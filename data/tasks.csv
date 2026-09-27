@@ -2,7 +2,7 @@ id,task,category,deadline,priority,status,planned_hours,actual_hours,type,notes
 W001,Русский ЕГЭ — выполнение 1,5 ч,RUS,2026-10-04,high,planned,1.5,0,WEEKLY,в субботу; теория номера 9 изучена
 W002,Профильная математика — 1–2 ч,PMATH,2026-10-04,high,planned,2,0,WEEKLY,задача недели; основная работа в субботу
 W003,CP — 2–4 сложные задачи ~1900–2300,CP,2026-10-04,medium,planned,7.5,0,WEEKLY,самостоятельно + Div2
-W004,Задачи тренера,TR,,high,planned,5,2.5,WEEKLY,две тренировки по 2,5 ч
+W004,Задачи тренера,TR,,high,planned,5,0,WEEKLY,две тренировки по 2,5 ч
 W005,Командная тренировка ВКОШП,TEAM,,high,planned,5,0,WEEKLY,обычно четверг
 W006,Div2 / дорешивание,DIV2,,medium,planned,0,0,WEEKLY,если есть и не конфликтует с основными блоками
 W007,Чтение,READ,,medium,planned,3,0,WEEKLY,короткие ежедневные блоки
