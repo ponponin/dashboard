@@ -138,32 +138,56 @@ $("creditHours").onclick=()=>{
 renderBalance();
 
 const symbols=["7️⃣","🍒","🍋","🍉","🍌","⭐"];
-const prizes={
-"7️⃣":{text:"777 — +3 бонусных вращения",add:3},
-"⭐":{text:"Три звезды — +2 бонусных вращения",add:2}
-};
+
 function spinSlot(){
-  if(bank<=0)return;
-  bank--; $("spinBank").textContent=bank;
+  if(points<200){
+    $("slotResult").textContent="Нужно минимум 200 очков.";
+    return;
+  }
+  points-=200;
+  localStorage.setItem("dashboard_game_points",String(points));
+  renderBalance();
   ["r0","r1","r2"].forEach(id=>$(id).classList.add("spin"));
-  if(points<200){$("slotResult").textContent="Нужно минимум 200 очков.";return;}\n  points-=200;renderBalance();localStorage.setItem("dashboard_game_points",String(points));\n  let ticks=0; const timer=setInterval(()=>{
-    ["r0","r1","r2"].forEach((id,i)=>$(id).textContent=symbols[Math.floor(Math.random()*symbols.length)]);
+  let ticks=0;
+  const timer=setInterval(()=>{
+    ["r0","r1","r2"].forEach(id=>{
+      $(id).textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    });
     if(++ticks>=24){
-      clearInterval(timer);["r0","r1","r2"].forEach(id=>$(id).classList.remove("spin"));
-      const a=symbols[Math.floor(Math.random()*symbols.length)],b=symbols[Math.floor(Math.random()*symbols.length)],c=symbols[Math.floor(Math.random()*symbols.length)];
-      $("r0").textContent=a;$("r1").textContent=b;$("r2").textContent=c;
-      let prize=0,text="Ничего — просто стильный проигрыш без потери часов.";
-      if(a===b&&b===c&&a==="7️⃣")prize=3,text="777 — +3 бонусных вращения!";
-      else if(a===b&&b===c&&a==="⭐")prize=2,text="Три звезды — +2 бонусных вращения!";
-      else if(a===b&&b===c)prize=1,text="Три одинаковых — +1 бонусное вращение!";
-      else if(a===b||a===c||b===c)prize=1,text="Две одинаковых — +1 бонусное вращение!";
-      bank+=prize;$("spinBank").textContent=bank;
-      localStorage.setItem("dashboard_slot_bank",JSON.stringify({bank,creditedHours}));
+      clearInterval(timer);
+      ["r0","r1","r2"].forEach(id=>$(id).classList.remove("spin"));
+      const a=symbols[Math.floor(Math.random()*symbols.length)];
+      const b=symbols[Math.floor(Math.random()*symbols.length)];
+      const c=symbols[Math.floor(Math.random()*symbols.length)];
+      $("r0").textContent=a;
+      $("r1").textContent=b;
+      $("r2").textContent=c;
+
+      let prize=0;
+      let text="Проигрыш — −200 очков.";
+      if(a===b&&b===c&&a==="7️⃣"){
+        prize=600;
+        text="777 — +600 очков!";
+      }else if(a===b&&b===c&&a==="⭐"){
+        prize=400;
+        text="Три звезды — +400 очков!";
+      }else if(a===b&&b===c){
+        prize=300;
+        text="Три одинаковых — +300 очков!";
+      }else if(a===b||a===c||b===c){
+        prize=100;
+        text="Две одинаковых — +100 очков!";
+      }
+      points+=prize;
+      localStorage.setItem("dashboard_game_points",String(points));
+      renderBalance();
       $("slotResult").textContent=text;
       addSlotHistory(text);
     }
   },95);
 }
+$("spinSlot").onclick=spinSlot;
+
 function addSlotHistory(text){
   const h=$("slotHistory"),e=document.createElement("div");e.className="history-item";e.innerHTML="<span>"+text+"</span><span class='muted'>"+new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})+"</span>";h.prepend(e);while(h.children.length>8)h.lastChild.remove();
 }
