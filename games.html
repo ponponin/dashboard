@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Интерактив</title>
+<style>
+:root{--bg:#090d19;--panel:#11182b;--panel2:#151e34;--text:#f4f7fb;--muted:#9aa8bf;--accent:#7c9cff;--good:#55d6a5;--warn:#ffc857;--danger:#ff7b8b;--line:#26324d}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 5%,#172442 0,#090d19 55%);color:var(--text);font:15px/1.45 Inter,system-ui,sans-serif}
+main{max-width:1100px;margin:auto;padding:26px 18px 50px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
+a,.btn,button{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:10px;font:inherit}
+button{cursor:pointer}.btn:hover,button:hover{border-color:var(--accent)}button:disabled{opacity:.5;cursor:not-allowed}
+h1{font-size:34px;margin:20px 0 4px}.muted{color:var(--muted)}
+.tabs{display:flex;gap:8px;margin:18px 0}.tab.active{border-color:var(--accent);background:#1b2745}
+.panel{background:rgba(17,24,43,.94);border:1px solid var(--line);border-radius:18px;padding:20px}
+.hidden{display:none}
+.slot-layout{display:grid;grid-template-columns:1fr 280px;gap:18px}.slot-machine{display:grid;gap:18px;place-items:center}
+.reels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(560px,100%)}
+.reel{height:155px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(#202a42,#11182b);border:3px solid #2a3858;box-shadow:inset 0 0 25px #080b13;font-size:70px;overflow:hidden}
+.reel.spin{animation:shake .12s linear infinite alternate}
+@keyframes shake{to{transform:translateY(4px)}}
+.slot-result{font-size:24px;font-weight:800;min-height:36px;text-align:center}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:25px;margin-top:3px}
+.note{font-size:12px;padding:11px 12px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);margin-top:12px}
+.history{display:grid;gap:8px;max-height:260px;overflow:auto;margin-top:12px}.history-item{display:flex;justify-content:space-between;gap:10px;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+.wheel-layout{display:grid;grid-template-columns:minmax(320px,1fr) 280px;gap:18px}.wheel-wrap{display:grid;place-items:center}.wheel-box{width:min(520px,88vw);aspect-ratio:1;position:relative}.wheel{width:100%;height:100%;border-radius:50%;border:8px solid #202a42;box-shadow:0 0 40px rgba(124,156,255,.18);transition:transform 4.4s cubic-bezier(.12,.7,.12,1)}
+.pointer{position:absolute;z-index:3;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:32px solid var(--good)}
+.center{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);z-index:2;width:78px;height:78px;border-radius:50%;background:var(--panel);border:6px solid #202a42;display:grid;place-items:center;font-weight:800;font-size:12px}
+.choice{font-size:24px;font-weight:800;min-height:40px;text-align:center;margin-top:14px}.kind{font-size:12px;color:var(--muted);text-transform:uppercase;text-align:center;letter-spacing:.12em}
+.legend2{display:grid;gap:8px;margin-top:14px}.legend2 div{padding:9px 10px;border-radius:10px;background:var(--panel2);border:1px solid var(--line)}
+@media(max-width:800px){.slot-layout,.wheel-layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+  <a href="./28.09/dashboard.html">← Актуальная неделя</a>
+  <a href="./reports.html">← Отчётник</a>
+</div>
+
+<h1>🎰 Интерактив</h1>
+<div class="muted">Два игровых режима. Реальные отработанные часы не списываются.</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="slot">🎰 Слот</button>
+  <button class="tab" data-tab="wheel">🎡 Колесо</button>
+</div>
+
+<section id="slotTab" class="panel">
+  <div class="slot-layout">
+    <div class="slot-machine">
+      <div class="reels">
+        <div class="reel" id="r0">7️⃣</div><div class="reel" id="r1">🍒</div><div class="reel" id="r2">🍌</div>
+      </div>
+      <button id="spinSlot" class="btn">Крутить слот</button>
+      <div class="slot-result" id="slotResult"></div>
+    </div>
+    <aside>
+      <div class="stat-grid">
+        <div class="stat"><div class="muted">Отработано</div><b id="totalHours">—</b><div class="muted">часов</div></div>
+        <div class="stat"><div class="muted">Вращений</div><b id="spinBank">—</b><div class="muted">доступно</div></div>
+      </div>
+      <div class="note">За каждые 2 отработанных часа открывается 1 вращение. Результат не изменяет реальные часы.</div>
+      <div class="history" id="slotHistory"></div>
+    </aside>
+  </div>
+</section>
+
+<section id="wheelTab" class="panel hidden">
+  <div class="wheel-layout">
+    <div>
+      <div class="wheel-wrap">
+        <div class="wheel-box">
+          <div class="pointer"></div>
+          <div class="wheel" id="rewardWheel"></div>
+          <div class="center">GO</div>
+        </div>
+      </div>
+      <button id="spinWheel" class="btn" style="display:block;margin:16px auto 0">Крутить колесо</button>
+      <div class="kind" id="wheelKind"></div>
+      <div class="choice" id="wheelResult"></div>
+    </div>
+    <aside>
+      <div class="note">Шансы 50/50: половина секторов — поощрения, половина — небольшие бытовые задания. Физические упражнения в качестве наказаний не используются.</div>
+      <div class="legend2">
+        <div>🎬 Серия сериала — до 30 мин</div>
+        <div>🎥 Фильм — 30 мин</div>
+        <div>📱 TikTok — 15 мин</div>
+        <div>🎮 Свободная игра — 20 мин</div>
+        <div>🧹 Уборка рабочего места — 15 мин</div>
+        <div>📚 Чтение — 20 мин</div>
+        <div>🗂️ Разбор файлов — 15 мин</div>
+        <div>📵 20 мин без соцсетей + одна мелкая задача</div>
+      </div>
+    </aside>
+  </div>
+</section>
+</main>
+
+<script>
+const $=id=>document.getElementById(id);
+
+document.querySelectorAll(".tab").forEach(btn=>btn.onclick=()=>{
+  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
+  btn.classList.add("active");
+  $("slotTab").classList.toggle("hidden",btn.dataset.tab!=="slot");
+  $("wheelTab").classList.toggle("hidden",btn.dataset.tab!=="wheel");
+});
+
+async function readCSV(path){
+  const r=await fetch(path+"?t="+Date.now(),{cache:"no-store"});
+  if(!r.ok)throw Error();
+  const lines=(await r.text()).trim().split(/\r?\n/);
+  const parse=line=>{const o=[];let c="",q=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){c+='"';i++}else q=!q}else if(ch===","&&!q){o.push(c);c=""}else c+=ch}o.push(c);return o};
+  const h=parse(lines.shift());return lines.filter(Boolean).map(line=>{const v=parse(line),o={};h.forEach((k,i)=>o[k]=v[i]??"");return o});
+}
+
+async function totalWorkedHours(){
+  let total=0;
+  try{
+    const stats=await readCSV("./data/stats.csv");
+    total+=stats.reduce((s,x)=>s+(parseFloat(x.work_hours)||0),0);
+  }catch(e){}
+  try{
+    const log=await readCSV("./data/log.csv");
+    total+=log.reduce((s,x)=>s+(parseFloat(x.hours ?? x[5])||0),0);
+  }catch(e){}
+  return total;
+}
+
+let totalHours=0, bank=0, creditedHours=0;
+async function initBank(){
+  totalHours=await totalWorkedHours();
+  $("totalHours").textContent=totalHours.toFixed(1);
+  const saved=JSON.parse(localStorage.getItem("dashboard_slot_bank")||"null");
+  const oldCredited=saved?.creditedHours||0;
+  bank=saved?.bank||0;
+  const nowCredited=Math.floor(totalHours/2)*2;
+  if(nowCredited>oldCredited) bank+=Math.floor((nowCredited-oldCredited)/2);
+  creditedHours=nowCredited;
+  localStorage.setItem("dashboard_slot_bank",JSON.stringify({bank,creditedHours}));
+  $("spinBank").textContent=bank;
+}
+const symbols=["7️⃣","🍒","🍋","🍉","🍌","⭐"];
+const prizes={
+"7️⃣":{text:"777 — +3 бонусных вращения",add:3},
+"⭐":{text:"Три звезды — +2 бонусных вращения",add:2}
+};
+function spinSlot(){
+  if(bank<=0)return;
+  bank--; $("spinBank").textContent=bank;
+  ["r0","r1","r2"].forEach(id=>$(id).classList.add("spin"));
+  let ticks=0; const timer=setInterval(()=>{
+    ["r0","r1","r2"].forEach((id,i)=>$(id).textContent=symbols[Math.floor(Math.random()*symbols.length)]);
+    if(++ticks>=24){
+      clearInterval(timer);["r0","r1","r2"].forEach(id=>$(id).classList.remove("spin"));
+      const a=symbols[Math.floor(Math.random()*symbols.length)],b=symbols[Math.floor(Math.random()*symbols.length)],c=symbols[Math.floor(Math.random()*symbols.length)];
+      $("r0").textContent=a;$("r1").textContent=b;$("r2").textContent=c;
+      let prize=0,text="Ничего — просто стильный проигрыш без потери часов.";
+      if(a===b&&b===c&&a==="7️⃣")prize=3,text="777 — +3 бонусных вращения!";
+      else if(a===b&&b===c&&a==="⭐")prize=2,text="Три звезды — +2 бонусных вращения!";
+      else if(a===b&&b===c)prize=1,text="Три одинаковых — +1 бонусное вращение!";
+      else if(a===b||a===c||b===c)prize=1,text="Две одинаковых — +1 бонусное вращение!";
+      bank+=prize;$("spinBank").textContent=bank;
+      localStorage.setItem("dashboard_slot_bank",JSON.stringify({bank,creditedHours}));
+      $("slotResult").textContent=text;
+      addSlotHistory(text);
+    }
+  },95);
+}
+function addSlotHistory(text){
+  const h=$("slotHistory"),e=document.createElement("div");e.className="history-item";e.innerHTML="<span>"+text+"</span><span class='muted'>"+new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})+"</span>";h.prepend(e);while(h.children.length>8)h.lastChild.remove();
+}
+$("spinSlot").onclick=spinSlot;
+
+const wheelItems=[
+  {kind:"reward",text:"🎬 1 серия сериала — до 30 минут"},
+  {kind:"reward",text:"🎥 30 минут фильма"},
+  {kind:"reward",text:"📱 15 минут TikTok"},
+  {kind:"reward",text:"🎮 20 минут свободной игры"},
+  {kind:"task",text:"🧹 15 минут уборки рабочего места"},
+  {kind:"task",text:"📚 20 минут чтения"},
+  {kind:"task",text:"🗂️ 15 минут разбора файлов / рабочего стола"},
+  {kind:"task",text:"📵 20 минут без соцсетей + одна мелкая задача"}
+];
+const wheelColors=["#7c9cff","#55d6a5","#5bd0e6","#a98bff","#ffc857","#ff7b8b","#d8a56d","#f29ac2"];
+$("rewardWheel").style.background="conic-gradient("+wheelItems.map((_,i)=>wheelColors[i]+" "+(i*100/wheelItems.length)+"% "+((i+1)*100/wheelItems.length)+"%").join(",")+")";
+let wheelRotation=0,wheelBusy=false;
+$("spinWheel").onclick=()=>{
+  if(wheelBusy)return;
+  wheelBusy=true;$("wheelResult").textContent="";$("wheelKind").textContent="";
+  const idx=Math.floor(Math.random()*wheelItems.length);
+  const target=360*(5+Math.floor(Math.random()*3))+(360-((idx+.5)*360/wheelItems.length));
+  wheelRotation+=target;$("rewardWheel").style.transform="rotate("+wheelRotation+"deg)";
+  setTimeout(()=>{
+    const x=wheelItems[idx];$("wheelKind").textContent=x.kind==="reward"?"ПОЩРЕНИЕ":"ЗАДАНИЕ";$("wheelResult").textContent=x.text;
+    wheelBusy=false;
+  },4500);
+};
+initBank();
+</script>
+</body>
+</html>
