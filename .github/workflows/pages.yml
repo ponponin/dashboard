@@ -2,9 +2,12 @@ name: Deploy dashboard
 on:
   push:
     branches: ["main"]
+    paths:
+      - "**.html"
+      - "data/**"
+      - "archive/**"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
-  schedule:
-    - cron: "0 * * * *"
 permissions:
   contents: read
   pages: write
