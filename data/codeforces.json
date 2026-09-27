@@ -1,6 +1,28 @@
 {
   "handle": "pon",
-  "updated_at": null,
-  "rating": null,
-  "history": []
+  "updated_at": "2026-09-27T18:51:08Z",
+  "rating": 1589,
+  "history": [],
+  "recent_divs": [
+    {
+      "name": "Codeforces Round 1124 (Div. 2)",
+      "date": "2026-09-26"
+    },
+    {
+      "name": "Codeforces Round 1123 (Div. 2)",
+      "date": "2026-09-25"
+    },
+    {
+      "name": "Codeforces Round 1122 (Div. 3)",
+      "date": "2026-09-21"
+    },
+    {
+      "name": "Codeforces Round 1121 (Div. 2)",
+      "date": "2026-09-13"
+    },
+    {
+      "name": "Codeforces Round 1120 (Div. 2)",
+      "date": "2026-09-12"
+    }
+  ]
 }
