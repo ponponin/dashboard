@@ -64,10 +64,10 @@ main{max-width:1600px;margin:auto;padding:28px 18px 50px}
 </div>
 
 <div id="cards" class="grid">
-  <div class="card" style="grid-column:span 2"><div class="muted">CF рейтинг</div><div class="v">1612</div><div class="muted">из последней сохранённой недели</div></div>
-  <div class="card"><div class="muted">Проф. мат. пробник</div><div class="v">81</div></div>
-  <div class="card"><div class="muted">Рег</div><div class="v">341/500</div></div>
-  <div class="card"><div class="muted">Закл</div><div class="v">0/0</div></div>
+  <div class="card" style="grid-column:span 2"><div class="muted">CF рейтинг</div><div class="v">—</div><div class="muted">последний сохранённый снимок</div></div>
+  <div class="card"><div class="muted">Проф. мат. пробник</div><div class="v">—</div></div>
+  <div class="card"><div class="muted">Рег</div><div class="v">—</div></div>
+  <div class="card"><div class="muted">Закл</div><div class="v">—</div></div>
 </div>
 
 <div class="controls">
@@ -89,17 +89,9 @@ main{max-width:1600px;margin:auto;padding:28px 18px 50px}
 <th>Неделя</th><th>Часы</th><th>Проги</th><th>Русский</th><th>Проф. мат.</th><th>Рег</th><th>Закл</th><th>CF</th><th>Div</th><th>Задачи/нед.</th><th>Степанов</th><th>Командка</th><th>ДЮ</th><th>Чтение</th>
 </tr></thead>
 <tbody id="rows">
-<tr class="current" data-week="2026-09-28" data-work="" data-prog="" data-cf="" data-solved="">
+<tr class="current" data-week="2026-09-28">
 <td><a href="./28.09/dashboard.html">2026-09-28 — 2026-10-04</a><span class="badge">АКТУАЛЬНАЯ</span></td>
 <td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
-</tr>
-<tr data-week="2026-09-21" data-work="37" data-prog="28" data-cf="1612" data-solved="37">
-<td><a href="./21.09/dashboard.html">2026-09-21 — 2026-09-27</a></td>
-<td>37 ч</td><td>28 ч</td><td>6</td><td>81</td><td>341/500</td><td>0/0</td><td>1612</td><td>Div.2: 1 место в рейтинге, Div.3: 18 место</td><td>37</td><td>4 ч</td><td>5 ч</td><td>9 ч</td><td>4 ч</td>
-</tr>
-<tr data-week="2026-09-14" data-work="41" data-prog="31" data-cf="1598" data-solved="20">
-<td><a href="./14.09/dashboard.html">2026-09-14 — 2026-09-20</a></td>
-<td>41 ч</td><td>31 ч</td><td>4</td><td>73</td><td>312/500</td><td>0/0</td><td>1598</td><td>Div.2: 27 место в рейтинге, Div.3: 9 место</td><td>20</td><td>3 ч</td><td>6 ч</td><td>8 ч</td><td>3 ч</td>
 </tr>
 </tbody>
 </table>
@@ -110,10 +102,7 @@ main{max-width:1600px;margin:auto;padding:28px 18px 50px}
 <script>
 "use strict";
 
-const fallbackStats = [
-  {week_start:"2026-09-21",week_end:"2026-09-27",work_hours:37,programming_hours:28,russian_ege_topics:6,math_ege_mock:81,vsosh_region_score:341,vsosh_region_max:500,vsosh_final_score:0,vsosh_final_max:0,cf_rating:1612,solved_week:37,coach_hours:4,team_hours:5,olympiad_math_hours:9,reading_hours:4,div_results:"Div.2: 1 место в рейтинге, Div.3: 18 место"},
-  {week_start:"2026-09-14",week_end:"2026-09-20",work_hours:41,programming_hours:31,russian_ege_topics:4,math_ege_mock:73,vsosh_region_score:312,vsosh_region_max:500,vsosh_final_score:0,vsosh_final_max:0,cf_rating:1598,solved_week:20,coach_hours:3,team_hours:6,olympiad_math_hours:8,reading_hours:3,div_results:"Div.2: 27 место в рейтинге, Div.3: 9 место"}
-];
+const fallbackStats = [];
 
 let stats = fallbackStats.slice();
 let ratings = [];
