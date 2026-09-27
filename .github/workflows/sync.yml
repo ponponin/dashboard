@@ -2,7 +2,7 @@ name: Sync from private planner
 on:
   workflow_dispatch:
   schedule:
-    - cron: "15 * * * *"
+    - cron: "7,22,37,52 * * * *"
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -15,13 +15,11 @@ jobs:
         run: |
           set -e
           mkdir -p data
-          curl -fsSL -H "Authorization: Bearer $MAIN_REPO_TOKEN" -H "Accept: application/vnd.github.raw+json" https://api.github.com/repos/ponponin/main/contents/dashboard.html?ref=main -o /tmp/dashboard.json
+          curl -fsSL -H "Authorization: Bearer $MAIN_REPO_TOKEN" -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/ponponin/main/contents/dashboard.html?ref=main" -o /tmp/dashboard.json
           python - <<'PY'
-          import json
+          import json,base64
           from pathlib import Path
-          p=Path("/tmp/dashboard.json")
-          j=json.loads(p.read_text())
-          import base64
+          j=json.loads(Path("/tmp/dashboard.json").read_text())
           s=base64.b64decode(j["content"]).decode()
           s=s.replace("5 задач на Фенвике; усталость 7/10","5 задач на Фенвике")
           Path("dashboard.html").write_text(s)
