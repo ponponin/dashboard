@@ -1,0 +1,15 @@
+<!doctype html>
+<html lang="ru">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Планировщик — дашборд</title></head>
+<body>
+<div id="app">Загрузка дашборда…</div>
+<script>
+async function load(){
+  const html=await fetch("https://raw.githubusercontent.com/ponponin/main/main/dashboard.html").catch(()=>null);
+  if(!html){document.getElementById("app").textContent="Не удалось загрузить дашборд.";return;}
+  document.open(); document.write(await html.text()); document.close();
+}
+load();
+</script>
+</body>
+</html>
