@@ -84,7 +84,9 @@ const w=(weekly&&weekly[0])||[]; document.querySelector("#results").innerHTML='<
 fetch("../data/codeforces.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(d=>{
   document.querySelector("#cfRating").textContent=d.rating??"—";
   const divs=Array.isArray(d.recent_divs)?d.recent_divs:[];
-  document.querySelector("#cfDivs").textContent=divs.length?divs.map(x=>x.name+" — "+x.date).join("; "):"нет сохранённых данных";
+  document.querySelector("#cfDivs").textContent=divs.length
+    ? divs.map(x=>x.name+" — #"+x.rank+" · "+(x.delta>=0?"+":"")+x.delta).join("; ")
+    : "нет сохранённых данных";
 }).catch(()=>{
   document.querySelector("#cfRating").textContent="—";
   document.querySelector("#cfDivs").textContent="нет сохранённых данных";
