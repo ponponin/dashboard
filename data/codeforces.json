@@ -1,7 +1,6 @@
 {
   "handle": "pon",
-  "updated_at": "2026-09-27T00:00:00Z",
-  "rating": 1612,
-  "history": [],
-  "note": "Fallback snapshot from the dashboard's previously saved CF data; automatic updater replaces this with the latest successful API snapshot."
+  "updated_at": null,
+  "rating": null,
+  "history": []
 }
