@@ -28,19 +28,22 @@ jobs:
         run: |
           set -euo pipefail
 
-          if ! curl -fsSL --retry 6 --retry-delay 3 --retry-all-errors --max-time 30             "https://codeforces.com/api/user.rating?handle=pon"             -o /tmp/rating.json; then
-            echo "::warning::Codeforces API is temporarily unavailable. Keeping the previous snapshot."
+          ok=0
+          for url in             "https://codeforces.com/api/user.rating?handle=pon"             "https://mirror.codeforces.com/api/user.rating?handle=pon"             "https://codeforces.org/api/user.rating?handle=pon"; do
+            echo "Trying $url"
+            if curl -fsSL --retry 10 --retry-delay 4 --retry-all-errors --max-time 40 "$url" -o /tmp/rating.json; then
+              node -e 'const x=require("/tmp/rating.json"); if(x.status==="OK" && Array.isArray(x.result)){process.exit(0)} process.exit(1)' && ok=1 && break
+            fi
+          done
+
+          if [ "$ok" -ne 1 ]; then
+            echo "::warning::Codeforces API unavailable. Keeping the previous snapshot."
             exit 0
           fi
 
           node <<'NODE'
           const fs = require("fs");
-
-          const api = JSON.parse(fs.readFileSync("/tmp/rating.json", "utf8"));
-          if (api.status !== "OK" || !Array.isArray(api.result)) {
-            throw new Error("Codeforces rating API returned an invalid response");
-          }
-
+          const api = JSON.parse(fs.readFileSync("/tmp/rating.json","utf8"));
           const history = api.result.slice(-100);
           const latest = history[history.length - 1];
 
@@ -51,10 +54,7 @@ jobs:
             history
           };
 
-          fs.writeFileSync(
-            "data/codeforces.json",
-            JSON.stringify(snapshot, null, 2) + "\n"
-          );
+          fs.writeFileSync("data/codeforces.json",JSON.stringify(snapshot,null,2)+"\n");
           NODE
 
       - name: Commit changed snapshot
