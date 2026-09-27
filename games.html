@@ -20,7 +20,7 @@ h1{font-size:34px;margin:20px 0 4px}.muted{color:var(--muted)}
 .reel.spin{animation:shake .12s linear infinite alternate}
 @keyframes shake{to{transform:translateY(4px)}}
 .slot-result{font-size:24px;font-weight:800;min-height:36px;text-align:center}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:25px;margin-top:3px}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.credit-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}.credit-row input{width:100%;min-width:0;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit}.stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:25px;margin-top:3px}
 .note{font-size:12px;padding:11px 12px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);margin-top:12px}
 .history{display:grid;gap:8px;max-height:260px;overflow:auto;margin-top:12px}.history-item{display:flex;justify-content:space-between;gap:10px;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
 .wheel-layout{display:grid;grid-template-columns:minmax(320px,1fr) 280px;gap:18px}.wheel-wrap{display:grid;place-items:center}.wheel-box{width:min(520px,88vw);aspect-ratio:1;position:relative}.wheel{width:100%;height:100%;border-radius:50%;border:8px solid #202a42;box-shadow:0 0 40px rgba(124,156,255,.18);transition:transform 4.4s cubic-bezier(.12,.7,.12,1)}
@@ -39,7 +39,7 @@ h1{font-size:34px;margin:20px 0 4px}.muted{color:var(--muted)}
 </div>
 
 <h1>🎰 Интерактив</h1>
-<div class="muted">Два игровых режима. Реальные отработанные часы не списываются.</div>
+<div class="muted">Два игровых режима. Игровые очки существуют только на этой странице и не меняют отчёт.</div>
 
 <div class="tabs">
   <button class="tab active" data-tab="slot">🎰 Слот</button>
@@ -57,10 +57,14 @@ h1{font-size:34px;margin:20px 0 4px}.muted{color:var(--muted)}
     </div>
     <aside>
       <div class="stat-grid">
-        <div class="stat"><div class="muted">Отработано</div><b id="totalHours">—</b><div class="muted">часов</div></div>
-        <div class="stat"><div class="muted">Вращений</div><b id="spinBank">—</b><div class="muted">доступно</div></div>
+        <div class="stat"><div class="muted">Игровой баланс</div><b id="points">0</b><div class="muted">очков</div></div>
+        <div class="stat"><div class="muted">Решено часов</div><b id="hoursEntered">0</b><div class="muted">начислено</div></div>
       </div>
-      <div class="note">За каждые 2 отработанных часа открывается 1 вращение. Результат не изменяет реальные часы.</div>
+      <div class="credit-row">
+        <input id="hoursInput" type="number" min="0" step="0.1" placeholder="Сколько часов решал?">
+        <button id="creditHours">+ начислить</button>
+      </div>
+      <div class="note">1 час = 200 игровых очков. Баланс хранится только в браузере на этой странице и не влияет на отчётник.</div>
       <div class="history" id="slotHistory"></div>
     </aside>
   </div>
@@ -115,32 +119,24 @@ async function readCSV(path){
   const h=parse(lines.shift());return lines.filter(Boolean).map(line=>{const v=parse(line),o={};h.forEach((k,i)=>o[k]=v[i]??"");return o});
 }
 
-async function totalWorkedHours(){
-  let total=0;
-  try{
-    const stats=await readCSV("./data/stats.csv");
-    total+=stats.reduce((s,x)=>s+(parseFloat(x.work_hours)||0),0);
-  }catch(e){}
-  try{
-    const log=await readCSV("./data/log.csv");
-    total+=log.reduce((s,x)=>s+(parseFloat(x.hours ?? x[5])||0),0);
-  }catch(e){}
-  return total;
+let points=Number(localStorage.getItem("dashboard_game_points")||0);
+let hoursEntered=Number(localStorage.getItem("dashboard_game_hours")||0);
+function renderBalance(){
+  $("points").textContent=points.toLocaleString("ru-RU");
+  $("hoursEntered").textContent=hoursEntered.toFixed(1);
 }
+$("creditHours").onclick=()=>{
+  const h=parseFloat($("hoursInput").value);
+  if(!Number.isFinite(h)||h<=0)return;
+  points+=Math.round(h*200);
+  hoursEntered+=h;
+  localStorage.setItem("dashboard_game_points",String(points));
+  localStorage.setItem("dashboard_game_hours",String(hoursEntered));
+  $("hoursInput").value="";
+  renderBalance();
+};
+renderBalance();
 
-let totalHours=0, bank=0, creditedHours=0;
-async function initBank(){
-  totalHours=await totalWorkedHours();
-  $("totalHours").textContent=totalHours.toFixed(1);
-  const saved=JSON.parse(localStorage.getItem("dashboard_slot_bank")||"null");
-  const oldCredited=saved?.creditedHours||0;
-  bank=saved?.bank||0;
-  const nowCredited=Math.floor(totalHours/2)*2;
-  if(nowCredited>oldCredited) bank+=Math.floor((nowCredited-oldCredited)/2);
-  creditedHours=nowCredited;
-  localStorage.setItem("dashboard_slot_bank",JSON.stringify({bank,creditedHours}));
-  $("spinBank").textContent=bank;
-}
 const symbols=["7️⃣","🍒","🍋","🍉","🍌","⭐"];
 const prizes={
 "7️⃣":{text:"777 — +3 бонусных вращения",add:3},
@@ -150,7 +146,7 @@ function spinSlot(){
   if(bank<=0)return;
   bank--; $("spinBank").textContent=bank;
   ["r0","r1","r2"].forEach(id=>$(id).classList.add("spin"));
-  let ticks=0; const timer=setInterval(()=>{
+  if(points<200){$("slotResult").textContent="Нужно минимум 200 очков.";return;}\n  points-=200;renderBalance();localStorage.setItem("dashboard_game_points",String(points));\n  let ticks=0; const timer=setInterval(()=>{
     ["r0","r1","r2"].forEach((id,i)=>$(id).textContent=symbols[Math.floor(Math.random()*symbols.length)]);
     if(++ticks>=24){
       clearInterval(timer);["r0","r1","r2"].forEach(id=>$(id).classList.remove("spin"));
