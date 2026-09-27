@@ -106,6 +106,7 @@ const fallbackStats = [];
 
 let stats = fallbackStats.slice();
 let ratings = [];
+let recentDivs = [];
 let currentWeek = "2026-09-28";
 
 const num = v => {
@@ -171,8 +172,12 @@ function renderDetails() {
   if (mode==="cf") {
     title="Codeforces";
     const rr=ratings.slice().sort((a,b)=>a.ratingUpdateTimeSeconds-b.ratingUpdateTimeSeconds);
-    points=rr.slice(-5).map(x=>({label:new Date(x.ratingUpdateTimeSeconds*1000).toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit"}),value:x.newRating}));
-    items=rr.slice(-5).reverse().map(x=>({label:x.contestName,value:x.newRating+" ("+(x.newRating-x.oldRating>=0?"+":"")+(x.newRating-x.oldRating)+")"}));
+    if(rr.length){
+      points=rr.slice(-5).map(x=>({label:new Date(x.ratingUpdateTimeSeconds*1000).toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit"}),value:x.newRating}));
+      items=rr.slice(-5).reverse().map(x=>({label:x.contestName,value:x.newRating+" ("+(x.newRating-x.oldRating>=0?"+":"")+(x.newRating-x.oldRating)+")"}));
+    }else{
+      recentDivs.slice(0,5).forEach(x=>items.push({label:x.name,value:x.date}));
+    }
   } else {
     title=mode==="vsosh_region_score"?"ВсОШ регион":"ЗКЛА";
     const rr=stats.filter(x=>num(x[mode])!==null).sort((a,b)=>a.week_start.localeCompare(b.week_start));
@@ -245,6 +250,7 @@ async function loadCf() {
     if (!response.ok) throw new Error();
     const snapshot=await response.json();
     ratings=Array.isArray(snapshot.history)?snapshot.history:[];
+    recentDivs=Array.isArray(snapshot.recent_divs)?snapshot.recent_divs:[];
     const latestRating=num(snapshot.rating) ?? (ratings.length ? num(ratings[ratings.length-1].newRating) : null);
 
     if(latestRating!==null){
