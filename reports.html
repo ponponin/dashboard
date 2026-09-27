@@ -73,7 +73,7 @@ main{max-width:1600px;margin:auto;padding:28px 18px 50px}
 <div class="controls">
   <input id="search" placeholder="Поиск по неделям">
   <select id="sort">
-    <option value="filled">Только заполненные</option>
+    <option value="date">Сначала новые</option>
     <option value="work">Часы</option>
     <option value="prog">Программирование</option>
     <option value="cf">Codeforces</option>
@@ -125,7 +125,7 @@ const fallbackStats = [
 let stats = fallbackStats.slice();
 let ratings = [];
 let currentWeek = "2026-09-28";
-let sortMode = "filled";
+let sortMode = "date";
 
 const num = v => {
   const n = Number(v);
@@ -155,17 +155,12 @@ function renderTable() {
               sortMode==="cf" ? "cf_rating" :
               sortMode==="solved" ? "solved_week" : null;
 
-  if (sortMode==="filled") {
-    rows.sort((a,b)=>(a.__current?1:0)-(b.__current?1:0));
-    rows.sort((a,b)=>b.week_start.localeCompare(a.week_start));
-    if (rows.length && rows.some(x=>x.__current)) rows.sort((a,b)=>(a.__current? -1 : b.__current? 1 : 0));
-  } else if (key) {
+  if (key) {
     rows.sort((a,b)=>(num(b[key]) ?? -1)-(num(a[key]) ?? -1));
   }
 
   const q = document.getElementById("search").value.trim().toLowerCase();
-  let filtered = rows.filter(x => (x.week_start+" "+x.week_end).toLowerCase().includes(q));
-  if (sortMode==="filled") filtered = filtered.filter(x => x.__current || Object.values(x).some(v => v!=="" && v!==null && v!==undefined && v!==false && v!==x.week_start && v!==x.week_end));
+  const filtered = rows.filter(x => (x.week_start+" "+x.week_end).toLowerCase().includes(q));
 
   document.getElementById("rows").innerHTML = filtered.map((x,i) => {
     const prev = i+1 < filtered.length ? filtered[i+1] : null;
@@ -295,9 +290,9 @@ document.getElementById("sort").addEventListener("change",e=>{sortMode=e.target.
 document.getElementById("metric").addEventListener("change",renderDetails);
 document.getElementById("reset").addEventListener("click",()=>{
   document.getElementById("search").value="";
-  document.getElementById("sort").value="filled";
+  document.getElementById("sort").value="date";
   document.getElementById("metric").value="";
-  sortMode="filled";
+  sortMode="date";
   renderTable();
   renderDetails();
 });
