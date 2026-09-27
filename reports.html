@@ -24,7 +24,7 @@ function delta(cur,prev,key){const a=num(cur[key]),b=prev?num(prev[key]):null;if
 function cell(cur,prev,key,suffix=""){let x=val(cur[key]);if(key==="zakl_tour_score"&&cur.zakl_tour_max)x+="/"+cur.zakl_tour_max;if(key==="vsosh_region_score"&&cur.vsosh_region_max)x+="/"+cur.vsosh_region_max;if(key==="vsosh_final_score"&&cur.vsosh_final_max)x+="/"+cur.vsosh_final_max;return x==="—"?"—":x+suffix+delta(cur,prev,key)}
 async function init(){
 stats=await csv("data/stats.csv");try{ratings=(await (await fetch("https://codeforces.com/api/user.rating?handle=pon")).json()).result||[]}catch(e){ratings=[]}
-stats=stats.map(s=>{const a=new Date(s.week_start+"T00:00:00"),b=new Date(s.week_end+"T23:59:59");const rr=ratings.filter(z=>{const d=new Date(z.ratingUpdateTimeSeconds*1000);return d>=a&&d<=b});const last=rr[rr.length-1];const divs=rr.filter(z=>/Div\.? ?[12]/i.test(z.contestName)).map(z=>z.contestName.replace(/Codeforces Round /i,"")+" — #"+z.rank);return {...s,cf_auto:last?last.newRating:"",div_auto:divs.join("; ")}});renderCF();render()
+stats=stats.map(s=>{const a=new Date(s.week_start+"T00:00:00"),b=new Date(s.week_end+"T23:59:59");const rr=ratings.filter(z=>{const d=new Date(z.ratingUpdateTimeSeconds*1000);return d>=a&&d<=b});const last=rr[rr.length-1];const divs=rr.filter(z=>/Div\.? ?[12]/i.test(z.contestName)).map(z=>z.contestName.replace(/Codeforces Round /i,"")+" — #"+z.rank);return {...s,cf_auto:last?last.newRating:"",div_auto:divs.join("; ")}});render();renderCF();renderDetails()
 }
 function renderCF(){
 const info=document.querySelector("#cfInfo"), chart=document.querySelector("#cfHeaderChart"), recent=ratings.slice(-12);
