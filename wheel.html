@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Колесо наград</title>
+<style>
+:root{--bg:#090d19;--panel:#11182b;--panel2:#151e34;--text:#f4f7fb;--muted:#9aa8bf;--accent:#7c9cff;--line:#26324d;--good:#55d6a5}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 50% 20%,#172442 0,#090d19 55%);color:var(--text);font:15px/1.45 Inter,system-ui,sans-serif}
+main{max-width:1050px;margin:auto;padding:26px 18px 50px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+a,.btn{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:10px}
+a:hover,.btn:hover{border-color:var(--accent)}
+h1{font-size:34px;margin:6px 0 2px}
+.muted{color:var(--muted)}
+.layout{display:grid;grid-template-columns:minmax(320px,1fr) 330px;gap:18px;margin-top:20px}
+.card{background:rgba(17,24,43,.92);border:1px solid var(--line);border-radius:18px;padding:18px}
+.wheel-wrap{display:grid;place-items:center;padding:20px}
+.wheel-box{width:min(520px,86vw);aspect-ratio:1;position:relative}
+#wheel{width:100%;height:100%;border-radius:50%;border:8px solid #202a42;box-shadow:0 0 45px rgba(124,156,255,.18);transition:transform 4.5s cubic-bezier(.12,.7,.12,1)}
+.pointer{position:absolute;z-index:3;top:-9px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:32px solid var(--good);filter:drop-shadow(0 4px 6px rgba(0,0,0,.45))}
+.center{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);z-index:2;width:82px;height:82px;border-radius:50%;background:var(--panel);border:6px solid #202a42;display:grid;place-items:center;font-weight:800;font-size:13px;text-align:center}
+.controls{display:flex;gap:10px;align-items:center;justify-content:center;margin-top:16px}
+button{cursor:pointer;font:inherit}
+.spin{background:var(--accent);border-color:var(--accent);font-weight:800;min-width:150px}
+.spin:disabled{opacity:.5;cursor:not-allowed}
+.result{font-size:24px;font-weight:800;text-align:center;min-height:38px;margin-top:14px}
+.history{display:grid;gap:8px;max-height:300px;overflow:auto;margin-top:10px}
+.item{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
+.stat{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat .box{padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2)}
+.stat b{display:block;font-size:24px;margin-top:3px}
+.note{margin-top:14px;padding:11px 12px;border:1px solid var(--line);border-radius:12px;background:var(--panel2);font-size:12px}
+@media(max-width:800px){.layout{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+  <a href="./28.09/dashboard.html">← Актуальная неделя</a>
+  <a href="./reports.html">← Отчётник по неделям</a>
+</div>
+
+<div style="margin-top:22px">
+  <div class="muted">интерактив</div>
+  <h1>🎡 Колесо наград</h1>
+  <div class="muted">Случайный выбор небольшого бонуса. Отработанные часы не тратятся и не ставятся.</div>
+</div>
+
+<div class="layout">
+  <section class="card">
+    <div class="wheel-wrap">
+      <div class="wheel-box">
+        <div class="pointer"></div>
+        <div id="wheel"></div>
+        <div class="center">GO</div>
+      </div>
+    </div>
+    <div class="controls"><button id="spin" class="btn spin">Крутить</button></div>
+    <div id="result" class="result"></div>
+  </section>
+
+  <aside class="card">
+    <div class="stat">
+      <div class="box"><div class="muted">Отработано</div><b id="hours">—</b><div class="muted">часов</div></div>
+      <div class="box"><div class="muted">Вращений</div><b id="spins">0</b><div class="muted">в этой сессии</div></div>
+    </div>
+
+    <div class="note">Варианты можно заменить на свои: отдых, чтение, любимая задача, музыка или другой небольшой бонус.</div>
+
+    <div style="margin-top:18px;font-weight:700">Последние результаты</div>
+    <div id="history" class="history"></div>
+  </aside>
+</div>
+</main>
+
+<script>
+const rewards=[
+"10 минут отдыха","Выбрать любимую задачу","Чай / кофе-пауза","15 минут музыки",
+"Небольшая прогулка","Пропустить одну мелкую задачу","20 минут свободного времени","Своя награда"
+];
+const colors=["#7c9cff","#55d6a5","#ffc857","#ff7b8b","#a98bff","#5bd0e6","#f29ac2","#8bd17c"];
+const wheel=document.getElementById("wheel");
+const n=rewards.length;
+wheel.style.background="conic-gradient("+rewards.map((_,i)=>colors[i]+" "+(i*100/n)+"% "+((i+1)*100/n)+"%").join(",")+")";
+let rotation=0, spinning=false, spins=Number(localStorage.getItem("wheel_spins")||0);
+document.getElementById("spins").textContent=spins;
+
+async function loadHours(){
+  try{
+    const r=await fetch("data/log.csv?t="+Date.now(),{cache:"no-store"});
+    if(!r.ok)throw Error();
+    const s=await r.text();
+    const lines=s.trim().split(/\r?\n/).slice(1);
+    let total=0;
+    for(const line of lines){
+      const m=line.match(/(?:^|,)\s*([0-9]+(?:[.,][0-9]+)?)\s*(?:,|$)/g);
+      const fields=line.split(",");
+      const v=parseFloat((fields[5]||"").replace(",","."));
+      if(Number.isFinite(v)) total+=v;
+    }
+    document.getElementById("hours").textContent=total.toFixed(1);
+  }catch(e){document.getElementById("hours").textContent="—";}
+}
+function addHistory(text){
+  const h=document.getElementById("history");
+  const d=new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"});
+  const el=document.createElement("div");
+  el.className="item";
+  el.innerHTML="<span>"+text+"</span><span class='muted'>"+d+"</span>";
+  h.prepend(el);
+  while(h.children.length>8)h.lastChild.remove();
+}
+document.getElementById("spin").onclick=()=>{
+  if(spinning)return;
+  spinning=true;
+  document.getElementById("result").textContent="";
+  const index=Math.floor(Math.random()*n);
+  const sector=index+0.5;
+  const target=360*(5+Math.floor(Math.random()*3))+(360-(sector*360/n));
+  rotation+=target;
+  wheel.style.transform="rotate("+rotation+"deg)";
+  setTimeout(()=>{
+    document.getElementById("result").textContent=rewards[index];
+    spins++;
+    localStorage.setItem("wheel_spins",String(spins));
+    document.getElementById("spins").textContent=spins;
+    addHistory(rewards[index]);
+    spinning=false;
+  },4600);
+};
+loadHours();
+</script>
+</body>
+</html>
