@@ -1,15 +1,90 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Отчётник</title>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Отчётник</title>
 <style>
-body{margin:0;background:#0b0d12;color:#e9edf5;font:14px system-ui,sans-serif}main{max-width:1400px;margin:auto;padding:28px}h1{margin:0 0 6px}p{color:#8f98a8}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:22px 0}.card{background:#131720;border:1px solid #252b36;border-radius:14px;padding:16px}.v{font-size:25px;font-weight:700;margin-top:7px}table{width:100%;border-collapse:collapse;background:#131720;border-radius:14px;overflow:hidden}th,td{padding:11px;border-bottom:1px solid #252b36;text-align:left}th{color:#8f98a8;font-weight:500}section{margin-top:28px;overflow:auto}.muted{color:#8f98a8}.nav a{color:#8db4ff;margin-right:16px;text-decoration:none}
-</style></head><body><main>
+*{box-sizing:border-box}
+body{margin:0;background:#0b0d12;color:#e9edf5;font:14px system-ui,sans-serif}
+main{max-width:1500px;margin:auto;padding:28px}
+h1{margin:0 0 6px}h2{margin:0 0 14px}p{color:#8f98a8}
+.nav{margin-bottom:20px}.nav a{color:#8db4ff;margin-right:18px;text-decoration:none}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:22px 0}
+.card{background:#131720;border:1px solid #252b36;border-radius:14px;padding:16px}
+.v{font-size:25px;font-weight:700;margin-top:7px}.muted{color:#8f98a8}
+section{margin-top:28px;overflow:auto}
+table{width:100%;border-collapse:collapse;background:#131720;border-radius:14px;overflow:hidden;min-width:1250px}
+th,td{padding:11px;border-bottom:1px solid #252b36;text-align:left;white-space:nowrap}
+th{color:#8f98a8;font-weight:500}
+.badge{display:inline-block;padding:4px 8px;border-radius:8px;background:#1b2230}
+.small{font-size:12px;color:#8f98a8}
+</style>
+</head>
+<body>
+<main>
 <div class="nav"><a href="dashboard.html">Главный</a><a href="weekly.html">Трекер недели</a></div>
-<h1>Отчётник по неделям</h1><p>Накопительная статистика. Новая неделя добавляется отдельно, старые результаты не теряются.</p>
+<h1>Отчётник по неделям</h1>
+<p>Накопительная статистика: текущая неделя обновляется, прошедшие недели остаются в истории.</p>
+
 <div id="cards" class="grid"></div>
-<section><h2>Все недели</h2><table><thead><tr><th>Неделя</th><th>Русский ЕГЭ</th><th>Пробник математики</th><th>ЗКЛА</th><th>CF</th><th>Решено всего</th><th>Решено за неделю</th><th>Программирование</th><th>Степанов</th><th>Команда</th><th>Математика</th><th>Чтение</th></tr></thead><tbody id="rows"></tbody></table></section>
+
+<section>
+<h2>Все недели</h2>
+<table>
+<thead><tr>
+<th>Неделя</th><th>Русский ЕГЭ</th><th>Проф. математика</th><th>ЗКЛА</th>
+<th>ВсОШ регион</th><th>ВсОШ финал</th><th>Codeforces</th><th>Div</th>
+<th>Рабочие часы</th><th>Программирование</th><th>Задачи за неделю</th><th>Задачи всего</th>
+<th>Степанов</th><th>Командные</th><th>Олимп. математика</th><th>Чтение</th><th>Английский</th><th>Литература</th>
+</tr></thead>
+<tbody id="rows"></tbody>
+</table>
+</section>
+
 <script>
-async function csv(p){let s=await fetch(p+'?v='+Date.now()).then(r=>r.text());let a=s.trim().split(/\r?\n/);let h=a.shift().split(',');return a.filter(Boolean).map(x=>{let v=x.split(',');let o={};h.forEach((k,i)=>o[k]=v[i]??'');return o})}
-(async()=>{let d=await csv('data/stats.csv');let x=d[d.length-1]||{};document.querySelector('#cards').innerHTML=[
-['CF рейтинг',x.cf_rating||'—'],['Русский ЕГЭ',(x.russian_ege_topics||'—')+'/'+(x.russian_ege_topics_total||26)],['Пробник математики',x.math_ege_mock||'—'],['ЗКЛА',x.zakl_tour_score?x.zakl_tour_score+(x.zakl_tour_max?'/'+x.zakl_tour_max:''):'—'],['Решено задач',x.solved_total||'—'],['За неделю',x.solved_week||'—'],['Программирование',x.programming_hours?x.programming_hours+' ч':'—']].map(a=>'<div class="card"><div class="muted">'+a[0]+'</div><div class="v">'+a[1]+'</div></div>').join('');
-document.querySelector('#rows').innerHTML=d.map(x=>'<tr><td>'+x.week_start+' — '+x.week_end+'</td><td>'+((x.russian_ege_topics||'—')+'/'+(x.russian_ege_topics_total||26))+'</td><td>'+((x.math_ege_mock||'—'))+'</td><td>'+((x.zakl_tour_score||'—')+(x.zakl_tour_max?'/'+x.zakl_tour_max:''))+'</td><td>'+x.cf_rating+'</td><td>'+x.solved_total+'</td><td>'+x.solved_week+'</td><td>'+x.programming_hours+' ч</td><td>'+x.coach_hours+' ч</td><td>'+x.team_hours+' ч</td><td>'+x.olympiad_math_hours+' ч</td><td>'+x.reading_hours+' ч</td></tr>').join('')})()
-</script></main></body></html>
+async function csv(path){
+  const text=await fetch(path+'?v='+Date.now()).then(r=>r.text());
+  const lines=text.trim().split(/\r?\n/);
+  if(!lines.length)return[];
+  const parse=s=>{let a=[],cur='',q=false;for(let i=0;i<s.length;i++){let c=s[i];if(c=='"'){if(q&&s[i+1]=='"'){cur+='"';i++}else q=!q}else if(c==','&&!q){a.push(cur);cur=''}else cur+=c}a.push(cur);return a};
+  const h=parse(lines.shift());
+  return lines.filter(Boolean).map(line=>{const v=parse(line),o={};h.forEach((k,i)=>o[k]=v[i]??'');return o});
+}
+const val=x=>x===undefined||x===null||x===''?'—':x;
+const hours=x=>x===''||x===undefined?'—':x+' ч';
+function n(x){const v=parseFloat(x);return Number.isFinite(v)?v:0}
+
+(async()=>{
+  const stats=await csv('data/stats.csv');
+  const x=stats[stats.length-1]||{};
+
+  document.querySelector('#cards').innerHTML=[
+    ['CF рейтинг',val(x.cf_rating)],
+    ['Русский ЕГЭ',val(x.russian_ege_topics)+' / '+val(x.russian_ege_topics_total||26)],
+    ['Проф. математика',val(x.math_ege_mock)],
+    ['ЗКЛА',x.zakl_tour_score?x.zakl_tour_score+(x.zakl_tour_max?'/'+x.zakl_tour_max:''):'—'],
+    ['ВсОШ регион',val(x.vsosh_region)],
+    ['ВсОШ финал',val(x.vsosh_final)],
+    ['Рабочие часы',hours(x.work_hours)],
+    ['Программирование',hours(x.programming_hours)]
+  ].map(a=>'<div class="card"><div class="muted">'+a[0]+'</div><div class="v">'+a[1]+'</div></div>').join('');
+
+  document.querySelector('#rows').innerHTML=stats.map(x=>'<tr>'+
+    '<td>'+val(x.week_start)+' — '+val(x.week_end)+'</td>'+
+    '<td>'+val(x.russian_ege_topics)+' / '+val(x.russian_ege_topics_total||26)+'</td>'+
+    '<td>'+val(x.math_ege_mock)+'</td>'+
+    '<td>'+((x.zakl_tour_score||'—')+(x.zakl_tour_max?'/'+x.zakl_tour_max:''))+'</td>'+
+    '<td>'+val(x.vsosh_region)+'</td><td>'+val(x.vsosh_final)+'</td>'+
+    '<td>'+val(x.cf_rating)+'</td><td>'+val(x.div_results)+'</td>'+
+    '<td>'+hours(x.work_hours)+'</td><td>'+hours(x.programming_hours)+'</td>'+
+    '<td>'+val(x.solved_week)+'</td><td>'+val(x.solved_total)+'</td>'+
+    '<td>'+hours(x.coach_hours)+'</td><td>'+hours(x.team_hours)+'</td>'+
+    '<td>'+hours(x.olympiad_math_hours)+'</td><td>'+hours(x.reading_hours)+'</td>'+
+    '<td>'+hours(x.english_hours)+'</td><td>'+hours(x.literature_hours)+'</td>'+
+    '</tr>').join('');
+})().catch(e=>{document.querySelector('#rows').innerHTML='<tr><td colspan="18">Ошибка загрузки данных</td></tr>'});
+</script>
+</main>
+</body>
+</html>
