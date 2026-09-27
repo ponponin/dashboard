@@ -32,9 +32,28 @@ const fields=[["work_hours","Часы"," ч"],["programming_hours","Проги",
 function delta(cur,prev,key){const a=num(cur[key]),b=prev?num(prev[key]):null;if(a===null||b===null)return "";const d=a-b;if(!d)return '<span class="delta flat">±0</span>';return '<span class="delta '+(d>0?"up":"down")+'">'+(d>0?"+":"")+d+'</span>'}
 function cell(cur,prev,key,suffix=""){let x=val(cur[key]);if(key==="zakl_tour_score"&&cur.zakl_tour_max)x+="/"+cur.zakl_tour_max;if(key==="vsosh_region_score"&&cur.vsosh_region_max)x+="/"+cur.vsosh_region_max;if(key==="vsosh_final_score"&&cur.vsosh_final_max)x+="/"+cur.vsosh_final_max;return x==="—"?"—":x+suffix+delta(cur,prev,key)}
 async function init(){
-stats=await csv("data/stats.csv");
-const weeks=await csv("data/weeks.csv").catch(()=>[]); currentWeek=(weeks.find(x=>x.report==="./28.09/dashboard.html"||x.report==="28.09/dashboard.html")||{}).week_start||"2026-09-28";try{ratings=(await (await fetch("https://codeforces.com/api/user.rating?handle=pon")).json()).result||[]}catch(e){ratings=[]}
-stats=stats.map(s=>{const a=new Date(s.week_start+"T00:00:00"),b=new Date(s.week_end+"T23:59:59");const rr=ratings.filter(z=>{const d=new Date(z.ratingUpdateTimeSeconds*1000);return d>=a&&d<=b});const last=rr[rr.length-1];const divs=rr.filter(z=>/Div\.? ?[12]/i.test(z.contestName)).map(z=>z.contestName.replace(/Codeforces Round /i,"")+" — #"+z.rank);return {...s,cf_auto:last?last.newRating:"",div_auto:divs.join("; ")}});render();renderCF();renderDetails()
+const [loadedStats,weeks]=await Promise.all([csv("data/stats.csv"),csv("data/weeks.csv").catch(()=>[])]);
+stats=loadedStats||[];
+currentWeek=(weeks.find(x=>x.report==="./28.09/dashboard.html"||x.report==="28.09/dashboard.html")||{}).week_start||"2026-09-28";
+render();
+renderDetails();
+try{
+  const controller=new AbortController();
+  const timer=setTimeout(()=>controller.abort(),4000);
+  const response=await fetch("https://codeforces.com/api/user.rating?handle=pon",{signal:controller.signal});
+  clearTimeout(timer);
+  const json=await response.json();
+  ratings=json.result||[];
+}catch(e){ratings=[]}
+stats=stats.map(s=>{
+  const a=new Date(s.week_start+"T00:00:00"),b=new Date(s.week_end+"T23:59:59");
+  const rr=ratings.filter(z=>{const d=new Date(z.ratingUpdateTimeSeconds*1000);return d>=a&&d<=b});
+  const last=rr[rr.length-1];
+  const divs=rr.filter(z=>/Div\.? ?[12]/i.test(z.contestName)).map(z=>z.contestName.replace(/Codeforces Round /i,"")+" — #"+z.rank);
+  return {...s,cf_auto:last?last.newRating:"",div_auto:divs.join("; ")};
+});
+render();
+renderDetails();
 }
 function renderCF(){
 const info=document.querySelector("#cfInfo"), chart=document.querySelector("#cfHeaderChart"), recent=ratings.slice(-12);
