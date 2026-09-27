@@ -1,4 +1,4 @@
-date,day,start,end,category,task,planned_hours,status,actual_hours,completion
+date,day,start,end,category,task,planned_hours,status,actual_hours,completion,notes
 2026-09-28,Mon,19:00,21:00,MATH,Олимпиадная математика,2,planned,0,0
 2026-09-28,Mon,21:30,22:00,READ,Чтение,0.5,planned,0,0
 2026-09-29,Tue,16:00,18:30,TR,Программирование с тренером,2.5,planned,2.5,100
@@ -11,7 +11,7 @@ date,day,start,end,category,task,planned_hours,status,actual_hours,completion
 2026-10-02,Fri,16:00,18:30,TR,Программирование с тренером,2.5,planned,0,0
 2026-10-02,Fri,19:00,21:00,DIV2,Div2 / дорешивание,0,planned,0,0
 2026-10-02,Fri,21:30,22:00,READ,Чтение,0.5,planned,0,0
-2026-10-03,Sat,14:00,16:00,RUS,1 типовое ЕГЭ по русскому,0,planned,0,0
+2026-10-03,Sat,14:00,15:30,RUS,ЕГЭ по русскому — выполнение,1.5,planned,0,0
 2026-10-03,Sat,16:30,18:30,MATH,Профильная математика — работа по задаче недели,0,planned,0,0
 2026-10-03,Sat,19:00,21:00,CP,Div2 / программирование,0,planned,0,0
 2026-10-03,Sat,21:15,21:45,READ,Чтение,0.5,planned,0,0
