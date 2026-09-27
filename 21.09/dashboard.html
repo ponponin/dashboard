@@ -7,7 +7,7 @@ main{max-width:1180px;margin:auto;padding:28px 18px 48px}.top{display:flex;justi
   <div style="margin-bottom:14px"><a class="back-home" href="../reports.html">← Отчётник по неделям</a></div>
   <div class="top">
     <div><div class="eyebrow">архив недели</div><div class="title">План → факт → прогресс</div><div class="sub">21.09.2026 — 27.09.2026 · сохранённый недельный отчёт</div></div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><a class="back-home" href="../28.09/dashboard.html">Актуальная неделя →</a></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="directionFilter" aria-label="Фильтр направления"><option value="ALL">Все направления</option><option value="CP">Программирование</option><option value="MATH">Математика</option><option value="RUS">Русский ЕГЭ</option><option value="READ">Чтение</option><option value="ENG">Английский</option><option value="LIT">Литература</option><option value="TR">Степанов</option><option value="TEAM">Командка</option></select><a class="back-home" href="../28.09/dashboard.html">Актуальная неделя →</a></div>
   </div>
   <section class="grid metrics">
     <div class="card metric"><div class="label">Запланировано</div><div class="num">37 ч</div><div class="hint">часов за неделю</div></div>
@@ -58,4 +58,35 @@ main{max-width:1180px;margin:auto;padding:28px 18px 48px}.top{display:flex;justi
   <section class="card" style="margin-top:14px"><div class="section-title">Факт занятий</div><div class="table-wrap"><table class="table"><thead><tr><th>Направление</th><th>Часы</th></tr></thead><tbody>
     <tr><td>Работа всего</td><td>37</td></tr><tr><td>Программирование</td><td>28</td></tr><tr><td>Степанов</td><td>4</td></tr><tr><td>Командка</td><td>5</td></tr><tr><td>Олимпиадная математика</td><td>9</td></tr><tr><td>Чтение</td><td>4</td></tr>
   </tbody></table></div><div class="footer">Это архивная версия отчёта. Оформление совпадает с актуальной неделей.</div></section>
-</main></body></html>
+</main><script>
+const directionFilter=document.getElementById("directionFilter");
+function archiveDirection(text){
+  const s=(text||"").toLowerCase();
+  if(s.includes("русский")) return "RUS";
+  if(s.includes("чтение")) return "READ";
+  if(s.includes("англий")) return "ENG";
+  if(s.includes("литератур")) return "LIT";
+  if(s.includes("степанов")) return "TR";
+  if(s.includes("команд")) return "TEAM";
+  if(s.includes("программирован")||s.includes("codeforces")||s.includes("div.")||s.includes("решено задач")) return "CP";
+  if(s.includes("математ")||s.includes("всош")) return "MATH";
+  return null;
+}
+function applyArchiveDirection(){
+  const wanted=directionFilter.value;
+  document.querySelectorAll("tbody tr").forEach(row=>{
+    const dir=archiveDirection(row.textContent);
+    row.style.display=(wanted==="ALL"||dir===wanted)?"":"none";
+  });
+  document.querySelectorAll(".task").forEach(task=>{
+    const dir=archiveDirection(task.textContent);
+    task.style.display=(wanted==="ALL"||dir===wanted)?"":"none";
+  });
+  document.querySelectorAll(".legend-row").forEach(row=>{
+    const dir=archiveDirection(row.textContent);
+    row.style.display=(wanted==="ALL"||dir===wanted)?"":"none";
+  });
+}
+directionFilter.addEventListener("change",applyArchiveDirection);
+applyArchiveDirection();
+</script></body></html>
