@@ -1,100 +1,300 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Отчётник по неделям</title>
 <style>
 :root{--bg:#090d19;--panel:#11182b;--panel2:#151e34;--text:#f4f7fb;--muted:#9aa8bf;--accent:#7c9cff;--line:#26324d;--good:#55d6a5;--bad:#ff7b8b}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#090d19,#111a2e);color:var(--text);font:14px/1.45 Inter,system-ui,sans-serif}
-main{max-width:1600px;margin:auto;padding:28px 18px 50px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-end}.eyebrow{color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px}.title{font-size:34px;font-weight:800;margin:4px 0}.sub,.muted{color:var(--muted)}
-.nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.nav a,.btn{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:10px}.nav a:hover,.btn:hover{border-color:var(--accent)}
-.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:20px 0}.grid .card{padding:11px 13px}.grid .v{font-size:22px;margin-top:3px}.card{background:rgba(17,24,43,.92);border:1px solid var(--line);border-radius:16px;padding:16px}.v{font-size:27px;font-weight:800;margin-top:6px}.controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.controls input,.controls select{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;font:inherit}.wrap{overflow:visible;border:1px solid var(--line);border-radius:12px}.table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:11px}.table th,.table td{padding:7px 5px;border-bottom:1px solid var(--line);text-align:center;white-space:normal;overflow:hidden;text-overflow:ellipsis}.table th:first-child,.table td:first-child{width:10%;text-align:left}.table th:nth-child(2),.table td:nth-child(2){width:7%}.table th{font-size:10px;line-height:1.15}.table td{line-height:1.2}.table th{background:var(--panel2);color:var(--muted);font-size:12px;position:sticky;top:0;cursor:pointer}.table th:hover{color:var(--text)}.table tr:hover{background:rgba(124,156,255,.06)}.table a{color:var(--accent);text-decoration:none}.delta{font-size:10px;margin-left:2px}.up{color:var(--good)}.down{color:var(--bad)}.flat{color:var(--muted)}.legend{font-size:12px;color:var(--muted);margin-top:10px}.bar{min-width:44px;flex:1;max-width:80px;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:190px;cursor:pointer}.bar i{display:block;width:100%;min-height:3px;background:var(--accent);border-radius:7px 7px 3px 3px;opacity:.8}.bar:hover i,.bar.active i{opacity:1}.bar span{font-size:10px;color:var(--muted);margin-top:5px;white-space:nowrap}.bar strong{font-size:10px;margin-bottom:3px}.hidden{display:none}.navlink{color:var(--accent);text-decoration:none}.cfitem{display:flex;justify-content:space-between;gap:12px;padding:9px 11px;background:var(--panel2);border:1px solid var(--line);border-radius:10px}.cfitem b{font-weight:700}.cfchange.up{color:var(--good)}.cfchange.down{color:var(--bad)}.cfbar{height:225px;cursor:pointer;position:relative}.cfbar svg{width:100%;height:225px;overflow:visible}.cfbar span{font-size:10px;color:var(--muted);margin-top:5px;white-space:nowrap}.cfbar strong{font-size:10px;margin-bottom:3px}.divrow{display:flex;justify-content:space-between;gap:10px;padding:8px 10px;background:var(--panel2);border:1px solid var(--line);border-radius:9px}.divrow .muted{font-size:11px}.divrow b{white-space:nowrap}.details-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:14px}.detail-panel{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}.detail-chart{height:260px}.detail-chart svg{width:100%;height:100%;overflow:visible}.detail-list{display:grid;gap:8px;max-height:260px;overflow:auto}.detail-item{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:9px}.detail-item .muted{font-size:11px}.detail-value{font-weight:700;white-space:nowrap}@media(max-width:900px){.details-grid{grid-template-columns:1fr}}@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}}@media(max-width:520px){.grid{grid-template-columns:1fr}.title{font-size:28px}}
-</style></head><body><main>
-<div class="top"><div><div class="eyebrow">личный отчётник</div><div class="title">Отчётник по неделям</div><div class="sub">Сравнение недель, динамика показателей и быстрый переход к конкретной неделе.</div></div></div>
-<div class="nav"><a href="28.09/dashboard.html">→ Актуальная неделя</a></div>
-<div id="cards" class="grid">
-<div class="card" style="grid-column:span 2"><div class="muted">CF рейтинг</div><div class="v">1612</div><div class="muted">резервные данные из stats.csv</div></div>
-<div class="card"><div class="muted">Проф. мат. пробник</div><div class="v">81</div></div>
-<div class="card"><div class="muted">Рег</div><div class="v">341/500</div></div>
-<div class="card"><div class="muted">Закл</div><div class="v">0/0</div></div>
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(145deg,#090d19,#111a2e);color:var(--text);font:14px/1.45 Inter,system-ui,sans-serif}
+main{max-width:1600px;margin:auto;padding:28px 18px 50px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-end}
+.eyebrow{color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px}
+.title{font-size:34px;font-weight:800;margin:4px 0}
+.sub,.muted{color:var(--muted)}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.nav a,.btn{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:10px}
+.nav a:hover,.btn:hover{border-color:var(--accent)}
+.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:20px 0}
+.card{background:rgba(17,24,43,.92);border:1px solid var(--line);border-radius:16px;padding:16px}
+.grid .card{padding:11px 13px}
+.grid .v{font-size:22px;margin-top:3px}
+.v{font-size:27px;font-weight:800;margin-top:6px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
+.controls input,.controls select{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;font:inherit}
+.wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
+.table{width:100%;border-collapse:collapse;min-width:1050px;font-size:11px}
+.table th,.table td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;white-space:normal}
+.table th:first-child,.table td:first-child{width:170px;text-align:left}
+.table th{background:var(--panel2);color:var(--muted);font-size:11px;position:sticky;top:0;cursor:pointer}
+.table tr:hover{background:rgba(124,156,255,.06)}
+.table a{color:var(--accent);text-decoration:none}
+.current td{background:rgba(124,156,255,.07)}
+.delta{font-size:10px;margin-left:2px}
+.up{color:var(--good)} .down{color:var(--bad)} .flat{color:var(--muted)}
+.hidden{display:none}
+.navlink{color:var(--accent);text-decoration:none}
+.details-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:14px}
+.detail-panel{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}
+.detail-chart{height:260px}
+.detail-chart svg{width:100%;height:100%;overflow:visible}
+.detail-list{display:grid;gap:8px;max-height:260px;overflow:auto}
+.detail-item{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:9px}
+.detail-item .muted{font-size:11px}
+.detail-value{font-weight:700;white-space:nowrap}
+.badge{display:inline-block;border:1px solid #2e6b58;border-radius:999px;padding:2px 6px;font-size:10px;margin-left:5px;color:var(--good)}
+@media(max-width:900px){.details-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.title{font-size:28px}}
+</style>
+</head>
+<body>
+<main>
+<div class="top">
+  <div>
+    <div class="eyebrow">личный отчётник</div>
+    <div class="title">Отчётник по неделям</div>
+    <div class="sub">Сравнение недель, динамика показателей и быстрый переход к конкретной неделе.</div>
+  </div>
 </div>
-<div class="controls"><input id="search" placeholder="Поиск по неделям"><select id="sort"><option value="date">Сначала новые</option><option value="work">Часы</option><option value="prog">Программирование</option><option value="cf">Codeforces</option><option value="solved">Задачи за неделю</option></select><select id="metric"><option value="">Подробнее…</option><option value="cf">Codeforces</option><option value="vsosh_region_score">Рег</option><option value="vsosh_final_score">Закл</option></select><button class="btn" id="reset">Сбросить</button></div><div id="details" class="card hidden"></div>
-<div class="wrap"><table class="table"><thead><tr>
-<th data-key="week_start">Неделя ↕</th><th>Часы</th><th>Проги</th><th>Русский</th><th>Проф. мат.</th><th>Рег</th><th>Закл</th><th>CF</th><th>Div</th><th>Задачи/нед.</th><th>Степанов</th><th>Командка</th><th>ДЮ</th><th>Чтение</th></tr></thead><tbody id="rows">
-<tr><td><a href="./21.09/dashboard.html">2026-09-21 — 2026-09-27</a></td><td>37 ч</td><td>28 ч</td><td>6</td><td>81</td><td>341/500</td><td>0/0</td><td>1612</td><td>Div.2: 1 место в рейтинге, Div.3: 18 место</td><td>37</td><td>4 ч</td><td>5 ч</td><td>9 ч</td><td>4 ч</td></tr>
-<tr><td><a href="./14.09/dashboard.html">2026-09-14 — 2026-09-20</a></td><td>41 ч</td><td>31 ч</td><td>4</td><td>73</td><td>312/500</td><td>0/0</td><td>1598</td><td>Div.2: 27 место в рейтинге, Div.3: 9 место</td><td>20</td><td>3 ч</td><td>6 ч</td><td>8 ч</td><td>3 ч</td></tr>
-</tbody></table></div>
-<div class="legend">↕ — сортировка. Значения в скобках — изменение относительно предыдущей недели. Для часов, задач и рейтинга изменение считается автоматически.</div>
+
+<div class="nav">
+  <a href="28.09/dashboard.html">→ Актуальная неделя</a>
+</div>
+
+<div id="cards" class="grid">
+  <div class="card" style="grid-column:span 2"><div class="muted">CF рейтинг</div><div class="v">1612</div><div class="muted">из последней сохранённой недели</div></div>
+  <div class="card"><div class="muted">Проф. мат. пробник</div><div class="v">81</div></div>
+  <div class="card"><div class="muted">Рег</div><div class="v">341/500</div></div>
+  <div class="card"><div class="muted">Закл</div><div class="v">0/0</div></div>
+</div>
+
+<div class="controls">
+  <input id="search" placeholder="Поиск по неделям">
+  <select id="sort">
+    <option value="date">Сначала новые</option>
+    <option value="work">Часы</option>
+    <option value="prog">Программирование</option>
+    <option value="cf">Codeforces</option>
+    <option value="solved">Задачи за неделю</option>
+  </select>
+  <select id="metric">
+    <option value="">Подробнее…</option>
+    <option value="cf">Codeforces</option>
+    <option value="vsosh_region_score">Рег</option>
+    <option value="vsosh_final_score">Закл</option>
+  </select>
+  <button class="btn" id="reset">Сбросить</button>
+</div>
+
+<div id="details" class="card hidden"></div>
+
+<div class="wrap">
+<table class="table">
+<thead><tr>
+<th>Неделя</th><th>Часы</th><th>Проги</th><th>Русский</th><th>Проф. мат.</th><th>Рег</th><th>Закл</th><th>CF</th><th>Div</th><th>Задачи/нед.</th><th>Степанов</th><th>Командка</th><th>ДЮ</th><th>Чтение</th>
+</tr></thead>
+<tbody id="rows">
+<tr class="current" data-week="2026-09-28" data-work="" data-prog="" data-cf="" data-solved="">
+<td><a href="./28.09/dashboard.html">2026-09-28 — 2026-10-04</a><span class="badge">АКТУАЛЬНАЯ</span></td>
+<td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+</tr>
+<tr data-week="2026-09-21" data-work="37" data-prog="28" data-cf="1612" data-solved="37">
+<td><a href="./21.09/dashboard.html">2026-09-21 — 2026-09-27</a></td>
+<td>37 ч</td><td>28 ч</td><td>6</td><td>81</td><td>341/500</td><td>0/0</td><td>1612</td><td>Div.2: 1 место в рейтинге, Div.3: 18 место</td><td>37</td><td>4 ч</td><td>5 ч</td><td>9 ч</td><td>4 ч</td>
+</tr>
+<tr data-week="2026-09-14" data-work="41" data-prog="31" data-cf="1598" data-solved="20">
+<td><a href="./14.09/dashboard.html">2026-09-14 — 2026-09-20</a></td>
+<td>41 ч</td><td>31 ч</td><td>4</td><td>73</td><td>312/500</td><td>0/0</td><td>1598</td><td>Div.2: 27 место в рейтинге, Div.3: 9 место</td><td>20</td><td>3 ч</td><td>6 ч</td><td>8 ч</td><td>3 ч</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="muted" style="margin-top:10px">Текущая неделя отображается первой и отмечена «АКТУАЛЬНАЯ». Поиск, сортировка и подробности работают независимо от Codeforces API.</div>
+
 <script>
-async function csv(path){const s=await fetch(path+"?t="+Date.now()).then(r=>r.text());const lines=s.trim().split(/\r?
-/);if(!lines.length)return[];const parse=x=>{let a=[],c="",q=false;for(let i=0;i<x.length;i++){if(x[i]=='"'){if(q&&x[i+1]=='"'){c+='"';i++}else q=!q}else if(x[i]==','&&!q){a.push(c);c=""}else c+=x[i]}a.push(c);return a};const h=parse(lines.shift());return lines.filter(Boolean).map(l=>{const v=parse(l),o={};h.forEach((k,i)=>o[k]=v[i]??"");return o})}
-const num=x=>{const n=parseFloat(x);return Number.isFinite(n)?n:null};const val=x=>x===""||x==null?"—":x;
-let stats=[], ratings=[]; let sort="date"; let metric="work_hours"; let currentWeek="2026-09-28";
-const fields=[["work_hours","Часы"," ч"],["programming_hours","Проги"," ч"],["russian_ege_topics","Русский",""],["math_ege_mock","Проф. мат.",""],["vsosh_region_score","Рег",""],["vsosh_final_score","Закл",""],["solved_week","Задачи/нед.",""],["coach_hours","Степанов"," ч"],["team_hours","Командка"," ч"],["olympiad_math_hours","ДЮ"," ч"],["reading_hours","Чтение",""]];
-function delta(cur,prev,key){const a=num(cur[key]),b=prev?num(prev[key]):null;if(a===null||b===null)return "";const d=a-b;if(!d)return '<span class="delta flat">±0</span>';return '<span class="delta '+(d>0?"up":"down")+'">'+(d>0?"+":"")+d+'</span>'}
-function cell(cur,prev,key,suffix=""){let x=val(cur[key]);if(key==="zakl_tour_score"&&cur.zakl_tour_max)x+="/"+cur.zakl_tour_max;if(key==="vsosh_region_score"&&cur.vsosh_region_max)x+="/"+cur.vsosh_region_max;if(key==="vsosh_final_score"&&cur.vsosh_final_max)x+="/"+cur.vsosh_final_max;return x==="—"?"—":x+suffix+delta(cur,prev,key)}
-async function init(){
-const [loadedStats,weeks]=await Promise.all([csv("data/stats.csv"),csv("data/weeks.csv").catch(()=>[])]);
-stats=loadedStats||[];
-currentWeek=(weeks.find(x=>x.report==="./28.09/dashboard.html"||x.report==="28.09/dashboard.html")||{}).week_start||"2026-09-28";
-render();
-renderDetails();
-try{
-  const controller=new AbortController();
-  const timer=setTimeout(()=>controller.abort(),4000);
-  const response=await fetch("https://codeforces.com/api/user.rating?handle=pon",{signal:controller.signal});
-  clearTimeout(timer);
-  const json=await response.json();
-  ratings=json.result||[];
-}catch(e){ratings=[]}
-stats=stats.map(s=>{
-  const a=new Date(s.week_start+"T00:00:00"),b=new Date(s.week_end+"T23:59:59");
-  const rr=ratings.filter(z=>{const d=new Date(z.ratingUpdateTimeSeconds*1000);return d>=a&&d<=b});
-  const last=rr[rr.length-1];
-  const divs=rr.filter(z=>/Div\.? ?[12]/i.test(z.contestName)).map(z=>z.contestName.replace(/Codeforces Round /i,"")+" — #"+z.rank);
-  return {...s,cf_auto:last?last.newRating:"",div_auto:divs.join("; ")};
+"use strict";
+
+const fallbackStats = [
+  {week_start:"2026-09-21",week_end:"2026-09-27",work_hours:37,programming_hours:28,russian_ege_topics:6,math_ege_mock:81,vsosh_region_score:341,vsosh_region_max:500,vsosh_final_score:0,vsosh_final_max:0,cf_rating:1612,solved_week:37,coach_hours:4,team_hours:5,olympiad_math_hours:9,reading_hours:4,div_results:"Div.2: 1 место в рейтинге, Div.3: 18 место"},
+  {week_start:"2026-09-14",week_end:"2026-09-20",work_hours:41,programming_hours:31,russian_ege_topics:4,math_ege_mock:73,vsosh_region_score:312,vsosh_region_max:500,vsosh_final_score:0,vsosh_final_max:0,cf_rating:1598,solved_week:20,coach_hours:3,team_hours:6,olympiad_math_hours:8,reading_hours:3,div_results:"Div.2: 27 место в рейтинге, Div.3: 9 место"}
+];
+
+let stats = fallbackStats.slice();
+let ratings = [];
+let currentWeek = "2026-09-28";
+let sortMode = "date";
+
+const num = v => {
+  const n = Number(v);
+  return Number.isFinite(n) ? n : null;
+};
+
+const format = (v, suffix="") => v===undefined || v===null || v==="" ? "—" : String(v)+suffix;
+
+function escapeHtml(s) {
+  return String(s ?? "").replace(/[&<>"]/g, ch => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[ch]));
+}
+
+function delta(cur, prev, key) {
+  const a = num(cur[key]), b = prev ? num(prev[key]) : null;
+  if (a===null || b===null) return "";
+  const d = a-b;
+  if (!d) return '<span class="delta flat">±0</span>';
+  return '<span class="delta '+(d>0?"up":"down")+'">'+(d>0?"+":"")+d+'</span>';
+}
+
+function renderTable() {
+  const rows = stats.slice();
+  rows.unshift({week_start:currentWeek,week_end:"2026-10-04",__current:true});
+
+  const key = sortMode==="work" ? "work_hours" :
+              sortMode==="prog" ? "programming_hours" :
+              sortMode==="cf" ? "cf_rating" :
+              sortMode==="solved" ? "solved_week" : null;
+
+  if (key) rows.sort((a,b)=>(num(b[key]) ?? -1)-(num(a[key]) ?? -1));
+  else rows.sort((a,b)=>b.week_start.localeCompare(a.week_start));
+
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const filtered = rows.filter(x => (x.week_start+" "+x.week_end).toLowerCase().includes(q));
+
+  document.getElementById("rows").innerHTML = filtered.map((x,i) => {
+    const prev = i+1 < filtered.length ? filtered[i+1] : null;
+    const isCurrent = !!x.__current;
+    const cf = x.cf_auto ?? x.cf_rating;
+    const href = "./"+x.week_start.slice(8,10)+"."+x.week_start.slice(5,7)+"/dashboard.html";
+    const mark = isCurrent ? '<span class="badge">АКТУАЛЬНАЯ</span>' : "";
+    return '<tr class="'+(isCurrent?"current":"")+'">'+
+      '<td><a href="'+href+'">'+x.week_start+" — "+x.week_end+'</a>'+mark+'</td>'+
+      '<td>'+format(x.work_hours," ч")+delta(x,prev,"work_hours")+'</td>'+
+      '<td>'+format(x.programming_hours," ч")+delta(x,prev,"programming_hours")+'</td>'+
+      '<td>'+format(x.russian_ege_topics)+delta(x,prev,"russian_ege_topics")+'</td>'+
+      '<td>'+format(x.math_ege_mock)+delta(x,prev,"math_ege_mock")+'</td>'+
+      '<td>'+format(x.vsosh_region_score)+(x.vsosh_region_max?"/"+x.vsosh_region_max:"")+delta(x,prev,"vsosh_region_score")+'</td>'+
+      '<td>'+format(x.vsosh_final_score)+(x.vsosh_final_max?"/"+x.vsosh_final_max:"")+delta(x,prev,"vsosh_final_score")+'</td>'+
+      '<td>'+format(cf)+delta(x,prev,"cf_auto")+'</td>'+
+      '<td>'+format(x.div_auto || x.div_results)+'</td>'+
+      '<td>'+format(x.solved_week)+delta(x,prev,"solved_week")+'</td>'+
+      '<td>'+format(x.coach_hours," ч")+delta(x,prev,"coach_hours")+'</td>'+
+      '<td>'+format(x.team_hours," ч")+delta(x,prev,"team_hours")+'</td>'+
+      '<td>'+format(x.olympiad_math_hours," ч")+delta(x,prev,"olympiad_math_hours")+'</td>'+
+      '<td>'+format(x.reading_hours," ч")+delta(x,prev,"reading_hours")+'</td>'+
+    '</tr>';
+  }).join("");
+}
+
+function renderDetails() {
+  const box = document.getElementById("details");
+  const mode = document.getElementById("metric").value;
+  if (!mode) { box.classList.add("hidden"); box.innerHTML=""; return; }
+
+  let points = [], items = [], title = "";
+
+  if (mode==="cf") {
+    title="Codeforces";
+    const rr=ratings.slice().sort((a,b)=>a.ratingUpdateTimeSeconds-b.ratingUpdateTimeSeconds);
+    points=rr.slice(-5).map(x=>({label:new Date(x.ratingUpdateTimeSeconds*1000).toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit"}),value:x.newRating}));
+    items=rr.slice(-5).reverse().map(x=>({label:x.contestName,value:x.newRating+" ("+(x.newRating-x.oldRating>=0?"+":"")+(x.newRating-x.oldRating)+")"}));
+  } else {
+    title=mode==="vsosh_region_score"?"ВсОШ регион":"ЗКЛА";
+    const rr=stats.filter(x=>num(x[mode])!==null).sort((a,b)=>a.week_start.localeCompare(b.week_start));
+    points=rr.map(x=>({label:x.week_start.slice(8,10)+"."+x.week_start.slice(5,7),value:num(x[mode]),max:num(x[mode==="vsosh_region_score"?"vsosh_region_max":"vsosh_final_max"])}));
+    items=rr.slice(-5).reverse().map(x=>({label:x.week_start+" — "+x.week_end,value:x[mode]+(x[mode==="vsosh_region_score"?"vsosh_region_max":"vsosh_final_max"]?"/"+x[mode==="vsosh_region_score"?"vsosh_region_max":"vsosh_final_max"]:"")}));
+  }
+
+  box.classList.remove("hidden");
+
+  if (!points.length) {
+    box.innerHTML='<h3 style="margin:0 0 10px">'+title+'</h3><div class="muted">Нет данных для подробностей.</div>';
+    return;
+  }
+
+  const vals=points.map(p=>p.value);
+  const minV=Math.min(...vals), maxV=Math.max(...vals), range=Math.max(maxV-minV,1);
+  const W=720,H=240,pad=34,step=points.length>1?(W-pad*2)/(points.length-1):0;
+  const pts=points.map((p,i)=>({x:pad+i*step,y:H-pad-(p.value-minV)/range*(H-pad*2),p}));
+  const path=pts.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+" "+p.y.toFixed(1)).join(" ");
+  const circles=pts.map(p=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="var(--accent)"><title>'+p.p.value+'</title></circle>').join("");
+  const labels=pts.map(p=>'<text x="'+p.x+'" y="'+(H-8)+'" text-anchor="middle" fill="var(--muted)" font-size="10">'+p.p.label+'</text>').join("");
+
+  box.innerHTML='<h3 style="margin:0 0 12px">'+title+'</h3>'+
+    '<div class="details-grid">'+
+      '<div class="detail-panel"><div class="muted" style="margin-bottom:8px">Динамика</div><div class="detail-chart"><svg viewBox="0 0 '+W+' '+H+'"><path d="'+path+'" fill="none" stroke="var(--accent)" stroke-width="3"/>'+circles+labels+'</svg></div></div>'+
+      '<div class="detail-panel"><div class="muted" style="margin-bottom:8px">Последние 5 результатов</div><div class="detail-list">'+
+        items.map(x=>'<div class="detail-item"><span>'+escapeHtml(x.label)+'</span><b class="detail-value">'+escapeHtml(x.value)+'</b></div>').join("")+
+      '</div></div>'+
+    '</div>';
+}
+
+async function loadCsv() {
+  try {
+    const response=await fetch("data/stats.csv?t="+Date.now(),{cache:"no-store"});
+    if (!response.ok) throw new Error();
+    const text=await response.text();
+    const lines=text.trim().split(/\r?\n/);
+    if (lines.length<2) return;
+    const parse=line => {
+      const out=[]; let cur="", quoted=false;
+      for(let i=0;i<line.length;i++){
+        const ch=line[i];
+        if(ch==='"'){
+          if(quoted && line[i+1]==='"'){cur+='"';i++;}
+          else quoted=!quoted;
+        } else if(ch==="," && !quoted){out.push(cur);cur="";}
+        else cur+=ch;
+      }
+      out.push(cur); return out;
+    };
+    const header=parse(lines.shift());
+    stats=lines.filter(Boolean).map(line=>{
+      const v=parse(line),o={};
+      header.forEach((key,i)=>o[key]=v[i]??"");
+      return o;
+    });
+    renderTable();
+    renderDetails();
+  } catch(e) {}
+}
+
+async function loadCf() {
+  try {
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),4000);
+    const response=await fetch("https://codeforces.com/api/user.rating?handle=pon",{signal:controller.signal,cache:"no-store"});
+    clearTimeout(timer);
+    const json=await response.json();
+    ratings=Array.isArray(json.result)?json.result:[];
+    stats=stats.map(s=>{
+      const a=new Date(s.week_start+"T00:00:00"), b=new Date(s.week_end+"T23:59:59");
+      const rr=ratings.filter(z=>{const d=new Date(z.ratingUpdateTimeSeconds*1000);return d>=a&&d<=b;});
+      const last=rr[rr.length-1];
+      const divs=rr.filter(z=>/Div\.? ?[12]/i.test(z.contestName)).map(z=>z.contestName.replace(/Codeforces Round /i,"")+" — #"+z.rank);
+      return {...s,cf_auto:last?last.newRating:"",div_auto:divs.join("; ")};
+    });
+    renderTable();
+    renderDetails();
+  } catch(e) {}
+}
+
+document.getElementById("search").addEventListener("input",renderTable);
+document.getElementById("sort").addEventListener("change",e=>{sortMode=e.target.value;renderTable();});
+document.getElementById("metric").addEventListener("change",renderDetails);
+document.getElementById("reset").addEventListener("click",()=>{
+  document.getElementById("search").value="";
+  document.getElementById("sort").value="date";
+  document.getElementById("metric").value="";
+  sortMode="date";
+  renderTable();
+  renderDetails();
 });
-render();
+
+renderTable();
 renderDetails();
-}
-function renderCF(){
-const info=document.querySelector("#cfInfo"), chart=document.querySelector("#cfHeaderChart"), recent=ratings.slice(-12);
-if(!recent.length)return;
-const last=recent[recent.length-1],d=last.newRating-last.oldRating,min=Math.floor((Math.min(...recent.map(x=>x.newRating))-50)/50)*50,max=Math.ceil((Math.max(...recent.map(x=>x.newRating))+50)/50)*50, W=520,H=90,pad=10,range=Math.max(max-min,100);
-const pts=recent.map((x,i)=>{const xx=pad+i*(W-pad*2)/Math.max(recent.length-1,1),yy=H-pad-(x.newRating-min)/range*(H-pad*2);return{xx,yy,x}});
-const path=pts.map((p,i)=>(i?"L":"M")+p.xx.toFixed(1)+" "+p.yy.toFixed(1)).join(" ");
-chart.innerHTML='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none"><path d="'+path+'" fill="none" stroke="var(--accent)" stroke-width="2.5"/>'+pts.map(p=>'<circle cx="'+p.xx+'" cy="'+p.yy+'" r="3" fill="var(--accent)"><title>'+p.x.newRating+' · '+new Date(p.x.ratingUpdateTimeSeconds*1000).toLocaleDateString("ru-RU")+'</title></circle>').join("")+'</svg>';
-info.textContent="Текущий рейтинг: "+last.newRating+" · последнее изменение: "+(d>0?"+":"")+d;
-}
-function renderDetails(){
-const box=document.querySelector("#details"),m=document.querySelector("#metric").value;
-if(!m){box.classList.add("hidden");return}
-box.classList.remove("hidden");
-let title="", points=[], items=[];
-if(m==="cf"){
- title="Codeforces";
- const rr=ratings.slice().sort((a,b)=>a.ratingUpdateTimeSeconds-b.ratingUpdateTimeSeconds);
- points=rr.slice(-5).map((x,i)=>({label:new Date(x.ratingUpdateTimeSeconds*1000).toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit"}),value:x.newRating,raw:x}));
- items=rr.slice(-5).reverse().map(x=>({label:x.contestName,value:x.newRating+(x.newRating-x.oldRating>=0?" (+" :" (")+ (x.newRating-x.oldRating)+")"}));
-}else{
- title=m==="vsosh_region_score"?"ВсОШ регион":"ЗКЛА";
- const rr=stats.filter(x=>num(x[m])!==null).sort((a,b)=>a.week_start.localeCompare(b.week_start));
- const key=m, maxKey=m==="vsosh_region_score"?"vsosh_region_max":"zakl_tour_max";
- points=rr.map(x=>({label:x.week_start.slice(8,10)+"."+x.week_start.slice(5,7),value:num(x[key]),raw:x,max:x[maxKey]}));
- items=rr.slice(-5).reverse().map(x=>({label:x.week_start+" — "+x.week_end,value:x[m]+(x[maxKey]?"/"+x[maxKey]:"")}));
-}
-if(!points.length){box.innerHTML='<h3 style="margin:0 0 10px">'+title+'</h3><div class="muted">Нет данных для построения подробностей.</div>';return}
-const vals=points.map(p=>p.value), minV=Math.min(...vals),maxV=Math.max(...vals),pad=34,W=720,H=240,range=Math.max(maxV-minV,1),step=points.length>1?(W-pad*2)/(points.length-1):0;
-const pts=points.map((p,i)=>({x:pad+i*step,y:H-pad-(p.value-minV)/range*(H-pad*2),p}));
-const path=pts.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+" "+p.y.toFixed(1)).join(" ");
-const yTicks=[0,.5,1].map(t=>{const v=minV+t*range,y=H-pad-t*(H-pad*2);return '<text x="0" y="'+(y+4)+'" fill="var(--muted)" font-size="11">'+Math.round(v)+'</text><line x1="'+pad+'" y1="'+y+'" x2="'+(W-10)+'" y2="'+y+'" stroke="var(--line)" stroke-width="1"/>'}).join("");
-const xLabels=pts.map(p=>'<text x="'+p.x+'" y="'+(H-8)+'" text-anchor="middle" fill="var(--muted)" font-size="10">'+p.p.label+'</text>').join("");
-const circles=pts.map(p=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="var(--accent)"><title>'+p.p.value+(p.p.max?"/"+p.p.max:"")+' · '+p.p.label+'</title></circle>').join("");
-box.innerHTML='<h3 style="margin:0 0 12px">'+title+'</h3><div class="details-grid"><div class="detail-panel"><div class="muted" style="margin-bottom:8px">Динамика</div><div class="detail-chart"><svg viewBox="0 0 '+W+' '+H+'"><g>'+yTicks+'</g><path d="'+path+'" fill="none" stroke="var(--accent)" stroke-width="3"/>'+circles+xLabels+'</svg></div></div><div class="detail-panel"><div class="muted" style="margin-bottom:8px">Последние 5 результатов</div><div class="detail-list">'+items.map(x=>'<div class="detail-item"><span>'+x.label+'</span><b class="detail-value">'+x.value+'</b></div>').join("")+'</div></div></div>';
-}
-function render(){
-let currentRow={week_start:currentWeek,week_end:"2026-10-04",__current:true}; let arr=[...stats,currentRow].sort((a,b)=>sort==="date"?b.week_start.localeCompare(a.week_start):(num(b[sort==="work"?"work_hours":sort==="prog"?"programming_hours":sort==="cf"?"cf_auto":"solved_week"])??-1)-(num(a[sort==="work"?"work_hours":sort==="prog"?"programming_hours":sort==="cf"?"cf_auto":"solved_week"])??-1));
-const q=document.querySelector("#search").value.toLowerCase();arr=arr.filter(x=>(x.week_start+" "+x.week_end).toLowerCase().includes(q));
-document.querySelector("#rows").innerHTML=arr.map((x)=>{const ordered=[...stats].sort((a,b)=>b.week_start.localeCompare(a.week_start)),isCurrent=x.week_start===currentWeek,prev=isCurrent?ordered[0]:ordered[ordered.indexOf(x)+1],href="./"+x.week_start.slice(8,10)+"."+x.week_start.slice(5,7)+"/dashboard.html";const cf=val(x.cf_auto||x.cf_rating),mark=isCurrent?" <span class=\"delta up\">АКТУАЛЬНАЯ</span>":"";return '<tr><td><a href="'+href+'">'+x.week_start+' — '+x.week_end+mark+'</a></td><td>'+cell(x,prev,"work_hours"," ч")+'</td><td>'+cell(x,prev,"programming_hours"," ч")+'</td><td>'+cell(x,prev,"russian_ege_topics")+'</td><td>'+cell(x,prev,"math_ege_mock")+'</td><td>'+cell(x,prev,"vsosh_region_score")+'</td><td>'+cell(x,prev,"vsosh_final_score")+'</td><td>'+cf+(num(x.cf_auto)!=null&&num(prev?.cf_auto)!=null?'<span class="delta '+(num(x.cf_auto)-num(prev.cf_auto)>0?"up":num(x.cf_auto)-num(prev.cf_auto)<0?"down":"flat")+'"> '+(num(x.cf_auto)-num(prev.cf_auto)>0?"+":"")+(num(x.cf_auto)-num(prev.cf_auto))+'</span>':'')+'</td><td>'+val(x.div_auto||x.div_results)+'</td><td>'+cell(x,prev,"solved_week")+'</td><td>'+cell(x,prev,"coach_hours"," ч")+'</td><td>'+cell(x,prev,"team_hours"," ч")+'</td><td>'+cell(x,prev,"olympiad_math_hours"," ч")+'</td><td>'+cell(x,prev,"reading_hours"," ч")+'</td></tr>'}).join("");const latest=[...stats].sort((a,b)=>b.week_start.localeCompare(a.week_start))[0]||{};document.querySelector("#cards").innerHTML='<div class="card" style="grid-column:span 2"><div style="display:flex;justify-content:space-between;align-items:center"><div><div class="muted">CF рейтинг</div><div class="v">'+val(latest.cf_auto||latest.cf_rating)+'</div><div class="muted" id="cfInfo">Загрузка рейтинга…</div></div><a class="navlink" href="https://codeforces.com/profile/pon" target="_blank">Профиль CF</a></div><div id="cfHeaderChart" style="height:90px;margin-top:8px"></div></div>'+[["Проф. мат. пробник",val(latest.math_ege_mock)],["Рег",val(latest.vsosh_region_score)+(latest.vsosh_region_max?"/"+latest.vsosh_region_max:"")],["Закл",val(latest.vsosh_final_score)+(latest.vsosh_final_max?"/"+latest.vsosh_final_max:"")]].map(x=>'<div class="card"><div class="muted">'+x[0]+'</div><div class="v">'+x[1]+'</div></div>').join("");renderCF()
-}
-document.querySelector("#search").oninput=render;document.querySelector("#sort").onchange=e=>{sort=e.target.value;render()};document.querySelector("#metric").onchange=renderDetails;document.querySelector("#reset").onclick=()=>{document.querySelector("#search").value="";document.querySelector("#sort").value="date";sort="date";render()};
-init().catch(e=>{console.error(e);document.querySelector("#details").classList.add("hidden");});
-</script></main></body></html>
+loadCsv();
+loadCf();
+</script>
+</main>
+</body>
+</html>
