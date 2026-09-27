@@ -17,10 +17,10 @@ main{max-width:1180px;margin:auto;padding:28px 18px 48px}.top{display:flex;justi
     <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center"><select id="catFilter" aria-label="Фильтр направления"><option value="ALL">Все направления</option></select><button id="refresh">Обновить данные</button></div>
   </div>
   <section class="grid metrics">
-    <div class="card metric"><div class="label">Запланировано</div><div class="num" id="planned">24.5 ч</div><div class="hint">часов в расписании</div></div>
+    <div class="card metric"><div class="label">Запланировано</div><div class="num" id="planned">13.0 ч</div><div class="hint">часов в расписании</div></div>
     <div class="card metric"><div class="label">Сделано</div><div class="num" id="actual">0.0 ч</div><div class="hint">часов по факту</div></div>
     <div class="card metric"><div class="label">Выполнение плана</div><div class="num" id="ratio">0%</div><div class="hint">факт / план</div></div>
-    <div class="card metric"><div class="label">Задач закрыто</div><div class="num" id="doneTasks">0/9</div><div class="hint">из недельного списка</div></div><div class="card metric"><div class="label">Программирование</div><div class="num" id="progHours">0.0 / 17.5 ч</div><div class="hint">факт / план</div></div>
+    <div class="card metric"><div class="label">Задач закрыто</div><div class="num" id="doneTasks">0/6</div><div class="hint">из недельного списка</div></div><div class="card metric"><div class="label">Программирование</div><div class="num" id="progHours">0.0 / 7.0 ч</div><div class="hint">факт / план</div></div>
   </section>
 
   <section class="grid two">
@@ -54,10 +54,11 @@ const labels={CP:"Программирование",PMATH:"Профильная 
 let activeCategory="ALL";
 const colors=["#7c9cff","#55d6a5","#ffc857","#ff7b8b","#a98bff","#5bd0e6","#f29ac2","#8bd17c","#d8a56d"];
 const fallback={
-schedule:[["2026-09-28","Mon","","","MATH","Олимпиадная математика","2","planned","0","0",""],["2026-09-29","Tue","","","TR","Программирование с тренером","2.5","planned","2.5","100",""],["2026-09-30","Wed","","","CP","Индивидуальное программирование","2.5","planned","0","0",""],["2026-09-30","Wed","19:00","21:00","MATH","Олимпиадная математика","2","planned","0","0",""],["2026-10-01","Thu","","","TEAM","Командная тренировка ВКОШП","5","planned","0","0",""],["2026-10-02","Fri","","","TR","Программирование с тренером","2.5","planned","0","0",""],["2026-10-04","Sun","","","CP","Глубокое программирование: финал ВсОШ / сложные C–D","3","planned","0","0",""],["2026-10-04","Sun","","","READ","Чтение","0.5","planned","0","0",""]],
-tasks:[["W001","Русский ЕГЭ — 1 типовое ЕГЭ","RUS","2026-10-04","high","planned","2","0",""],["W002","Профильная математика — 1–2 ч","MATH","2026-10-04","high","planned","2","0",""],["W003","Английский — 2 пересказа","ENG","2026-10-31","high","planned","0","0",""],["W004","Литература — 6–7 стихов","LIT","2026-10-31","high","planned","0","0",""],["W005","CP — 2–4 сложные задачи ~1900–2300","CP","2026-10-04","medium","planned","0","0",""],["W006","Задачи тренера","TR","","high","planned","5","2.5",""],["W007","Командная тренировка ВКОШП","TEAM","","high","planned","5","0",""],["W008","Div2 / дорешивание","DIV2","","medium","planned","0","0",""]],
-log:[["2026-09-29","TR","Тренер","","","2.5","5 задач на Фенвике"]]
+schedule:[["2026-09-28","Mon","19:00","21:00","MATH","ДЮ — олимпиадная математика","2","planned","0","0",""],["2026-09-29","Tue","16:00","18:30","TR","Степанов","2.5","planned","0","0",""],["2026-09-30","Wed","19:00","21:00","MATH","ДЮ — олимпиадная математика","2","planned","0","0",""],["2026-10-01","Thu","15:30","20:30","TEAM","Командка — пишем командку","5","planned","0","0",""],["2026-10-01","Thu","21:00","22:30","RUS","ЕГЭ русский — задание 8","1.5","planned","0","0",""]],
+tasks:[["W001","ЕГЭ по русскому — задание 8 допройти","RUS","2026-10-01","high","planned","1.5","0",""],["W002","ДЮ — олимпиадная математика","MATH","2026-10-01","high","planned","4","0",""],["W003","Степанов — 1 тренировка из 2","TR","2026-09-29","high","planned","2.5","0",""],["W004","Командка — написать в четверг","TEAM","2026-10-01","high","planned","5","0",""],["W005","Дорешать 1 задачу со вчерашнего Div","CP","2026-10-01","medium","planned","1","0",""],["W006","Дорешать 1 задачу с позавчерашнего Div","CP","2026-10-01","medium","planned","1","0",""]],
+log:[]
 };
+
 function parseCSV(s){return s.trim().split(/\r?\n/).slice(1).map(line=>{const out=[];let cur="",q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c=='"'){if(q&&line[i+1]=='"'){cur+='"';i++}else q=!q}else if(c===','&&!q){out.push(cur);cur=""}else cur+=c}out.push(cur);return out})}
 async function get(path,key){try{const r=await fetch(path+"?t="+Date.now());if(!r.ok)throw Error();return parseCSV(await r.text())}catch(e){return fallback[key]||[]}}
 function n(v){const x=parseFloat(v);return Number.isFinite(x)?x:0}
@@ -79,12 +80,19 @@ document.querySelector("#progressList").innerHTML=cats.map(x=>{const v=actual[x[
 document.querySelector("#bars").innerHTML=cats.map((x,i)=>{const v=actual[x[0]]||0;const pct=x[1]?Math.min(100,100*v/x[1]):0;return '<div style="margin:12px 0"><div style="display:flex;justify-content:space-between"><span>'+esc(labels[x[0]]||x[0])+'</span><span class="small">'+v.toFixed(1)+' / '+x[1].toFixed(1)+' ч</span></div><div class="bar"><div class="fill" style="width:'+pct+'%;background:'+colors[i%colors.length]+'"></div></div></div>'}).join("");
 const weeklyTasks=tasks.filter(r=>(r[8]||"WEEKLY")==="WEEKLY"); const deadlineTasks=tasks.filter(r=>(r[8]||"WEEKLY")==="DEADLINE"); const taskHTML=(arr)=>arr.map(r=>{const status=(r[5]||"planned").toLowerCase();const cls=["done","completed"].includes(status)?"done":"";return '<div class="task"><div><div class="task-title">'+esc(r[1])+'</div><div class="small">'+(r[3]?"дедлайн: "+esc(r[3]):"без жёсткого дедлайна")+'</div></div><span class="pill '+cls+' '+(r[4]==="high"?"high":"")+'">'+(cls?"готово":r[4]==="high"?"важно":"в плане")+'</span></div>'}).join("");
 document.querySelector("#schedule").innerHTML=schedule.map(r=>{const days={Mon:"Пн",Tue:"Вт",Wed:"Ср",Thu:"Чт",Fri:"Пт",Sat:"Сб",Sun:"Вс"};return '<tr><td class="schedule-day">'+days[r[1]]+'<div class="small">'+esc(r[0])+'.</div></td><td class="schedule-time">'+(r[2]&&r[3]?esc(r[2]+"–"+r[3]):"—")+"</td><td>"+esc(labels[r[4]]||r[4])+"</td><td class=\"schedule-task\">"+esc(r[5])+"</td></tr>"}).join("");
-const w=(weekly&&weekly[0])||[]; document.querySelector("#results").innerHTML='<tr><td>ВсОШ — региональный тур</td><td>'+(w[2]||"—")+' баллов</td></tr><tr><td>ВсОШ — заключительный тур</td><td>'+(w[3]||"—")+' баллов</td></tr><tr><td>Codeforces</td><td id="cfRating">загрузка…</td></tr><tr><td>Дивы Codeforces</td><td id="cfDivs">загрузка…</td></tr>';
-fetch("https://codeforces.com/api/user.rating?handle=pon").then(r=>r.json()).then(d=>{const rs=d.result||[]; const latest=rs[rs.length-1]; document.querySelector("#cfRating").textContent=latest?latest.newRating+" ("+(latest.newRating-latest.oldRating>=0?"+":"")+ (latest.newRating-latest.oldRating)+")":"—"; const start=new Date((schedule[0]?.[0]||"2026-09-28")+"T00:00:00"); const end=new Date((schedule[schedule.length-1]?.[0]||"2026-10-04")+"T23:59:59"); const divs=rs.filter(x=>{const d=new Date(x.ratingUpdateTimeSeconds*1000);return d>=start&&d<=end&&/Div\.? ?[12]/i.test(x.contestName)}); document.querySelector("#cfDivs").textContent=divs.length?divs.map(x=>{const delta=x.newRating-x.oldRating;return x.contestName.replace(/Codeforces Round /i,"")+" — #"+x.rank+", "+(delta>=0?"+":"")+delta}).join("; "):"нет рейтинговых дивов";}).catch(()=>{document.querySelector("#cfRating").textContent="не удалось загрузить";document.querySelector("#cfDivs").textContent="не удалось загрузить";});
+const w=(weekly&&weekly[0])||[]; document.querySelector("#results").innerHTML='<tr><td>ВсОШ — региональный тур</td><td>'+(w[2]||"—")+' баллов</td></tr><tr><td>ВсОШ — заключительный тур</td><td>'+(w[3]||"—")+' баллов</td></tr><tr><td>Codeforces</td><td id="cfRating">загрузка…</td></tr><tr><td>Последние 5 Div</td><td id="cfDivs">загрузка…</td></tr>';
+fetch("../data/codeforces.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json()).then(d=>{
+  document.querySelector("#cfRating").textContent=d.rating??"—";
+  const divs=Array.isArray(d.recent_divs)?d.recent_divs:[];
+  document.querySelector("#cfDivs").textContent=divs.length?divs.map(x=>x.name+" — "+x.date).join("; "):"нет сохранённых данных";
+}).catch(()=>{
+  document.querySelector("#cfRating").textContent="—";
+  document.querySelector("#cfDivs").textContent="нет сохранённых данных";
+});
 document.querySelector("#log").innerHTML=log.length?log.map(r=>'<tr><td>'+esc(r[0])+'</td><td>'+esc(labels[r[1]]||r[1])+'</td><td>'+esc(r[2])+"</td><td>"+n(r[5]).toFixed(1)+"</td></tr>").join(""):'<tr><td colspan="4" class="empty">Пока нет фактических записей.</td></tr>';
 }
 document.querySelector("#refresh").addEventListener("click",()=>render().catch(e=>{console.error(e)}));
-render().catch(e=>{console.error(e);document.querySelector("#period").textContent="Не удалось загрузить данные — показан встроенный резервный набор";});
+render().catch(e=>{console.error(e);document.querySelector("#period").textContent="Не удалось загрузить данные — показаны последние сохранённые значения";});
 </script>
 </body>
 </html>
