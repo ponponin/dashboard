@@ -1,0 +1,51 @@
+name: Sync from private planner
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "15 * * * *"
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    env:
+      MAIN_REPO_TOKEN: ${{ secrets.MAIN_REPO_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Sync selected public data
+        if: ${{ env.MAIN_REPO_TOKEN != '' }}
+        run: |
+          set -e
+          mkdir -p data
+          curl -fsSL -H "Authorization: Bearer $MAIN_REPO_TOKEN" -H "Accept: application/vnd.github.raw+json" https://api.github.com/repos/ponponin/main/contents/dashboard.html?ref=main -o /tmp/dashboard.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("/tmp/dashboard.json")
+          j=json.loads(p.read_text())
+          import base64
+          s=base64.b64decode(j["content"]).decode()
+          s=s.replace("5 задач на Фенвике; усталость 7/10","5 задач на Фенвике")
+          Path("dashboard.html").write_text(s)
+          PY
+          for f in schedule tasks log; do
+            curl -fsSL -H "Authorization: Bearer $MAIN_REPO_TOKEN" -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/ponponin/main/contents/data/$f.csv?ref=main" -o "/tmp/$f.json"
+            python - "$f" <<'PY'
+          import json,sys,base64
+          from pathlib import Path
+          f=sys.argv[1]
+          s=base64.b64decode(json.loads(Path(f"/tmp/{f}.json").read_text())["content"]).decode()
+          lines=s.splitlines()
+          if f=="schedule":
+              lines=[",".join(x.split(",")[:10]) for x in lines]
+          elif f=="log":
+              lines=[",".join(x.split(",")[:6]) for x in lines]
+          Path(f"data/{f}.csv").write_text("\n".join(lines)+"\n")
+          PY
+          done
+      - name: Commit synced files
+        if: ${{ env.MAIN_REPO_TOKEN != '' }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dashboard.html data/
+          git diff --cached --quiet || git commit -m "Sync planner data from main"
+          git push
