@@ -53,7 +53,7 @@ let title="", points=[], items=[];
 if(m==="cf"){
  title="Codeforces";
  const rr=ratings.slice().sort((a,b)=>a.ratingUpdateTimeSeconds-b.ratingUpdateTimeSeconds);
- points=rr.slice(-12).map((x,i)=>({label:new Date(x.ratingUpdateTimeSeconds*1000).toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit"}),value:x.newRating,raw:x}));
+ points=rr.slice(-5).map((x,i)=>({label:new Date(x.ratingUpdateTimeSeconds*1000).toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit"}),value:x.newRating,raw:x}));
  items=rr.slice(-5).reverse().map(x=>({label:x.contestName,value:x.newRating+(x.newRating-x.oldRating>=0?" (+" :" (")+ (x.newRating-x.oldRating)+")"}));
 }else{
  title=m==="vsosh_region_score"?"ВсОШ регион":"ЗКЛА";
