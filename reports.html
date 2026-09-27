@@ -1,90 +1,42 @@
 <!doctype html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Отчётник</title>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Отчётник</title>
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#0b0d12;color:#e9edf5;font:14px system-ui,sans-serif}
-main{max-width:1500px;margin:auto;padding:28px}
-h1{margin:0 0 6px}h2{margin:0 0 14px}p{color:#8f98a8}
-.nav{margin-bottom:20px}.nav a{color:#8db4ff;margin-right:18px;text-decoration:none}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:22px 0}
-.card{background:#131720;border:1px solid #252b36;border-radius:14px;padding:16px}
-.v{font-size:25px;font-weight:700;margin-top:7px}.muted{color:#8f98a8}
-section{margin-top:28px;overflow:auto}
-table{width:100%;border-collapse:collapse;background:#131720;border-radius:14px;overflow:hidden;min-width:1250px}
-th,td{padding:11px;border-bottom:1px solid #252b36;text-align:left;white-space:nowrap}
-th{color:#8f98a8;font-weight:500}
-.badge{display:inline-block;padding:4px 8px;border-radius:8px;background:#1b2230}
-.small{font-size:12px;color:#8f98a8}
-</style>
-</head>
-<body>
-<main>
+*{box-sizing:border-box}body{margin:0;background:#0b0d12;color:#e9edf5;font:14px system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:28px}h1{margin:0 0 6px}h2{margin:0 0 14px}p{color:#8f98a8}.nav{margin-bottom:20px}.nav a{color:#8db4ff;margin-right:18px;text-decoration:none}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin:22px 0}.card{background:#131720;border:1px solid #252b36;border-radius:14px;padding:16px}.v{font-size:25px;font-weight:700;margin-top:7px}.muted{color:#8f98a8}section{margin-top:28px;overflow:auto}table{width:100%;border-collapse:collapse;background:#131720;border-radius:14px;overflow:hidden;min-width:1550px}th,td{padding:11px;border-bottom:1px solid #252b36;text-align:left;white-space:nowrap}th{color:#8f98a8;font-weight:500}.small{font-size:12px;color:#8f98a8}
+</style></head><body><main>
 <div class="nav"><a href="dashboard.html">Главный</a><a href="weekly.html">Трекер недели</a></div>
-<h1>Отчётник по неделям</h1>
-<p>Накопительная статистика: текущая неделя обновляется, прошедшие недели остаются в истории.</p>
-
+<h1>Отчётник по неделям</h1><p>Накопительная статистика. Баллы ВсОШ добавляются после виртуальных участий; Codeforces и Div подтягиваются автоматически.</p>
 <div id="cards" class="grid"></div>
-
-<section>
-<h2>Все недели</h2>
-<table>
-<thead><tr>
+<section><h2>Все недели</h2><table><thead><tr>
 <th>Неделя</th><th>Русский ЕГЭ</th><th>Проф. математика</th><th>ЗКЛА</th>
 <th>ВсОШ регион</th><th>ВсОШ финал</th><th>Codeforces</th><th>Div</th>
 <th>Рабочие часы</th><th>Программирование</th><th>Задачи за неделю</th><th>Задачи всего</th>
 <th>Степанов</th><th>Командные</th><th>Олимп. математика</th><th>Чтение</th><th>Английский</th><th>Литература</th>
-</tr></thead>
-<tbody id="rows"></tbody>
-</table>
-</section>
-
+</tr></thead><tbody id="rows"></tbody></table></section>
 <script>
-async function csv(path){
-  const text=await fetch(path+'?v='+Date.now()).then(r=>r.text());
-  const lines=text.trim().split(/\r?\n/);
-  if(!lines.length)return[];
-  const parse=s=>{let a=[],cur='',q=false;for(let i=0;i<s.length;i++){let c=s[i];if(c=='"'){if(q&&s[i+1]=='"'){cur+='"';i++}else q=!q}else if(c==','&&!q){a.push(cur);cur=''}else cur+=c}a.push(cur);return a};
-  const h=parse(lines.shift());
-  return lines.filter(Boolean).map(line=>{const v=parse(line),o={};h.forEach((k,i)=>o[k]=v[i]??'');return o});
-}
-const val=x=>x===undefined||x===null||x===''?'—':x;
-const hours=x=>x===''||x===undefined?'—':x+' ч';
-function n(x){const v=parseFloat(x);return Number.isFinite(v)?v:0}
-
+async function csv(path){const text=await fetch(path+'?v='+Date.now()).then(r=>r.text());const lines=text.trim().split(/\r?\n/);if(!lines.length)return[];const parse=s=>{let a=[],cur='',q=false;for(let i=0;i<s.length;i++){let c=s[i];if(c=='"'){if(q&&s[i+1]=='"'){cur+='"';i++}else q=!q}else if(c==','&&!q){a.push(cur);cur=''}else cur+=c}a.push(cur);return a};const h=parse(lines.shift());return lines.filter(Boolean).map(line=>{const v=parse(line),o={};h.forEach((k,i)=>o[k]=v[i]??'');return o})}
+const val=x=>x===undefined||x===null||x===''?'—':x;const hours=x=>x===''||x===undefined?'—':x+' ч';
+function weekBounds(x){return [new Date(x.week_start+'T00:00:00'),new Date(x.week_end+'T23:59:59')]}
+async function cf(){const r=await fetch('https://codeforces.com/api/user.rating?handle=pon');const d=await r.json();return d.result||[]}
 (async()=>{
-  const stats=await csv('data/stats.csv');
-  const x=stats[stats.length-1]||{};
-
-  document.querySelector('#cards').innerHTML=[
-    ['CF рейтинг',val(x.cf_rating)],
-    ['Русский ЕГЭ',val(x.russian_ege_topics)+' / '+val(x.russian_ege_topics_total||26)],
-    ['Проф. математика',val(x.math_ege_mock)],
-    ['ЗКЛА',x.zakl_tour_score?x.zakl_tour_score+(x.zakl_tour_max?'/'+x.zakl_tour_max:''):'—'],
-    ['ВсОШ регион',val(x.vsosh_region)],
-    ['ВсОШ финал',val(x.vsosh_final)],
-    ['Рабочие часы',hours(x.work_hours)],
-    ['Программирование',hours(x.programming_hours)]
-  ].map(a=>'<div class="card"><div class="muted">'+a[0]+'</div><div class="v">'+a[1]+'</div></div>').join('');
-
-  document.querySelector('#rows').innerHTML=stats.map(x=>'<tr>'+
-    '<td>'+val(x.week_start)+' — '+val(x.week_end)+'</td>'+
-    '<td>'+val(x.russian_ege_topics)+' / '+val(x.russian_ege_topics_total||26)+'</td>'+
-    '<td>'+val(x.math_ege_mock)+'</td>'+
-    '<td>'+((x.zakl_tour_score||'—')+(x.zakl_tour_max?'/'+x.zakl_tour_max:''))+'</td>'+
-    '<td>'+val(x.vsosh_region)+'</td><td>'+val(x.vsosh_final)+'</td>'+
-    '<td>'+val(x.cf_rating)+'</td><td>'+val(x.div_results)+'</td>'+
-    '<td>'+hours(x.work_hours)+'</td><td>'+hours(x.programming_hours)+'</td>'+
-    '<td>'+val(x.solved_week)+'</td><td>'+val(x.solved_total)+'</td>'+
-    '<td>'+hours(x.coach_hours)+'</td><td>'+hours(x.team_hours)+'</td>'+
-    '<td>'+hours(x.olympiad_math_hours)+'</td><td>'+hours(x.reading_hours)+'</td>'+
-    '<td>'+hours(x.english_hours)+'</td><td>'+hours(x.literature_hours)+'</td>'+
-    '</tr>').join('');
-})().catch(e=>{document.querySelector('#rows').innerHTML='<tr><td colspan="18">Ошибка загрузки данных</td></tr>'});
-</script>
-</main>
-</body>
-</html>
+ const stats=await csv('data/stats.csv'); let ratings=[];try{ratings=await cf()}catch(e){}
+ const enriched=stats.map(x=>{
+   const [a,b]=weekBounds(x);const rr=ratings.filter(z=>{const d=new Date(z.ratingUpdateTimeSeconds*1000);return d>=a&&d<=b});
+   const last=rr[rr.length-1]||ratings[ratings.length-1]; 
+   const divs=rr.filter(z=>/Div\.? ?[12]/i.test(z.contestName)).map(z=>z.contestName.replace(/Codeforces Round /i,'')+' — #'+z.rank);
+   return {...x,auto_cf:last?last.newRating:'',auto_div:divs.join('; ')};
+ });
+ const x=enriched[enriched.length-1]||{};
+ document.querySelector('#cards').innerHTML=[
+  ['CF рейтинг',val(x.auto_cf||x.cf_rating)],['Русский ЕГЭ',val(x.russian_ege_topics)+' / '+val(x.russian_ege_topics_total||26)],
+  ['Проф. математика',val(x.math_ege_mock)],['ЗКЛА',x.zakl_tour_score?x.zakl_tour_score+(x.zakl_tour_max?'/'+x.zakl_tour_max:''):'—'],
+  ['ВсОШ регион',x.vsosh_region_score?x.vsosh_region_score+(x.vsosh_region_max?'/'+x.vsosh_region_max:''):'—'],
+  ['ВсОШ финал',x.vsosh_final_score?x.vsosh_final_score+(x.vsosh_final_max?'/'+x.vsosh_final_max:''):'—'],
+  ['Рабочие часы',hours(x.work_hours)],['Программирование',hours(x.programming_hours)]
+ ].map(a=>'<div class="card"><div class="muted">'+a[0]+'</div><div class="v">'+a[1]+'</div></div>').join('');
+ document.querySelector('#rows').innerHTML=enriched.map(x=>{
+  const reg=x.vsosh_region_score?x.vsosh_region_score+(x.vsosh_region_max?'/'+x.vsosh_region_max:''):'—';
+  const fin=x.vsosh_final_score?x.vsosh_final_score+(x.vsosh_final_max?'/'+x.vsosh_final_max:''):'—';
+  return '<tr><td>'+val(x.week_start)+' — '+val(x.week_end)+'</td><td>'+val(x.russian_ege_topics)+' / '+val(x.russian_ege_topics_total||26)+'</td><td>'+val(x.math_ege_mock)+'</td><td>'+((x.zakl_tour_score||'—')+(x.zakl_tour_max?'/'+x.zakl_tour_max:''))+'</td><td>'+reg+'</td><td>'+fin+'</td><td>'+val(x.auto_cf||x.cf_rating)+'</td><td>'+val(x.auto_div||x.div_results)+'</td><td>'+hours(x.work_hours)+'</td><td>'+hours(x.programming_hours)+'</td><td>'+val(x.solved_week)+'</td><td>'+val(x.solved_total)+'</td><td>'+hours(x.coach_hours)+'</td><td>'+hours(x.team_hours)+'</td><td>'+hours(x.olympiad_math_hours)+'</td><td>'+hours(x.reading_hours)+'</td><td>'+hours(x.english_hours)+'</td><td>'+hours(x.literature_hours)+'</td></tr>'
+ }).join('');
+})().catch(e=>document.querySelector('#rows').innerHTML='<tr><td colspan="18">Ошибка загрузки данных</td></tr>');
+</script></main></body></html>
