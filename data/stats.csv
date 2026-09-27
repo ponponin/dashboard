@@ -1,2 +1,2 @@
-week_start,week_end,russian_ege_topics,russian_ege_topics_total,math_ege_mock,zakl_tour_score,zakl_tour_max,cf_rating,solved_total,solved_week,programming_hours,coach_hours,team_hours,olympiad_math_hours,reading_hours,notes
-2026-09-28,2026-10-04,0,26,,448,,1500,,,,2.5,5,2,, "Начало накопления статистики; неизвестные показатели заполняем по факту"
+week_start,week_end,russian_ege_topics,russian_ege_topics_total,math_ege_mock,zakl_tour_score,zakl_tour_max,vsosh_region,vsosh_final,cf_rating,div_results,work_hours,programming_hours,solved_week,solved_total,coach_hours,team_hours,olympiad_math_hours,reading_hours,english_hours,literature_hours,notes
+2026-09-28,2026-10-04,0,26,,,,,,1500,,,0,0,0,0,0,0,0,0,0,Начало новой недели
