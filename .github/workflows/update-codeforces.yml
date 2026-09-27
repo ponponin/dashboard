@@ -46,12 +46,25 @@ jobs:
           const api = JSON.parse(fs.readFileSync("/tmp/rating.json","utf8"));
           const history = api.result.slice(-100);
           const latest = history[history.length - 1];
+          const recent_divs = history
+            .filter(x => /Div\.? ?[123]/i.test(x.contestName))
+            .slice(-5)
+            .reverse()
+            .map(x => ({
+              name: x.contestName,
+              date: new Date(x.ratingUpdateTimeSeconds * 1000).toISOString().slice(0,10),
+              rank: x.rank,
+              oldRating: x.oldRating,
+              newRating: x.newRating,
+              delta: x.newRating - x.oldRating
+            }));
 
           const snapshot = {
             handle: "pon",
             updated_at: new Date().toISOString(),
             rating: latest ? latest.newRating : null,
-            history
+            history,
+            recent_divs
           };
 
           fs.writeFileSync("data/codeforces.json",JSON.stringify(snapshot,null,2)+"\n");
