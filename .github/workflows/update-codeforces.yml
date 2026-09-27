@@ -1,0 +1,79 @@
+name: Update Codeforces snapshot
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/update-codeforces.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: codeforces-snapshot
+  cancel-in-progress: true
+
+jobs:
+  update:
+    if: github.event_name != 'push' || github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch Codeforces API
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL --max-time 25 "https://codeforces.com/api/user.rating?handle=pon" -o /tmp/rating.json
+          curl -fsSL --max-time 25 "https://codeforces.com/api/user.info?handles=pon" -o /tmp/user.json
+
+          node <<'NODE'
+          const fs = require("fs");
+
+          const ratingApi = JSON.parse(fs.readFileSync("/tmp/rating.json", "utf8"));
+          const userApi = JSON.parse(fs.readFileSync("/tmp/user.json", "utf8"));
+
+          if (ratingApi.status !== "OK" || !Array.isArray(ratingApi.result)) {
+            throw new Error("Codeforces rating API returned an invalid response");
+          }
+          if (userApi.status !== "OK" || !Array.isArray(userApi.result) || !userApi.result[0]) {
+            throw new Error("Codeforces user API returned an invalid response");
+          }
+
+          const user = userApi.result[0];
+          const history = ratingApi.result.slice(-100);
+          const latest = history[history.length - 1];
+
+          const snapshot = {
+            handle: user.handle,
+            updated_at: new Date().toISOString(),
+            rating: Number.isFinite(user.rating) ? user.rating : (latest ? latest.newRating : null),
+            maxRating: Number.isFinite(user.maxRating) ? user.maxRating : null,
+            rank: user.rank ?? null,
+            maxRank: user.maxRank ?? null,
+            history
+          };
+
+          fs.writeFileSync(
+            "data/codeforces.json",
+            JSON.stringify(snapshot, null, 2) + "\n"
+          );
+          NODE
+
+      - name: Commit changed snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- data/codeforces.json; then
+            echo "Codeforces snapshot has not changed."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/codeforces.json
+          git commit -m "Update Codeforces snapshot"
+          git push
