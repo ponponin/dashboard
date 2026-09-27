@@ -1,0 +1,9 @@
+week_start,week_end,id,category,task,priority,status,planned_hours,actual_hours
+2026-09-28,2026-10-04,W001,RUS,1 типовое ЕГЭ по русскому,high,planned,2,0
+2026-09-28,2026-10-04,W002,MATH,Профильная математика — 1–2 ч,high,planned,2,0
+2026-09-28,2026-10-04,W003,ENG,2 пересказа,high,planned,0,0
+2026-09-28,2026-10-04,W004,LIT,6–7 стихов,high,planned,0,0
+2026-09-28,2026-10-04,W005,CP,2–4 сложные задачи ~1900–2300,medium,planned,0,0
+2026-09-28,2026-10-04,W006,TR,Степанов — две тренировки,high,planned,5,2.5
+2026-09-28,2026-10-04,W007,TEAM,Командная тренировка ВКОШП,high,planned,5,0
+2026-09-28,2026-10-04,W008,DIV2,Div2 / дорешивание,medium,planned,0,0
