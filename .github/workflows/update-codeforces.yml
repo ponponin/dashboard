@@ -23,37 +23,31 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Fetch Codeforces API
+      - name: Fetch Codeforces rating history
         shell: bash
         run: |
           set -euo pipefail
-          curl -fsSL --max-time 25 "https://codeforces.com/api/user.rating?handle=pon" -o /tmp/rating.json
-          curl -fsSL --max-time 25 "https://codeforces.com/api/user.info?handles=pon" -o /tmp/user.json
+
+          if ! curl -fsSL --retry 6 --retry-delay 3 --retry-all-errors --max-time 30             "https://codeforces.com/api/user.rating?handle=pon"             -o /tmp/rating.json; then
+            echo "::warning::Codeforces API is temporarily unavailable. Keeping the previous snapshot."
+            exit 0
+          fi
 
           node <<'NODE'
           const fs = require("fs");
 
-          const ratingApi = JSON.parse(fs.readFileSync("/tmp/rating.json", "utf8"));
-          const userApi = JSON.parse(fs.readFileSync("/tmp/user.json", "utf8"));
-
-          if (ratingApi.status !== "OK" || !Array.isArray(ratingApi.result)) {
+          const api = JSON.parse(fs.readFileSync("/tmp/rating.json", "utf8"));
+          if (api.status !== "OK" || !Array.isArray(api.result)) {
             throw new Error("Codeforces rating API returned an invalid response");
           }
-          if (userApi.status !== "OK" || !Array.isArray(userApi.result) || !userApi.result[0]) {
-            throw new Error("Codeforces user API returned an invalid response");
-          }
 
-          const user = userApi.result[0];
-          const history = ratingApi.result.slice(-100);
+          const history = api.result.slice(-100);
           const latest = history[history.length - 1];
 
           const snapshot = {
-            handle: user.handle,
+            handle: "pon",
             updated_at: new Date().toISOString(),
-            rating: Number.isFinite(user.rating) ? user.rating : (latest ? latest.newRating : null),
-            maxRating: Number.isFinite(user.maxRating) ? user.maxRating : null,
-            rank: user.rank ?? null,
-            maxRank: user.maxRank ?? null,
+            rating: latest ? latest.newRating : null,
             history
           };
 
