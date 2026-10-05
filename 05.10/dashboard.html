@@ -65,7 +65,7 @@ function n(v){const x=parseFloat(v);return Number.isFinite(x)?x:0}
 function esc(s){return String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
 function donut(values,total){let start=0;const parts=[];values.forEach((v,i)=>{const p=total?100*v/total:0;parts.push(colors[i%colors.length]+" "+start+"% "+(start+p)+"%");start+=p});return parts.length?"conic-gradient("+parts.join(",")+")":"#202a42"}
 async function render(){
-const [schedule,tasks,log,weekly]=await Promise.all([get("../archive/28.09/data/schedule.csv","schedule"),get("../archive/28.09/data/tasks.csv","tasks"),get("../archive/28.09/data/log.csv","log"),get("data/weekly.csv","weekly")]);
+const [schedule,tasks,log,weekly]=await Promise.all([get("data/schedule.csv","schedule"),get("data/tasks.csv","tasks"),get("data/log.csv","log"),get("data/weekly.csv","weekly")]);
 const planned={}; schedule.forEach(r=>{const c=r[4];planned[c]=(planned[c]||0)+n(r[6])}); const actual={}; log.forEach(r=>{const c=r[1];actual[c]=(actual[c]||0)+n(r[5])});
 const p=Object.values(planned).reduce((a,b)=>a+b,0), a=Object.values(actual).reduce((a,b)=>a+b,0);
 const progCats=["CP","TEAM","TR","DIV2"]; const progPlan=progCats.reduce((s,c)=>s+(planned[c]||0),0); const progActual=progCats.reduce((s,c)=>s+(actual[c]||0),0); document.querySelector("#planned").textContent=p.toFixed(1)+" ч";document.querySelector("#actual").textContent=a.toFixed(1)+" ч";document.querySelector("#progHours").textContent=progActual.toFixed(1)+" / "+progPlan.toFixed(1)+" ч";document.querySelector("#ratio").textContent=p?(100*a/p).toFixed(0)+"%":"—";
