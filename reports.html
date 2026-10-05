@@ -150,7 +150,7 @@ async function loadTasks(row){
     plansByWeek[row.week_start]=raw;
   }catch{plansByWeek[row.week_start]=[]}
 }
-function taskPct(row){
+function taskStats(row){
   const ps=plansByWeek[row.week_start]||[];
   const agg={};
   ps.forEach(x=>{
@@ -161,8 +161,10 @@ function taskPct(row){
     agg[c].fact+=num(x.actual_hours);
   });
   const entries=Object.values(agg).filter(x=>x.plan>0);
-  return entries.length?100*entries.filter(x=>x.fact>=x.plan).length/entries.length:0;
+  const done=entries.filter(x=>x.fact>=x.plan).length;
+  return {done,total:entries.length,pct:entries.length?100*done/entries.length:0};
 }
+function taskPct(row){return taskStats(row).pct}
 function value(row){
   if(metric.value==="plan")return num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100;
   if(metric.value==="tasks")return taskPct(row);
@@ -196,7 +198,8 @@ function renderDetail(){
   document.querySelector("#timeValue").textContent=percentTime.toFixed(1)+"%";
   document.querySelector("#timeMeta").textContent=num(row.work_hours).toFixed(1)+" ч факта из "+num(row.planned_hours).toFixed(1)+" ч плана";
   document.querySelector("#taskValue").textContent=percentTasks.toFixed(1)+"%";
-  document.querySelector("#taskMeta").textContent=Math.round(percentTasks*10)/10+"% направлений с выполнением ≥100%";
+  const tm=taskStats(row);
+  document.querySelector("#taskMeta").textContent=tm.done+" из "+tm.total+" направлений с выполнением ≥100%";
   document.querySelector("#timeBar").style.width=Math.min(100,percentTime)+"%";
   document.querySelector("#taskBar").style.width=Math.min(100,percentTasks)+"%";
   const overall=document.querySelector("#overall");
@@ -217,7 +220,7 @@ function renderDetail(){
     ["План",num(row.planned_hours).toFixed(1)+" ч","недельный объём"],
     ["Факт",num(row.work_hours).toFixed(1)+" ч","реально сделано"],
     ["Время",percentTime.toFixed(1)+"%","факт / план"],
-    ["Задачи",t.done.length+"/"+t.all.length,percentTasks.toFixed(1)+"% закрыто"]
+    ["Задачи",tm.done+"/"+tm.total,percentTasks.toFixed(1)+"% направлений ≥100%"]
   ].map(x=>'<div class="card kpi"><div class="kpi-label">'+x[0]+'</div><div class="kpi-value">'+x[1]+'</div><div class="kpi-sub">'+x[2]+'</div></div>').join("");
   document.querySelector("#hint").textContent=percentTime>100&&percentTasks<100
     ?"Эта неделя перевыполнена по часам, но не по задачам. Например, дополнительные часы ДЮ не превращают задачу по русскому в выполненную."
