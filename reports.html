@@ -60,7 +60,7 @@ main{max-width:1600px;margin:auto;padding:28px 18px 50px}
 </div>
 
 <div class="nav">
-  <a href="28.09/dashboard.html">→ Актуальная неделя</a>
+  <a id="currentLink" href="./05.10/dashboard.html">→ Актуальная неделя</a>
 </div>
 
 <div id="cards" class="grid">
@@ -107,7 +107,12 @@ const fallbackStats = [];
 let stats = fallbackStats.slice();
 let ratings = [];
 let recentDivs = [];
-let currentWeek = "2026-09-28";
+function dateKey(d){return d.toISOString().slice(0,10)}
+function monday(d){d=new Date(d);const n=(d.getDay()+6)%7;d.setDate(d.getDate()-n);return dateKey(d)}
+function sunday(d){d=new Date(d);const n=(d.getDay()+6)%7;d.setDate(d.getDate()-n+6);return dateKey(d)}
+let currentWeek = monday(new Date());
+let currentWeekEnd = sunday(new Date());
+document.getElementById("currentLink").href = "./"+currentWeek.slice(8,10)+"."+currentWeek.slice(5,7)+"/dashboard.html";
 
 const num = v => {
   const n = Number(v);
@@ -130,7 +135,7 @@ function delta(cur, prev, key) {
 
 function renderTable() {
   const rows = stats.slice();
-  rows.unshift({week_start:currentWeek,week_end:"2026-10-04",__current:true});
+  rows.unshift({week_start:currentWeek,week_end:currentWeekEnd,__current:true});
 
   rows.sort((a,b)=>b.week_start.localeCompare(a.week_start));
 
