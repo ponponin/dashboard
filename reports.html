@@ -135,8 +135,6 @@ function delta(cur, prev, key) {
 
 function renderTable() {
   const rows = stats.slice();
-  rows.unshift({week_start:currentWeek,week_end:currentWeekEnd,__current:true});
-
   rows.sort((a,b)=>b.week_start.localeCompare(a.week_start));
 
   const q = document.getElementById("search").value.trim().toLowerCase();
@@ -144,7 +142,7 @@ function renderTable() {
 
   document.getElementById("rows").innerHTML = filtered.map((x,i) => {
     const prev = i+1 < filtered.length ? filtered[i+1] : null;
-    const isCurrent = !!x.__current;
+    const isCurrent = i===0;
     const cf = x.cf_auto ?? x.cf_rating;
     const href = "./"+x.week_start.slice(8,10)+"."+x.week_start.slice(5,7)+"/dashboard.html";
     const mark = isCurrent ? '<span class="badge">АКТУАЛЬНАЯ</span>' : "";
