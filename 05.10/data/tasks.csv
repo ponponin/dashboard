@@ -1,0 +1,8 @@
+id,task,category,deadline,priority,status,planned_hours,actual_hours,type,notes
+W101,ДЮ — олимпиадная математика,MATH,2026-10-11,high,planned,2,0,WEEKLY,подготовка к неделе
+W102,Степанов — 2 тренировки,TR,2026-10-11,high,planned,5,0,WEEKLY,по 2,5 часа
+W103,Олимпиадное программирование — сложные задачи,CP,2026-10-11,high,planned,4,0,WEEKLY,2 блока
+W104,ЕГЭ по русскому — задание 8,RUS,2026-10-11,high,planned,1.5,0,WEEKLY,закрыть тему
+W105,Английский — 1-й пересказ,ENG,2026-10-11,high,planned,1.5,0,DEADLINE,сдать до 11.10
+W106,Литература — 1 стихотворение,LIT,2026-10-11,medium,planned,0.5,0,WEEKLY,выучить за неделю
+W107,Физтех — математика,MATH,2026-10-11,high,planned,2,0,EVENT,11.10 в 10:00 МСК
