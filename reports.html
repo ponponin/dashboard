@@ -5,294 +5,96 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Отчётник по неделям</title>
 <style>
-:root{--bg:#090d19;--panel:#11182b;--panel2:#151e34;--text:#f4f7fb;--muted:#9aa8bf;--accent:#7c9cff;--line:#26324d;--good:#55d6a5;--bad:#ff7b8b}
-*{box-sizing:border-box}
-body{margin:0;background:linear-gradient(145deg,#090d19,#111a2e);color:var(--text);font:14px/1.45 Inter,system-ui,sans-serif}
-main{max-width:1600px;margin:auto;padding:28px 18px 50px}
-.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-end}
-.eyebrow{color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px}
-.title{font-size:34px;font-weight:800;margin:4px 0}
-.sub,.muted{color:var(--muted)}
-.nav{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
-.nav a,.btn{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:10px}
-.nav a:hover,.btn:hover{border-color:var(--accent)}
-.grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin:20px 0}
-.card{background:rgba(17,24,43,.92);border:1px solid var(--line);border-radius:16px;padding:16px}
-.grid .card{padding:11px 13px}
-.grid .v{font-size:22px;margin-top:3px}
-.v{font-size:27px;font-weight:800;margin-top:6px}
-.controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}
-.controls input,.controls select{background:var(--panel2);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:10px 12px;font:inherit}
-.wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}
-.table{width:100%;border-collapse:collapse;min-width:1050px;font-size:11px}
-.table th,.table td{padding:7px 6px;border-bottom:1px solid var(--line);text-align:center;white-space:normal}
-.table th:first-child,.table td:first-child{width:170px;text-align:left}
-.table th{background:var(--panel2);color:var(--muted);font-size:11px;position:sticky;top:0;cursor:pointer}
-.table tr:hover{background:rgba(124,156,255,.06)}
-.table a{color:var(--accent);text-decoration:none}
-.current td{background:rgba(124,156,255,.07)}
-.delta{font-size:10px;margin-left:2px}
-.up{color:var(--good)} .down{color:var(--bad)} .flat{color:var(--muted)}
-.hidden{display:none}
-.navlink{color:var(--accent);text-decoration:none}
-.details-grid{display:grid;grid-template-columns:1.4fr .9fr;gap:14px}
-.detail-panel{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px}
-.detail-chart{height:260px}
-.detail-chart svg{width:100%;height:100%;overflow:visible}
-.detail-list{display:grid;gap:8px;max-height:260px;overflow:auto}
-.detail-item{display:flex;justify-content:space-between;gap:10px;padding:9px 10px;border:1px solid var(--line);border-radius:9px}
-.detail-item .muted{font-size:11px}
-.detail-value{font-weight:700;white-space:nowrap}
-.badge{display:inline-block;border:1px solid #2e6b58;border-radius:999px;padding:2px 6px;font-size:10px;margin-left:5px;color:var(--good)}
-@media(max-width:900px){.details-grid{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}}
-@media(max-width:520px){.grid{grid-template-columns:1fr}.title{font-size:28px}}
+:root{--bg:#090d19;--panel:#11182b;--panel2:#151e34;--text:#f4f7fb;--muted:#9aa8bf;--accent:#7c9cff;--good:#55d6a5;--line:#26324d}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#090d19,#111a2e);color:var(--text);font:14px/1.45 Inter,system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:28px 18px 50px}
+.top{display:flex;justify-content:space-between;gap:18px;align-items:flex-end}.eyebrow{color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px}.title{font-size:34px;font-weight:800;margin:4px 0}.sub,.muted{color:var(--muted)}
+.nav{margin:16px 0}.nav a,.btn,.select{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:10px}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.select{font:inherit}
+.card{background:rgba(17,24,43,.92);border:1px solid var(--line);border-radius:16px;padding:16px}.chart-card{padding:18px}.chart-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.chart-title{font-size:17px;font-weight:750}
+.chart-wrap{height:520px;margin-top:12px;position:relative;overflow:hidden}.chart-wrap svg{width:100%;height:100%}.gridline{stroke:var(--line);stroke-width:1}.axis{fill:var(--muted);font-size:11px}.bar{fill:var(--accent);opacity:.86}.bar.current{fill:var(--good)}.bar:hover{opacity:1}.line{fill:none;stroke:var(--accent);stroke-width:4}.point{fill:var(--panel);stroke:var(--accent);stroke-width:3}.point.current{fill:var(--good);stroke:var(--good)}.week-label{fill:var(--text);font-size:11px}.value-label{fill:var(--text);font-size:11px;font-weight:700}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}.legend span{color:var(--muted)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--accent);margin-right:6px}.dot.good{background:var(--good)}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.summary .v{font-size:24px;font-weight:800;margin-top:3px}
+.note{margin-top:12px;padding:10px 12px;background:var(--panel2);border-radius:10px;color:var(--muted)}
+@media(max-width:850px){.summary{grid-template-columns:1fr 1fr}.chart-wrap{height:430px}}@media(max-width:520px){.summary{grid-template-columns:1fr}.title{font-size:28px}.chart-wrap{height:380px}}
 </style>
 </head>
 <body>
 <main>
-<div class="top">
-  <div>
-    <div class="eyebrow">личный отчётник</div>
-    <div class="title">Отчётник по неделям</div>
-    <div class="sub">Сравнение недель, динамика показателей и быстрый переход к конкретной неделе.</div>
-  </div>
-  <a class="navlink" href="games.html">🎰 Интерактив</a>
-</div>
-
-<div class="nav">
-  <a id="currentLink" href="./05.10/dashboard.html">→ Актуальная неделя</a>
-</div>
-
-<div id="cards" class="grid">
-  <div class="card" style="grid-column:span 2"><div class="muted">CF рейтинг</div><div class="v">—</div><div class="muted">последний сохранённый снимок</div></div>
-  <div class="card"><div class="muted">Проф. мат. пробник</div><div class="v">—</div></div>
-  <div class="card"><div class="muted">Рег</div><div class="v">—</div></div>
-  <div class="card"><div class="muted">Закл</div><div class="v">—</div></div>
-</div>
-
+<div class="top"><div><div class="eyebrow">личный отчётник</div><div class="title">Отчётник по неделям</div><div class="sub">Один большой интерактивный график по всем неделям.</div></div><div class="muted" id="period"></div></div>
+<div class="nav"><a href="./05.10/dashboard.html">→ Актуальная неделя</a></div>
 <div class="controls">
-  <input id="search" placeholder="Поиск по неделям">
-  <select id="metric">
-    <option value="">Подробнее…</option>
-    <option value="cf">Codeforces</option>
-    <option value="vsosh_region_score">Рег</option>
-    <option value="vsosh_final_score">Закл</option>
-  </select>
-  <button class="btn" id="reset">Сбросить</button>
+<select id="metric" class="select">
+<option value="plan">Выполнение плана, %</option>
+<option value="total">Все часы за неделю</option>
+<option value="programming">Программирование, ч</option>
+<option value="subject">Часы по предмету</option>
+</select>
+<select id="subject" class="select" hidden>
+<option value="russian_hours">Русский</option><option value="math_hours">Математика</option><option value="coach_hours">Степанов</option><option value="team_hours">Командка</option><option value="olympiad_math_hours">ДЮ</option><option value="english_hours">Английский</option><option value="literature_hours">Литература</option><option value="reading_hours">Чтение</option>
+</select>
 </div>
-
-<div id="details" class="card hidden"></div>
-
-<div class="wrap">
-<table class="table">
-<thead><tr>
-<th>Неделя</th><th>Часы</th><th>Проги</th><th>Русский</th><th>Проф. мат.</th><th>Рег</th><th>Закл</th><th>CF</th><th>Div</th><th>Задачи/нед.</th><th>Степанов</th><th>Командка</th><th>ДЮ</th><th>Чтение</th>
-</tr></thead>
-<tbody id="rows">
-<tr class="current" data-week="2026-09-28">
-<td><a href="./28.09/dashboard.html">2026-09-28 — 2026-10-04</a><span class="badge">АКТУАЛЬНАЯ</span></td>
-<td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
-</tr>
-</tbody>
-</table>
-</div>
-
-<div class="muted" style="margin-top:10px">Текущая неделя отображается первой и отмечена «АКТУАЛЬНАЯ». Данные Codeforces берутся из последнего сохранённого снимка и обновляются автоматически.</div>
-
+<section class="card chart-card">
+<div class="chart-head"><div><div class="chart-title" id="chartTitle">Выполнение плана</div><div class="muted" id="chartSubtitle"></div></div></div>
+<div class="chart-wrap"><svg id="chart" viewBox="0 0 1200 520" preserveAspectRatio="none"></svg></div>
+<div class="legend"><span><i class="dot"></i>прошлые недели</span><span><i class="dot good"></i>актуальная неделя</span><span>Нажми на неделю на графике, чтобы открыть её отчёт.</span></div>
+<div class="note" id="note"></div>
+</section>
+<div class="summary" id="summary"></div>
+</main>
 <script>
 "use strict";
-
-const fallbackStats = [];
-
-let stats = fallbackStats.slice();
-let ratings = [];
-let recentDivs = [];
-function dateKey(d){return d.toISOString().slice(0,10)}
-function monday(d){d=new Date(d);const n=(d.getDay()+6)%7;d.setDate(d.getDate()-n);return dateKey(d)}
-function sunday(d){d=new Date(d);const n=(d.getDay()+6)%7;d.setDate(d.getDate()-n+6);return dateKey(d)}
-let currentWeek = monday(new Date());
-let currentWeekEnd = sunday(new Date());
-document.getElementById("currentLink").href = "./"+currentWeek.slice(8,10)+"."+currentWeek.slice(5,7)+"/dashboard.html";
-
-const num = v => {
-  const n = Number(v);
-  return Number.isFinite(n) ? n : null;
-};
-
-const format = (v, suffix="") => v===undefined || v===null || v==="" ? "—" : String(v)+suffix;
-
-function escapeHtml(s) {
-  return String(s ?? "").replace(/[&<>"]/g, ch => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;" }[ch]));
+const labels={russian_hours:"Русский",math_hours:"Математика",coach_hours:"Степанов",team_hours:"Командка",olympiad_math_hours:"ДЮ",english_hours:"Английский",literature_hours:"Литература",reading_hours:"Чтение"};
+let data=[];
+const metric=document.querySelector("#metric"), subject=document.querySelector("#subject");
+const esc=s=>String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+async function load(){
+ const r=await fetch("data/stats.csv?t="+Date.now(),{cache:"no-store"});
+ const txt=await r.text(); const lines=txt.trim().split(/\r?\n/); const h=lines.shift().split(",");
+ data=lines.filter(Boolean).map(line=>{const v=line.split(",");const o={};h.forEach((k,i)=>o[k]=v[i]??"");return o});
+ render(); document.querySelector("#period").textContent=data.length?"последняя неделя: "+data[data.length-1].week_start+" — "+data[data.length-1].week_end:"";
 }
-
-function delta(cur, prev, key) {
-  const a = num(cur[key]), b = prev ? num(prev[key]) : null;
-  if (a===null || b===null) return "";
-  const d = a-b;
-  if (!d) return '<span class="delta flat">±0</span>';
-  return '<span class="delta '+(d>0?"up":"down")+'">'+(d>0?"+":"")+d+'</span>';
+function num(x){const n=Number(x);return Number.isFinite(n)?n:0}
+function value(row){
+ if(metric.value==="plan")return num(row.plan_percent);
+ if(metric.value==="total")return num(row.work_hours);
+ if(metric.value==="programming")return num(row.programming_hours);
+ return num(row[subject.value]);
 }
-
-function renderTable() {
-  const rows = stats.slice();
-  rows.sort((a,b)=>b.week_start.localeCompare(a.week_start));
-
-  const q = document.getElementById("search").value.trim().toLowerCase();
-  const filtered = rows.filter(x => (x.week_start+" "+x.week_end).toLowerCase().includes(q));
-
-  document.getElementById("rows").innerHTML = filtered.map((x,i) => {
-    const prev = i+1 < filtered.length ? filtered[i+1] : null;
-    const isCurrent = i===0;
-    const cf = x.cf_auto ?? x.cf_rating;
-    const href = "./"+x.week_start.slice(8,10)+"."+x.week_start.slice(5,7)+"/dashboard.html";
-    const mark = isCurrent ? '<span class="badge">АКТУАЛЬНАЯ</span>' : "";
-    return '<tr class="'+(isCurrent?"current":"")+'">'+
-      '<td><a href="'+href+'">'+x.week_start+" — "+x.week_end+'</a>'+mark+'</td>'+
-      '<td>'+format(x.work_hours," ч")+delta(x,prev,"work_hours")+'</td>'+
-      '<td>'+format(x.programming_hours," ч")+delta(x,prev,"programming_hours")+'</td>'+
-      '<td>'+format(x.russian_ege_topics)+delta(x,prev,"russian_ege_topics")+'</td>'+
-      '<td>'+format(x.math_ege_mock)+delta(x,prev,"math_ege_mock")+'</td>'+
-      '<td>'+format(x.vsosh_region_score)+(x.vsosh_region_max?"/"+x.vsosh_region_max:"")+delta(x,prev,"vsosh_region_score")+'</td>'+
-      '<td>'+format(x.vsosh_final_score)+(x.vsosh_final_max?"/"+x.vsosh_final_max:"")+delta(x,prev,"vsosh_final_score")+'</td>'+
-      '<td>'+format(cf)+delta(x,prev,"cf_auto")+'</td>'+
-      '<td>'+format(x.div_auto || x.div_results)+'</td>'+
-      '<td>'+format(x.solved_week)+delta(x,prev,"solved_week")+'</td>'+
-      '<td>'+format(x.coach_hours," ч")+delta(x,prev,"coach_hours")+'</td>'+
-      '<td>'+format(x.team_hours," ч")+delta(x,prev,"team_hours")+'</td>'+
-      '<td>'+format(x.olympiad_math_hours," ч")+delta(x,prev,"olympiad_math_hours")+'</td>'+
-      '<td>'+format(x.reading_hours," ч")+delta(x,prev,"reading_hours")+'</td>'+
-    '</tr>';
-  }).join("");
+function title(){
+ if(metric.value==="plan")return "Выполнение плана";
+ if(metric.value==="total")return "Все часы за неделю";
+ if(metric.value==="programming")return "Программирование";
+ return labels[subject.value];
 }
-
-function renderDetails() {
-  const box = document.getElementById("details");
-  const mode = document.getElementById("metric").value;
-  if (!mode) { box.classList.add("hidden"); box.innerHTML=""; return; }
-
-  let points = [], items = [], title = "";
-
-  if (mode==="cf") {
-    title="Codeforces";
-    const rr=ratings.slice().sort((a,b)=>a.ratingUpdateTimeSeconds-b.ratingUpdateTimeSeconds);
-    if(rr.length){
-      points=rr.slice(-5).map(x=>({label:new Date(x.ratingUpdateTimeSeconds*1000).toLocaleDateString("ru-RU",{day:"2-digit",month:"2-digit"}),value:x.newRating}));
-      items=rr.slice(-5).reverse().map(x=>({label:x.contestName,value:x.newRating+" ("+(x.newRating-x.oldRating>=0?"+":"")+(x.newRating-x.oldRating)+")"}));
-    }else{
-      recentDivs.slice(0,5).forEach(x=>items.push({label:x.name,value:x.date}));
-    }
-  } else {
-    title=mode==="vsosh_region_score"?"ВсОШ регион":"ЗКЛА";
-    const rr=stats.filter(x=>num(x[mode])!==null).sort((a,b)=>a.week_start.localeCompare(b.week_start));
-    points=rr.map(x=>({label:x.week_start.slice(8,10)+"."+x.week_start.slice(5,7),value:num(x[mode]),max:num(x[mode==="vsosh_region_score"?"vsosh_region_max":"vsosh_final_max"])}));
-    items=rr.slice(-5).reverse().map(x=>({label:x.week_start+" — "+x.week_end,value:x[mode]+(x[mode==="vsosh_region_score"?"vsosh_region_max":"vsosh_final_max"]?"/"+x[mode==="vsosh_region_score"?"vsosh_region_max":"vsosh_final_max"]:"")}));
-  }
-
-  box.classList.remove("hidden");
-
-  if (!points.length) {
-    box.innerHTML='<h3 style="margin:0 0 10px">'+title+'</h3><div class="muted">Нет данных для подробностей.</div>';
-    return;
-  }
-
-  const vals=points.map(p=>p.value);
-  const minV=Math.min(...vals), maxV=Math.max(...vals), range=Math.max(maxV-minV,1);
-  const W=720,H=240,pad=34,step=points.length>1?(W-pad*2)/(points.length-1):0;
-  const pts=points.map((p,i)=>({x:pad+i*step,y:H-pad-(p.value-minV)/range*(H-pad*2),p}));
-  const path=pts.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+" "+p.y.toFixed(1)).join(" ");
-  const labelText=p=>{
-    if(mode==="cf") return "рейтинг "+p.p.value;
-    const max=p.p.max ? "/"+p.p.max : "";
-    return "баллы "+p.p.value+max;
-  };
-  const circles=pts.map(p=>'<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="var(--accent)"><title>'+labelText(p)+'</title></circle>').join("");
-  const labels=pts.map(p=>'<g><rect x="'+(p.x-42)+'" y="'+(p.y-24)+'" width="84" height="16" rx="4" fill="var(--panel)"/><text x="'+p.x+'" y="'+(p.y-12)+'" text-anchor="middle" fill="var(--text)" font-size="10">'+labelText(p)+'</text><text x="'+p.x+'" y="'+(H-8)+'" text-anchor="middle" fill="var(--muted)" font-size="10">'+p.p.label+'</text></g>').join("");
-
-  box.innerHTML='<h3 style="margin:0 0 12px">'+title+'</h3>'+
-    '<div class="details-grid">'+
-      '<div class="detail-panel"><div class="muted" style="margin-bottom:8px">Динамика</div><div class="detail-chart"><svg viewBox="0 0 '+W+' '+H+'"><path d="'+path+'" fill="none" stroke="var(--accent)" stroke-width="3"/>'+circles+labels+'</svg></div></div>'+
-      '<div class="detail-panel"><div class="muted" style="margin-bottom:8px">Последние 5 результатов</div><div class="detail-list">'+
-        items.map(x=>'<div class="detail-item"><span>'+escapeHtml(x.label)+'</span><b class="detail-value">'+escapeHtml(x.value)+'</b></div>').join("")+
-      '</div></div>'+
-    '</div>';
+function render(){
+ subject.hidden=metric.value!=="subject";
+ const vals=data.map(value), max=Math.max(1,...vals), W=1200,H=520,L=70,R=35,T=34,B=70;
+ const innerW=W-L-R, innerH=H-T-B, step=data.length>1?innerW/(data.length-1):innerW;
+ let svg="";
+ for(let i=0;i<=5;i++){const y=T+innerH-i*innerH/5;const v=max*i/5;svg+=`<line class="gridline" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"/><text class="axis" x="${L-10}" y="${y+4}" text-anchor="end">${v%1?v.toFixed(1):v}</text>`;}
+ const points=data.map((row,i)=>({x:data.length===1?L+innerW/2:L+i*step,y:T+innerH-(value(row)/max)*innerH,row,i}));
+ const path=points.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+" "+p.y.toFixed(1)).join(" ");
+ const barW=Math.min(70,Math.max(18,innerW/Math.max(1,data.length*1.7)));
+ if(metric.value==="plan"){
+   points.forEach((p,i)=>{const y0=T+innerH;const h=y0-p.y;const x=p.x-barW/2;const cur=i===points.length-1;svg+=`<rect class="bar ${cur?"current":""}" x="${x}" y="${p.y}" width="${barW}" height="${Math.max(1,h)}" rx="8"><title>${p.row.week_start}: ${value(p.row).toFixed(1)}%</title></rect>`;});
+ }else{
+   svg+=`<path class="line" d="${path}"/>`;
+   points.forEach((p,i)=>{const cur=i===points.length-1;svg+=`<circle class="point ${cur?"current":""}" cx="${p.x}" cy="${p.y}" r="7"><title>${p.row.week_start}: ${value(p.row).toFixed(1)} ч</title></circle>`;});
+ }
+ points.forEach((p,i)=>{const cur=i===points.length-1;const x=p.x;svg+=`<a href="./${p.row.week_start.slice(8,10)}.${p.row.week_start.slice(5,7)}/dashboard.html"><g style="cursor:pointer"><text class="value-label" x="${x}" y="${Math.max(16,p.y-13)}" text-anchor="middle">${metric.value==="plan"?value(p.row).toFixed(1)+"%":value(p.row).toFixed(1)+" ч"}</text><text class="week-label" x="${x}" y="${H-38}" text-anchor="middle">${p.row.week_start.slice(8)}.${p.row.week_start.slice(5,7)}</text></g></a>`;});
+ document.querySelector("#chart").innerHTML=svg;
+ document.querySelector("#chartTitle").textContent=title();
+ document.querySelector("#chartSubtitle").textContent="Недели: "+data[0]?.week_start+" — "+data[data.length-1]?.week_end;
+ const cur=data[data.length-1], prev=data[data.length-2];
+ const summary=[
+  ["План, ч",num(cur?.planned_hours).toFixed(1)],
+  ["Факт, ч",num(cur?.work_hours).toFixed(1)],
+  ["Выполнение",num(cur?.plan_percent).toFixed(1)+"%"],
+  ["Программирование, ч",num(cur?.programming_hours).toFixed(1)]
+ ];
+ document.querySelector("#summary").innerHTML=summary.map(x=>'<div class="card"><div class="muted">'+esc(x[0])+'</div><div class="v">'+esc(x[1])+'</div></div>').join("");
+ document.querySelector("#note").textContent=cur?.notes||"";
 }
-
-async function loadCsv() {
-  try {
-    const response=await fetch("data/stats.csv?t="+Date.now(),{cache:"no-store"});
-    if (!response.ok) throw new Error();
-    const text=await response.text();
-    const lines=text.trim().split(/\r?\n/);
-    if (lines.length<2) return;
-    const parse=line => {
-      const out=[]; let cur="", quoted=false;
-      for(let i=0;i<line.length;i++){
-        const ch=line[i];
-        if(ch==='"'){
-          if(quoted && line[i+1]==='"'){cur+='"';i++;}
-          else quoted=!quoted;
-        } else if(ch==="," && !quoted){out.push(cur);cur="";}
-        else cur+=ch;
-      }
-      out.push(cur); return out;
-    };
-    const header=parse(lines.shift());
-    stats=lines.filter(Boolean).map(line=>{
-      const v=parse(line),o={};
-      header.forEach((key,i)=>o[key]=v[i]??"");
-      return o;
-    });
-    renderTable();
-    renderDetails();
-  } catch(e) {}
-}
-
-async function loadCf() {
-  try {
-    const response=await fetch("data/codeforces.json?t="+Date.now(),{cache:"no-store"});
-    if (!response.ok) throw new Error();
-    const snapshot=await response.json();
-    ratings=Array.isArray(snapshot.history)?snapshot.history:[];
-    recentDivs=Array.isArray(snapshot.recent_divs)?snapshot.recent_divs:[];
-    const latestRating=num(snapshot.rating) ?? (ratings.length ? num(ratings[ratings.length-1].newRating) : null);
-
-    if(latestRating!==null){
-      const cards=document.querySelectorAll("#cards .card");
-      if(cards[0]){
-        cards[0].querySelector(".v").textContent=latestRating;
-        const muted=cards[0].querySelectorAll(".muted");
-        if(muted.length>1) muted[muted.length-1].textContent="последний сохранённый снимок CF";
-      }
-    }
-
-    stats=stats.map(s=>{
-      const a=new Date(s.week_start+"T00:00:00"), b=new Date(s.week_end+"T23:59:59");
-      const rr=ratings.filter(z=>{const d=new Date(z.ratingUpdateTimeSeconds*1000);return d>=a&&d<=b;});
-      const last=rr[rr.length-1];
-      const divs=rr.filter(z=>/Div\.? ?[12]/i.test(z.contestName)).map(z=>z.contestName.replace(/Codeforces Round /i,"")+" — #"+z.rank);
-      return {...s,cf_auto:last?last.newRating:"",div_auto:divs.join("; ")};
-    });
-    renderTable();
-    renderDetails();
-  } catch(e) {
-    // Остаётся последний сохранённый fallback из stats.csv.
-  }
-}
-
-document.getElementById("search").addEventListener("input",renderTable);
-document.getElementById("metric").addEventListener("change",renderDetails);
-document.getElementById("reset").addEventListener("click",()=>{
-  document.getElementById("search").value="";
-  document.getElementById("metric").value="";
-  renderTable();
-  renderDetails();
-});
-
-renderTable();
-renderDetails();
-loadCsv();
-loadCf();
+metric.addEventListener("change",render);subject.addEventListener("change",render);load().catch(()=>document.querySelector("#note").textContent="Не удалось загрузить данные.");
 </script>
-</main>
 </body>
 </html>
