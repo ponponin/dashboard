@@ -87,7 +87,7 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
     <option value="subject">Часы по предмету</option>
   </select>
   <select id="subject" hidden>
-    <option value="russian_hours">Русский</option><option value="du_hours">ДЮ</option><option value="stepanov_hours">Степанов</option>
+    <option value="russian_hours">Русский</option><option value="ДЮ_hours">ДЮ</option><option value="stepanov_hours">Степанов</option>
     <option value="team_hours">Командка / тур Закл.</option><option value="ftech_hours">Физтех</option><option value="reading_hours">Чтение</option>
     <option value="english_hours">Английский</option><option value="literature_hours">Литература</option><option value="math_ege_hours">Ботать</option>
   </select>
@@ -128,24 +128,41 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
 
 <script>
 "use strict";
-const labels={russian_hours:"Русский",du_hours:"ДЮ",stepanov_hours:"Степанов",team_hours:"Командка / тур Закл.",ftech_hours:"Физтех",reading_hours:"Чтение",english_hours:"Английский",literature_hours:"Литература",math_ege_hours:"Ботать"};
+const labels={russian_hours:"Русский",ДЮ_hours:"ДЮ",stepanov_hours:"Степанов",team_hours:"Командка / тур Закл.",ftech_hours:"Физтех",reading_hours:"Чтение",english_hours:"Английский",literature_hours:"Литература",math_ege_hours:"Ботать"};
 const cats={RUS:"Русский",ДЮ:"ДЮ",TR:"Степанов",TEAM:"Командка / тур Закл.",CP:"Программирование",FTECH:"Физтех",READ:"Чтение",ENG:"Английский",LIT:"Литература",MATH_EGE:"Ботать"};
 const metric=document.querySelector("#metric"),subject=document.querySelector("#subject"),week=document.querySelector("#week");
-let data=[],tasksByWeek={};
+let data=[],tasksByWeek={},plansByWeek={};
 
 function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
 function esc(s){return String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
 function parseCSV(s){const rows=[];let row=[],cur="",q=false;for(let i=0;i<s.length;i++){const c=s[i];if(c==='"'){if(q&&s[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===','&&!q){row.push(cur);cur=""}else if((c==="\n"||c==="\r")&&!q){if(c==="\r"&&s[i+1]==="\n")i++;row.push(cur);cur="";if(row.some(x=>x!==""))rows.push(row);row=[]}else cur+=c}row.push(cur);if(row.some(x=>x!==""))rows.push(row);return rows}
 async function csv(path){const r=await fetch(path+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error(path);const rows=parseCSV(await r.text()),h=rows.shift()||[];return rows.map(v=>{const o={};h.forEach((k,i)=>o[k]=v[i]??"");return o})}
 function taskPath(ws){const p=ws.slice(8,10)+"."+ws.slice(5,7);return ws===data[data.length-1].week_start?p+"/data/tasks.csv":"archive/"+p+"/data/tasks.csv"}
+function planPath(ws){const p=ws.slice(8,10)+"."+ws.slice(5,7);return ws===data[data.length-1].week_start?p+"/data/weekly_plans.csv":"archive/"+p+"/data/weekly_plans.csv"}
 async function loadTasks(row){
   try{
     const all=(await csv(taskPath(row.week_start))).filter(x=>(x.type||"WEEKLY")==="WEEKLY");
     const done=all.filter(x=>["done","completed"].includes((x.status||"").toLowerCase()));
     tasksByWeek[row.week_start]={all,done};
   }catch{tasksByWeek[row.week_start]={all:[],done:[]}}
+  try{
+    const raw=await csv(planPath(row.week_start));
+    plansByWeek[row.week_start]=raw;
+  }catch{plansByWeek[row.week_start]=[]}
 }
-function taskPct(row){const t=tasksByWeek[row.week_start]||{all:[],done:[]};return t.all.length?100*t.done.length/t.all.length:0}
+function taskPct(row){
+  const ps=plansByWeek[row.week_start]||[];
+  const agg={};
+  ps.forEach(x=>{
+    const c=x.category||"";
+    if(!c)return;
+    agg[c]??={plan:0,fact:0};
+    agg[c].plan+=num(x.planned_hours);
+    agg[c].fact+=num(x.actual_hours);
+  });
+  const entries=Object.values(agg).filter(x=>x.plan>0);
+  return entries.length?100*entries.filter(x=>x.fact>=x.plan).length/entries.length:0;
+}
 function value(row){
   if(metric.value==="plan")return num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100;
   if(metric.value==="tasks")return taskPct(row);
@@ -179,13 +196,13 @@ function renderDetail(){
   document.querySelector("#timeValue").textContent=percentTime.toFixed(1)+"%";
   document.querySelector("#timeMeta").textContent=num(row.work_hours).toFixed(1)+" ч факта из "+num(row.planned_hours).toFixed(1)+" ч плана";
   document.querySelector("#taskValue").textContent=percentTasks.toFixed(1)+"%";
-  document.querySelector("#taskMeta").textContent=t.done.length+" из "+t.all.length+" недельных задач закрыто";
+  document.querySelector("#taskMeta").textContent=Math.round(percentTasks*10)/10+"% направлений с выполнением ≥100%";
   document.querySelector("#timeBar").style.width=Math.min(100,percentTime)+"%";
   document.querySelector("#taskBar").style.width=Math.min(100,percentTasks)+"%";
   const overall=document.querySelector("#overall");
   overall.className="status "+(percentTime>=100&&percentTasks>=100?"good":percentTime>=100||percentTasks>=100?"warn":"bad");
   overall.textContent=percentTime>=100&&percentTasks>=100?"План закрыт":percentTime>=100||percentTasks>=100?"Показатели расходятся":"Есть отставание";
-  const map=[["russian_hours","Русский"],["du_hours","ДЮ"],["stepanov_hours","Степанов"],["team_hours","Командка / тур Закл."],["ftech_hours","Физтех"],["reading_hours","Чтение"],["english_hours","Английский"],["literature_hours","Литература"],["math_ege_hours","Ботать"],["programming_hours","Программирование"]];
+  const map=[["russian_hours","Русский"],["ДЮ_hours","ДЮ"],["stepanov_hours","Степанов"],["team_hours","Командка / тур Закл."],["ftech_hours","Физтех"],["reading_hours","Чтение"],["english_hours","Английский"],["literature_hours","Литература"],["math_ege_hours","Ботать"],["programming_hours","Программирование"]];
   document.querySelector("#breakdown").innerHTML=map.filter(x=>num(row[x[0]])>0||x[0]==="russian_hours").map(x=>{
     const v=num(row[x[0]]),total=num(row.work_hours),pct=total?v/total*100:0;
     return '<div class="row"><div class="row-label">'+x[1]+'</div><div class="smallbar"><i style="width:'+Math.min(100,pct)+'%"></i></div><div class="row-val">'+v.toFixed(1)+' ч</div></div>'
