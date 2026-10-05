@@ -50,7 +50,7 @@ main{max-width:1180px;margin:auto;padding:28px 18px 48px}.top{display:flex;justi
   </section>
 </main>
 <script>
-const labels={CP:"Программирование",TR:"Степанов",TEAM:"Командка / тур Закл.",DU:"ДЮ",FTECH:"Физтех",RUS:"Русский ЕГЭ",READ:"Чтение",LIT:"Литература",ENG:"Английский",MATH_EGE:"Сложные задачи / ЕГЭ математика"};
+const labels={CP:"Программирование",TR:"Степанов",TEAM:"Командка / тур Закл.",FTECH:"Физтех",RUS:"Русский ЕГЭ",READ:"Чтение",LIT:"Литература",ENG:"Английский",MATH_EGE:"Сложные задачи / ЕГЭ математика",ДЮ:"ДЮ"};
 let activeCategory="ALL";
 const colors=["#7c9cff","#55d6a5","#ffc857","#ff7b8b","#a98bff","#5bd0e6","#f29ac2","#8bd17c","#d8a56d"];
 const fallback={
@@ -68,7 +68,7 @@ async function render(){
 const [schedule,tasks,log,weekly,weeklyPlans]=await Promise.all([get("../archive/28.09/data/schedule.csv","schedule"),get("../archive/28.09/data/tasks.csv","tasks"),get("../archive/28.09/data/log.csv","log"),get("../data/weekly.csv","weekly"),get("../archive/28.09/data/weekly_plans.csv","weeklyPlans")]);
 const planned={}; weeklyPlans.forEach(r=>{const c=r[3];planned[c]=(planned[c]||0)+n(r[7])}); const actual={}; log.forEach(r=>{const c=r[1];actual[c]=(actual[c]||0)+n(r[5])});
 const p=Object.values(planned).reduce((a,b)=>a+b,0), a=Object.values(actual).reduce((a,b)=>a+b,0);
-const progCats=["CP"]; const progPlan=progCats.reduce((s,c)=>s+(planned[c]||0),0); const progActual=progCats.reduce((s,c)=>s+(actual[c]||0),0); document.querySelector("#planned").textContent=p.toFixed(1)+" ч";document.querySelector("#actual").textContent=a.toFixed(1)+" ч";document.querySelector("#progHours").textContent=progActual.toFixed(1)+" / "+progPlan.toFixed(1)+" ч";document.querySelector("#ratio").textContent=p?(100*a/p).toFixed(0)+"%":"—";
+const progCats=["CP","TR","TEAM"]; const progPlan=progCats.reduce((s,c)=>s+(planned[c]||0),0); const progActual=progCats.reduce((s,c)=>s+(actual[c]||0),0); document.querySelector("#planned").textContent=p.toFixed(1)+" ч";document.querySelector("#actual").textContent=a.toFixed(1)+" ч";document.querySelector("#progHours").textContent=progActual.toFixed(1)+" / "+progPlan.toFixed(1)+" ч";document.querySelector("#ratio").textContent=p?(100*a/p).toFixed(0)+"%":"—";
 const done=tasks.filter(r=>["done","completed"].includes((r[5]||"").toLowerCase())).length;document.querySelector("#doneTasks").textContent=done+"/"+tasks.length;
 const statuses=[["Готово",done],["В плане",Math.max(0,tasks.length-done)]];document.querySelector("#statusTotal").textContent=tasks.length;document.querySelector("#statusDonut").style.background=donut(statuses.map(x=>x[1]),tasks.length);document.querySelector("#statusLegend").innerHTML=statuses.map((x,i)=>'<div class="legend-row"><i class="dot" style="background:'+colors[(i+3)%colors.length]+'"></i><span>'+x[0]+' — '+x[1]+'</span></div>').join("");
 const select=document.querySelector("#catFilter");if(!select.dataset.ready){Object.entries(labels).forEach(([k,v])=>{const o=document.createElement("option");o.value=k;o.textContent=v;select.appendChild(o)});select.value=activeCategory;select.addEventListener("change",e=>{activeCategory=e.target.value;render()});select.dataset.ready="1";}
