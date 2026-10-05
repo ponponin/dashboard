@@ -15,15 +15,6 @@ jobs:
         run: |
           set -e
           mkdir -p data
-          curl -fsSL -H "Authorization: Bearer $MAIN_REPO_TOKEN" -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/ponponin/main/contents/dashboard.html?ref=main" -o /tmp/dashboard.json
-          python - <<'PY'
-          import json,base64
-          from pathlib import Path
-          j=json.loads(Path("/tmp/dashboard.json").read_text())
-          s=base64.b64decode(j["content"]).decode()
-          s=s.replace("5 задач на Фенвике; усталость 7/10","5 задач на Фенвике")
-          Path("dashboard.html").write_text(s)
-          PY
           for f in schedule tasks log; do
             curl -fsSL -H "Authorization: Bearer $MAIN_REPO_TOKEN" -H "Accept: application/vnd.github.raw+json" "https://api.github.com/repos/ponponin/main/contents/data/$f.csv?ref=main" -o "/tmp/$f.json"
             python - "$f" <<'PY'
@@ -44,6 +35,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add dashboard.html data/
+          git add data/
           git diff --cached --quiet || git commit -m "Sync planner data from main"
           git push
