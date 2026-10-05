@@ -26,3 +26,4 @@ jobs:
           path: .
       - id: deployment
         uses: actions/deploy-pages@v4
+# Force Pages deployment after dashboard data sync.
