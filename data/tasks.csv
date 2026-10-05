@@ -1,13 +1,13 @@
 id,task,category,deadline,priority,status,planned_hours,actual_hours,type,notes
-W101,ДЮ — 2 часа,MATH,2026-10-11,high,planned,2,0,WEEKLY,понедельник
-W102,Дорешка Степанова — 4 часа,TR,2026-10-11,high,planned,4,0,WEEKLY,2 ч в понедельник + 2 ч во вторник
+W101,ДЮ — 2 часа,DU,2026-10-11,high,planned,2,0,WEEKLY,понедельник
+W102,Дорешка Степанова — 4 часа,CP,2026-10-11,high,planned,4,0,WEEKLY,2 ч в понедельник + 2 ч во вторник
 W103,Степанов — 2 тренировки по 2,5 часа,TR,2026-10-11,high,planned,5,0,WEEKLY,вторник и пятница
-W104,Выучить стихотворение,LIT,2026-10-11,medium,planned,0.5,0,WEEKLY,среда
-W105,ДЮ — 2 часа,MATH,2026-10-11,high,planned,2,0,WEEKLY,среда
-W106,Командка / тур Закл.,TEAM,2026-10-11,high,planned,5,0,WEEKLY,четверг
+W104,Выучить стихотворение,LIT,2026-10-11,medium,planned,1,0,WEEKLY,среда
+W105,ДЮ — 2 часа,DU,2026-10-11,high,planned,2,0,WEEKLY,среда
+W106,Командка / тур Закл.,CP,2026-10-11,high,planned,5,0,WEEKLY,четверг
 W107,ЕГЭ по русскому — задание 8,RUS,2026-10-11,high,planned,1.5,0,WEEKLY,пятница
-W108,Физтех — математика,MATH,2026-10-11,high,planned,5,0,EVENT,11.10 12:00–17:00
-W109,Сложные задачи / ЕГЭ матеша / другое,MIX,2026-10-11,medium,planned,3,0,WEEKLY,воскресенье после Физтеха
+W108,Физтех — математика,FTECH,2026-10-11,high,planned,5,0,EVENT,11.10 12:00–17:00
+W109,Сложные задачи / ЕГЭ матеша / другое,OTHER,2026-10-11,medium,planned,3,0,WEEKLY,воскресенье после Физтеха
 W110,Чтение — 3 часа за неделю,READ,2026-10-11,medium,planned,3,0,WEEKLY,распределить в течение недели
 OL001,ШЭ — Экономика,OLYMPIAD,2026-10-02,high,planned,0,0,EVENT,открытый период ШЭ: 08.09–22.10
 OL003,ШЭ — Математика,OLYMPIAD,2026-10-16,high,planned,0,0,EVENT,открытый период ШЭ: 08.09–22.10
