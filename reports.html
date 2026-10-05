@@ -5,94 +5,96 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Отчётник по неделям</title>
 <style>
-:root{--bg:#090d19;--panel:#11182b;--panel2:#151e34;--text:#f4f7fb;--muted:#9aa8bf;--accent:#7c9cff;--good:#55d6a5;--line:#26324d}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#090d19,#111a2e);color:var(--text);font:14px/1.45 Inter,system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:28px 18px 50px}
-.top{display:flex;justify-content:space-between;gap:18px;align-items:flex-end}.eyebrow{color:var(--accent);font-weight:700;text-transform:uppercase;letter-spacing:.12em;font-size:12px}.title{font-size:34px;font-weight:800;margin:4px 0}.sub,.muted{color:var(--muted)}
-.nav{margin:16px 0}.nav a,.btn,.select{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:10px}.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.select{font:inherit}
-.card{background:rgba(17,24,43,.92);border:1px solid var(--line);border-radius:16px;padding:16px}.chart-card{padding:18px}.chart-head{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.chart-title{font-size:17px;font-weight:750}
-.chart-wrap{height:520px;margin-top:12px;position:relative;overflow:hidden}.chart-wrap svg{width:100%;height:100%}.gridline{stroke:var(--line);stroke-width:1}.axis{fill:var(--muted);font-size:11px}.bar{fill:var(--accent);opacity:.86}.bar.current{fill:var(--good)}.bar:hover{opacity:1}.line{fill:none;stroke:var(--accent);stroke-width:4}.point{fill:var(--panel);stroke:var(--accent);stroke-width:3}.point.current{fill:var(--good);stroke:var(--good)}.week-label{fill:var(--text);font-size:11px}.value-label{fill:var(--text);font-size:11px;font-weight:700}
-.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px}.legend span{color:var(--muted)}.dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--accent);margin-right:6px}.dot.good{background:var(--good)}
-.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}.summary .v{font-size:24px;font-weight:800;margin-top:3px}
-.note{margin-top:12px;padding:10px 12px;background:var(--panel2);border-radius:10px;color:var(--muted)}
-@media(max-width:850px){.summary{grid-template-columns:1fr 1fr}.chart-wrap{height:430px}}@media(max-width:520px){.summary{grid-template-columns:1fr}.title{font-size:28px}.chart-wrap{height:380px}}
+:root{--bg:#090d16;--panel:#111827;--panel2:#172033;--text:#f4f7fb;--muted:#94a3b8;--line:#263247;--accent:#7c9cff;--good:#55d6a5}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at top,#17233b 0,#090d16 52%);color:var(--text);font:14px/1.5 Inter,system-ui,sans-serif}
+main{max-width:1500px;margin:auto;padding:32px 20px 56px}
+.header{display:flex;justify-content:space-between;align-items:end;gap:20px}
+.eyebrow{color:var(--accent);font-weight:800;letter-spacing:.14em;text-transform:uppercase;font-size:11px}
+h1{margin:5px 0;font-size:38px;line-height:1.1}.muted{color:var(--muted)}
+.nav{margin:20px 0}.nav a{display:inline-block;padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:var(--panel);color:var(--text);text-decoration:none}
+.controls{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}
+select{padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit}
+.card{background:rgba(17,24,39,.92);border:1px solid var(--line);border-radius:18px}
+.chart-card{padding:18px 18px 16px}.chart-title{font-size:18px;font-weight:800}.chart-wrap{height:540px;margin-top:12px}
+.chart-wrap svg{width:100%;height:100%;overflow:visible}.gridline{stroke:var(--line);stroke-width:1}.axis{fill:var(--muted);font-size:11px}
+.bar{fill:var(--accent);opacity:.78}.bar.current{fill:var(--good);opacity:1}.bar:hover{opacity:1}
+.line{fill:none;stroke:var(--accent);stroke-width:4}.point{fill:var(--panel);stroke:var(--accent);stroke-width:3}.point.current{fill:var(--good);stroke:var(--good)}
+.week-label,.value-label{fill:var(--text);font-size:12px}.value-label{font-weight:800}.week-hit{cursor:pointer}
+.week-hit:hover .week-label{fill:var(--accent)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;color:var(--muted);margin-top:4px}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:var(--accent);margin-right:5px}.dot.current{background:var(--good)}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}.summary .item{padding:15px 16px}.summary .label{color:var(--muted);font-size:12px}.summary .value{font-size:25px;font-weight:850;margin-top:2px}
+.note{margin-top:12px;padding:11px 13px;background:var(--panel2);border-radius:11px;color:var(--muted)}
+@media(max-width:800px){main{padding:22px 12px}.header{align-items:flex-start;flex-direction:column}.summary{grid-template-columns:1fr 1fr}.chart-wrap{height:440px}}
+@media(max-width:520px){h1{font-size:29px}.summary{grid-template-columns:1fr}.chart-wrap{height:360px}}
 </style>
 </head>
 <body>
 <main>
-<div class="top"><div><div class="eyebrow">личный отчётник</div><div class="title">Отчётник по неделям</div><div class="sub">Один большой интерактивный график по всем неделям.</div></div><div class="muted" id="period"></div></div>
+<div class="header">
+<div><div class="eyebrow">личный отчётник</div><h1>Отчётник по неделям</h1><div class="muted">Все недели на одном графике. Нажатие на неделю открывает её отчёт.</div></div>
+<div class="muted" id="period">Загрузка…</div>
+</div>
 <div class="nav"><a href="./05.10/dashboard.html">→ Актуальная неделя</a></div>
 <div class="controls">
-<select id="metric" class="select">
+<select id="metric">
 <option value="plan">Выполнение плана, %</option>
 <option value="total">Все часы за неделю</option>
 <option value="programming">Программирование, ч</option>
 <option value="subject">Часы по предмету</option>
 </select>
-<select id="subject" class="select" hidden>
-<option value="russian_hours">Русский</option><option value="math_hours">Математика</option><option value="coach_hours">Степанов</option><option value="team_hours">Командка</option><option value="olympiad_math_hours">ДЮ</option><option value="english_hours">Английский</option><option value="literature_hours">Литература</option><option value="reading_hours">Чтение</option>
+<select id="subject" hidden>
+<option value="russian_hours">Русский</option>
+<option value="du_hours">ДЮ</option>
+<option value="stepanov_hours">Степанов</option>
+<option value="team_hours">Командка / тур Закл.</option>
+<option value="ftech_hours">Физтех</option>
+<option value="reading_hours">Чтение</option>
+<option value="literature_hours">Литература</option>
+<option value="english_hours">Английский</option>
+<option value="math_ege_hours">Сложные задачи / ЕГЭ математика</option>
 </select>
-</div>
 <section class="card chart-card">
-<div class="chart-head"><div><div class="chart-title" id="chartTitle">Выполнение плана</div><div class="muted" id="chartSubtitle"></div></div></div>
-<div class="chart-wrap"><svg id="chart" viewBox="0 0 1200 520" preserveAspectRatio="none"></svg></div>
-<div class="legend"><span><i class="dot"></i>прошлые недели</span><span><i class="dot good"></i>актуальная неделя</span><span>Нажми на неделю на графике, чтобы открыть её отчёт.</span></div>
+<div class="chart-title" id="chartTitle"></div>
+<div class="muted" id="chartSubtitle"></div>
+<div class="chart-wrap"><svg id="chart" viewBox="0 0 1200 540" preserveAspectRatio="none"></svg></div>
+<div class="legend"><span><i class="dot"></i>прошлая неделя</span><span><i class="dot current"></i>актуальная неделя</span></div>
 <div class="note" id="note"></div>
 </section>
 <div class="summary" id="summary"></div>
 </main>
 <script>
 "use strict";
-const labels={russian_hours:"Русский",math_hours:"Математика",coach_hours:"Степанов",team_hours:"Командка",olympiad_math_hours:"ДЮ",english_hours:"Английский",literature_hours:"Литература",reading_hours:"Чтение"};
+const labels={russian_hours:"Русский",du_hours:"ДЮ",stepanov_hours:"Степанов",team_hours:"Командка / тур Закл.",ftech_hours:"Физтех",reading_hours:"Чтение",literature_hours:"Литература",english_hours:"Английский",math_ege_hours:"Сложные задачи / ЕГЭ математика"};
 let data=[];
-const metric=document.querySelector("#metric"), subject=document.querySelector("#subject");
-const esc=s=>String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
-async function load(){
- const r=await fetch("data/stats.csv?t="+Date.now(),{cache:"no-store"});
- const txt=await r.text(); const lines=txt.trim().split(/\r?\n/); const h=lines.shift().split(",");
- data=lines.filter(Boolean).map(line=>{const v=line.split(",");const o={};h.forEach((k,i)=>o[k]=v[i]??"");return o});
- render(); document.querySelector("#period").textContent=data.length?"последняя неделя: "+data[data.length-1].week_start+" — "+data[data.length-1].week_end:"";
-}
-function num(x){const n=Number(x);return Number.isFinite(n)?n:0}
-function value(row){
- if(metric.value==="plan")return num(row.plan_percent);
- if(metric.value==="total")return num(row.work_hours);
- if(metric.value==="programming")return num(row.programming_hours);
- return num(row[subject.value]);
-}
-function title(){
- if(metric.value==="plan")return "Выполнение плана";
- if(metric.value==="total")return "Все часы за неделю";
- if(metric.value==="programming")return "Программирование";
- return labels[subject.value];
-}
+const metric=document.querySelector("#metric"),subject=document.querySelector("#subject");
+function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
+function val(r){if(metric.value==="plan")return num(r.plan_percent);if(metric.value==="total")return num(r.work_hours);if(metric.value==="programming")return num(r.programming_hours);return num(r[subject.value])}
+function title(){if(metric.value==="plan")return "Выполнение плана";if(metric.value==="total")return "Все часы за неделю";if(metric.value==="programming")return "Программирование";return labels[subject.value]}
+function parseCSV(s){const rows=[];let row=[],cur="",q=false;for(let i=0;i<s.length;i++){const c=s[i];if(c==='"'){if(q&&s[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===','&&!q){row.push(cur);cur=""}else if((c==='\n'||c==='\r')&&!q){if(c==='\r'&&s[i+1]==='\n')i++;row.push(cur);cur="";if(row.some(x=>x!==""))rows.push(row);row=[]}else cur+=c}row.push(cur);if(row.some(x=>x!==""))rows.push(row);return rows}
+async function load(){const r=await fetch("data/stats.csv?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error();const rows=parseCSV(await r.text());const h=rows.shift();data=rows.map(v=>{const o={};h.forEach((k,i)=>o[k]=v[i]??"");return o});render();document.querySelector("#period").textContent=data.length?"последняя: "+data[data.length-1].week_start+" — "+data[data.length-1].week_end:""}
 function render(){
- subject.hidden=metric.value!=="subject";
- const vals=data.map(value), max=Math.max(1,...vals), W=1200,H=520,L=70,R=35,T=34,B=70;
- const innerW=W-L-R, innerH=H-T-B, step=data.length>1?innerW/(data.length-1):innerW;
- let svg="";
- for(let i=0;i<=5;i++){const y=T+innerH-i*innerH/5;const v=max*i/5;svg+=`<line class="gridline" x1="${L}" y1="${y}" x2="${W-R}" y2="${y}"/><text class="axis" x="${L-10}" y="${y+4}" text-anchor="end">${v%1?v.toFixed(1):v}</text>`;}
- const points=data.map((row,i)=>({x:data.length===1?L+innerW/2:L+i*step,y:T+innerH-(value(row)/max)*innerH,row,i}));
- const path=points.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+" "+p.y.toFixed(1)).join(" ");
- const barW=Math.min(70,Math.max(18,innerW/Math.max(1,data.length*1.7)));
- if(metric.value==="plan"){
-   points.forEach((p,i)=>{const y0=T+innerH;const h=y0-p.y;const x=p.x-barW/2;const cur=i===points.length-1;svg+=`<rect class="bar ${cur?"current":""}" x="${x}" y="${p.y}" width="${barW}" height="${Math.max(1,h)}" rx="8"><title>${p.row.week_start}: ${value(p.row).toFixed(1)}%</title></rect>`;});
- }else{
-   svg+=`<path class="line" d="${path}"/>`;
-   points.forEach((p,i)=>{const cur=i===points.length-1;svg+=`<circle class="point ${cur?"current":""}" cx="${p.x}" cy="${p.y}" r="7"><title>${p.row.week_start}: ${value(p.row).toFixed(1)} ч</title></circle>`;});
- }
- points.forEach((p,i)=>{const cur=i===points.length-1;const x=p.x;svg+=`<a href="./${p.row.week_start.slice(8,10)}.${p.row.week_start.slice(5,7)}/dashboard.html"><g style="cursor:pointer"><text class="value-label" x="${x}" y="${Math.max(16,p.y-13)}" text-anchor="middle">${metric.value==="plan"?value(p.row).toFixed(1)+"%":value(p.row).toFixed(1)+" ч"}</text><text class="week-label" x="${x}" y="${H-38}" text-anchor="middle">${p.row.week_start.slice(8)}.${p.row.week_start.slice(5,7)}</text></g></a>`;});
- document.querySelector("#chart").innerHTML=svg;
- document.querySelector("#chartTitle").textContent=title();
- document.querySelector("#chartSubtitle").textContent="Недели: "+data[0]?.week_start+" — "+data[data.length-1]?.week_end;
- const cur=data[data.length-1], prev=data[data.length-2];
- const summary=[
-  ["План, ч",num(cur?.planned_hours).toFixed(1)],
-  ["Факт, ч",num(cur?.work_hours).toFixed(1)],
-  ["Выполнение",num(cur?.plan_percent).toFixed(1)+"%"],
-  ["Программирование, ч",num(cur?.programming_hours).toFixed(1)]
- ];
- document.querySelector("#summary").innerHTML=summary.map(x=>'<div class="card"><div class="muted">'+esc(x[0])+'</div><div class="v">'+esc(x[1])+'</div></div>').join("");
- document.querySelector("#note").textContent=cur?.notes||"";
+subject.hidden=metric.value!=="subject";
+const vals=data.map(val),max=Math.max(1,...vals),W=1200,H=540,L=76,R=34,T=34,B=74,innerW=W-L-R,innerH=H-T-B;
+const step=data.length>1?innerW/(data.length-1):innerW;
+let svg="";
+for(let i=0;i<=5;i++){const y=T+innerH-i*innerH/5,v=max*i/5;svg+='<line class="gridline" x1="'+L+'" y1="'+y+'" x2="'+(W-R)+'" y2="'+y+'"/><text class="axis" x="'+(L-10)+'" y="'+(y+4)+'" text-anchor="end">'+(v%1?v.toFixed(1):v)+'</text>'}
+const pts=data.map((r,i)=>({r:r,i:i,x:data.length===1?L+innerW/2:L+i*step,y:T+innerH-val(r)/max*innerH}));
+if(metric.value==="plan"){
+const bw=Math.min(82,Math.max(32,innerW/Math.max(1,data.length*1.5)));
+pts.forEach(p=>{const h=T+innerH-p.y;svg+='<rect class="bar '+(p.i===pts.length-1?"current":"")+'" x="'+(p.x-bw/2)+'" y="'+p.y+'" width="'+bw+'" height="'+Math.max(1,h)+'" rx="10"><title>'+p.r.week_start+': '+val(p.r).toFixed(1)+'%</title></rect>'})
+}else{
+const path=pts.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+" "+p.y.toFixed(1)).join(" ");
+svg+='<path class="line" d="'+path+'"/>';
+pts.forEach(p=>svg+='<circle class="point '+(p.i===pts.length-1?"current":"")+'" cx="'+p.x+'" cy="'+p.y+'" r="7"><title>'+p.r.week_start+': '+val(p.r).toFixed(1)+' ч</title></circle>');
+}
+pts.forEach(p=>{const href="./"+p.r.week_start.slice(8,10)+"."+p.r.week_start.slice(5,7)+"/dashboard.html";const text=metric.value==="plan"?val(p.r).toFixed(1)+"%":val(p.r).toFixed(1)+" ч";svg+='<a class="week-hit" href="'+href+'"><text class="value-label" x="'+p.x+'" y="'+Math.max(17,p.y-14)+'" text-anchor="middle">'+text+'</text><text class="week-label" x="'+p.x+'" y="'+(H-38)+'" text-anchor="middle">'+p.r.week_start.slice(8,10)+'.'+p.r.week_start.slice(5,7)+'</text></a>'});
+document.querySelector("#chart").innerHTML=svg;
+document.querySelector("#chartTitle").textContent=title();
+document.querySelector("#chartSubtitle").textContent=data.length?data[0].week_start+" — "+data[data.length-1].week_end:"";
+const cur=data[data.length-1]||{};
+document.querySelector("#summary").innerHTML=[["План, ч",num(cur.planned_hours).toFixed(1)],["Факт, ч",num(cur.work_hours).toFixed(1)],["Выполнение",num(cur.plan_percent).toFixed(1)+"%"],["Программирование, ч",num(cur.programming_hours).toFixed(1)]].map(x=>'<div class="card item"><div class="label">'+x[0]+'</div><div class="value">'+x[1]+'</div></div>').join("");
+document.querySelector("#note").textContent=cur.notes||"";
 }
 metric.addEventListener("change",render);subject.addEventListener("change",render);load().catch(()=>document.querySelector("#note").textContent="Не удалось загрузить данные.");
 </script>
