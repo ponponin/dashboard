@@ -1,17 +1,385 @@
 <!doctype html>
-<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Задачи</title>
-<style>
-body{font-family:system-ui,sans-serif;margin:0;background:linear-gradient(145deg,#f5f7fb,#eef2f7);color:#18202a}
-main{max-width:1100px;margin:0 auto;padding:32px 18px 48px}.top{display:flex;justify-content:space-between;gap:20px;align-items:flex-end}.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:#5267d9}.dashboard-link{background:#18202a;color:white;text-decoration:none;padding:10px 14px;border-radius:10px;font-weight:650}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:22px 0}.stat{background:white;border:1px solid #e4e7ec;border-radius:14px;padding:16px}.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:#667085}
-h1{margin-bottom:6px}.muted{color:#667085}.bar{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0}button{border:1px solid #d0d5dd;background:white;border-radius:9px;padding:8px 12px;cursor:pointer}button.active{background:#18202a;color:white}.grid{display:grid;gap:12px}
-.card{background:white;border:1px solid #e4e7ec;border-radius:14px;padding:16px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px;align-items:center;box-shadow:0 2px 7px rgba(16,24,40,.04)}.title-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.task-title{font-weight:700}.badge{font-size:12px;padding:4px 9px;border-radius:999px;background:#eef2f6;display:inline-block}.high{background:#ffe4e4}.medium{background:#fff0c7}.low{background:#e5f4e8}.meta{font-size:13px;color:#667085;margin-top:5px}.notes{font-size:12px;color:#667085;margin-top:8px}.hours{font-weight:700;white-space:nowrap}.hours small{display:block;color:#667085;font-weight:500;font-size:11px;text-align:right}@media(max-width:600px){.top{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr}.card{grid-template-columns:1fr}.hours small{text-align:left}}
-</style></head><body><main>
-<div class="top"><div><div class="eyebrow">ПЛАНИРОВЩИК</div><h1>Задачи</h1><div class="muted">Приоритеты, сроки, прогресс и часы</div></div><a class="dashboard-link" href="dashboard.html">Открыть главный дашборд →</a></div>
-<div class="stats" id="stats"></div><div class="bar" id="filters"></div><div class="grid" id="list">Загрузка…</div>
-</main><script>
-let tasks=[],filter='all';
-function parseCSV(s){const rows=[];let row=[],cell='',q=false;for(let i=0;i<s.length;i++){let c=s[i];if(c=='"'){if(q&&s[i+1]=='"'){cell+='"';i++}else q=!q}else if(c==','&&!q){row.push(cell);cell=''}else if((c=='\n'||c=='\r')&&!q){if(c=='\r'&&s[i+1]=='\n')i++;row.push(cell);cell='';if(row.some(x=>x))rows.push(row);row=[]}else cell+=c}const h=rows.shift();return rows.map(r=>Object.fromEntries(h.map((k,i)=>[k,r[i]||''])));}
-function render(){const done=tasks.filter(t=>['done','completed'].includes((t.status||'').toLowerCase())).length;document.getElementById('stats').innerHTML='<div class="stat"><span>Всего задач</span><b>'+tasks.length+'</b></div><div class="stat"><span>Высокий приоритет</span><b>'+tasks.filter(t=>t.priority==='high').length+'</b></div><div class="stat"><span>Готово</span><b>'+done+'</b></div>';let a=tasks.filter(t=>filter==='all'||t.priority===filter);a.sort((x,y)=>({high:0,medium:1,low:2}[x.priority]-({high:0,medium:1,low:2}[y.priority])||((x.deadline||'9999').localeCompare(y.deadline||'9999')));document.getElementById('list').innerHTML=a.map(t=>'<div class="card"><div><div class="title-row"><span class="task-title">'+t.task+'</span><span class="badge '+t.priority+'">'+t.priority+'</span></div><div class="meta">'+t.status+(t.deadline?' · срок: '+t.deadline:' · без дедлайна')+'</div><div class="notes">'+(t.notes||'')+'</div></div><div class="hours">'+t.actual_hours+'/'+(t.planned_hours||0)+' ч<small>факт / план</small></div></div>').join('')||'Нет задач';}
-['all','high','medium','low'].forEach(x=>{let b=document.createElement('button');b.textContent=x==='all'?'Все':x==='high'?'Высокий':x==='medium'?'Средний':'Низкий';if(x==='all')b.className='active';b.onclick=()=>{filter=x;document.querySelectorAll('button').forEach(z=>z.classList.remove('active'));b.classList.add('active');render()};document.getElementById('filters').append(b)});fetch('data/tasks.csv').then(r=>r.text()).then(s=>{tasks=parseCSV(s);render()}).catch(()=>document.getElementById('list').textContent='Не удалось загрузить задачи');
-</script></body></html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Задачи</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --panel: #ffffff;
+      --panel-soft: #f0f4fa;
+      --line: #dfe6f1;
+      --text: #18202a;
+      --muted: #667085;
+      --accent: #4f7cff;
+      --accent-soft: rgba(79, 124, 255, 0.12);
+      --done: #1fa36d;
+      --warn: #d48a00;
+      --danger: #d84a63;
+      --shadow: 0 8px 24px rgba(16,24,40,0.06);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: linear-gradient(145deg, #f5f7fb, #eef2f7);
+      color: var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+    }
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 32px 18px 48px;
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .eyebrow {
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+    h1 {
+      margin: 6px 0 4px;
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.04em;
+    }
+    .muted { color: var(--muted); }
+    .nav {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    .nav a, .filter-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 10px;
+      padding: 8px 12px;
+      text-decoration: none;
+      cursor: pointer;
+      font: inherit;
+    }
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 14px;
+      margin: 18px 0 16px;
+    }
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+    .stat-label {
+      color: var(--muted);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .stat-value {
+      margin-top: 8px;
+      font-size: clamp(1.2rem, 2vw, 2rem);
+      font-weight: 800;
+    }
+    .bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin: 22px 0 18px;
+    }
+    .filter-btn.active {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 700;
+    }
+    .grid { display: grid; gap: 12px; }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+    .task-main { min-width: 0; }
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
+    }
+    .task-title {
+      font-weight: 700;
+      font-size: 1.08rem;
+      letter-spacing: -0.02em;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      padding: 5px 9px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+    }
+    .chip.done { background: rgba(31,163,109,.12); color: var(--done); border-color: rgba(31,163,109,.2); }
+    .chip.planned { background: rgba(212,138,0,.12); color: var(--warn); border-color: rgba(212,138,0,.2); }
+    .chip.high { background: rgba(216,74,99,.12); color: var(--danger); border-color: rgba(216,74,99,.2); }
+    .chip.medium { background: rgba(79,124,255,.12); color: var(--accent); border-color: rgba(79,124,255,.2); }
+    .chip.low { background: rgba(75,85,99,.12); color: #4b5563; border-color: rgba(75,85,99,.2); }
+    .task-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .task-side {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 8px;
+      min-width: 110px;
+      text-align: right;
+    }
+    .hours { font-weight: 800; font-size: 1.1rem; }
+    .empty {
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+    }
+    @media (max-width: 700px) {
+      .card { grid-template-columns: 1fr; }
+      .task-side { align-items: flex-start; text-align: left; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="top">
+      <div>
+        <div class="eyebrow">Планировщик</div>
+        <h1>Задачи</h1>
+        <div class="muted">Приоритеты, сроки, прогресс и часы</div>
+      </div>
+      <div class="nav">
+        <a href="./dashboard.html">Главная</a>
+        <a href="./reports.html">Отчётник</a>
+      </div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+    <div class="bar" id="filters"></div>
+    <div class="grid" id="list">Загрузка…</div>
+  </main>
+
+  <script>
+    let tasks = [];
+    let filter = 'all';
+
+    function parseCSV(text) {
+      const rows = [];
+      let row = [];
+      let cell = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (ch === '"') {
+          if (inQuotes && text[i + 1] === '"') {
+            cell += '"';
+            i++;
+          } else {
+            inQuotes = !inQuotes;
+          }
+        } else if (ch === ',' && !inQuotes) {
+          row.push(cell);
+          cell = '';
+        } else if ((ch === '\n' || ch === '\r') && !inQuotes) {
+          if (ch === '\r' && text[i + 1] === '\n') i++;
+          if (row.length || cell.length || i !== text.length - 1) {
+            row.push(cell);
+            rows.push(row);
+            row = [];
+            cell = '';
+          }
+        } else {
+          cell += ch;
+        }
+      }
+
+      if (row.length || cell.length) {
+        row.push(cell);
+        rows.push(row);
+      }
+
+      if (!rows.length) return [];
+      const [header, ...values] = rows;
+      return values.filter((line) => line.some((value) => String(value).trim() !== '')).map((line) => {
+        const obj = {};
+        header.forEach((key, index) => {
+          obj[key.trim()] = (line[index] ?? '').trim();
+        });
+        return obj;
+      });
+    }
+
+    function toNumber(value) {
+      const n = Number(value);
+      return Number.isFinite(n) ? n : 0;
+    }
+
+    function priorityOrder(priority) {
+      const map = { very_high: 5, high: 4, medium: 3, low: 2, none: 1 };
+      return map[String(priority || '').toLowerCase()] || 1;
+    }
+
+    function statusLabel(status) {
+      const s = String(status || '').toLowerCase();
+      if (['done', 'completed', 'finished'].includes(s)) return 'done';
+      return 'planned';
+    }
+
+    function moodText(priority) {
+      const p = String(priority || '').toLowerCase();
+      if (p === 'very_high') return 'Очень высокий';
+      if (p === 'high') return 'Высокий';
+      if (p === 'medium') return 'Средний';
+      if (p === 'low') return 'Низкий';
+      return 'Обычный';
+    }
+
+    function statusText(status) {
+      return statusLabel(status) === 'done' ? 'Готово' : 'В плане';
+    }
+
+    function renderStats() {
+      const total = tasks.length;
+      const done = tasks.filter((task) => statusLabel(task.status) === 'done').length;
+      const inProgress = tasks.filter((task) => statusLabel(task.status) !== 'done').length;
+      const percent = total ? Math.round((done / total) * 100) : 0;
+
+      document.getElementById('stats').innerHTML = `
+        <div class="stat"><div class="stat-label">Всего задач</div><div class="stat-value">${total}</div></div>
+        <div class="stat"><div class="stat-label">Выполнено</div><div class="stat-value">${done}</div></div>
+        <div class="stat"><div class="stat-label">В работе</div><div class="stat-value">${inProgress}</div></div>
+        <div class="stat"><div class="stat-label">Готовность</div><div class="stat-value">${percent}%</div></div>
+      `;
+    }
+
+    function renderFilters() {
+      const filters = ['all', 'high', 'medium', 'low', 'very_high'];
+      const container = document.getElementById('filters');
+      container.innerHTML = filters.map((value) => {
+        const label = value === 'all' ? 'Все' : moodText(value);
+        return `<button class="filter-btn ${filter === value ? 'active' : ''}" data-filter="${value}">${label}</button>`;
+      }).join('');
+
+      document.querySelectorAll('.filter-btn').forEach((button) => {
+        button.onclick = () => {
+          filter = button.dataset.filter;
+          renderFilters();
+          renderList();
+        };
+      });
+    }
+
+    function getFilteredTasks() {
+      return tasks.filter((task) => {
+        if (filter === 'all') return true;
+        return String(task.priority || '').toLowerCase() === filter;
+      }).sort((a, b) => {
+        const aDone = statusLabel(a.status) === 'done' ? 1 : 0;
+        const bDone = statusLabel(b.status) === 'done' ? 1 : 0;
+        if (aDone !== bDone) return aDone - bDone;
+        if (priorityOrder(b.priority) !== priorityOrder(a.priority)) {
+          return priorityOrder(b.priority) - priorityOrder(a.priority);
+        }
+        return String(a.deadline || '').localeCompare(String(b.deadline || ''));
+      });
+    }
+
+    function renderList() {
+      const list = document.getElementById('list');
+      const visible = getFilteredTasks();
+
+      if (!visible.length) {
+        list.innerHTML = '<div class="empty">Нет задач для текущего фильтра.</div>';
+        return;
+      }
+
+      list.innerHTML = visible.map((task) => {
+        const status = statusLabel(task.status);
+        const priority = String(task.priority || '').toLowerCase();
+        const category = task.category || '—';
+        const deadline = task.deadline || '—';
+        const planned = toNumber(task.planned_hours);
+        const actual = toNumber(task.actual_hours);
+
+        return `
+          <div class="card">
+            <div class="task-main">
+              <div class="task-header">
+                <div class="task-title">${task.task || 'Без названия'}</div>
+                <span class="chip ${status === 'done' ? 'done' : 'planned'}">${statusText(task.status)}</span>
+              </div>
+              <div class="task-meta">
+                <span>Категория: ${category}</span>
+                <span>Дедлайн: ${deadline}</span>
+                <span>Приоритет: ${moodText(task.priority)}</span>
+              </div>
+            </div>
+            <div class="task-side">
+              <span class="chip ${priority === 'very_high' ? 'high' : priority === 'high' ? 'high' : priority === 'medium' ? 'medium' : 'low'}">${moodText(task.priority)}</span>
+              <div class="hours">${actual.toFixed(1)} / ${planned.toFixed(1)} ч</div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    async function loadTasks() {
+      try {
+        const response = await fetch('./data/tasks.csv?t=' + Date.now(), { cache: 'no-store' });
+        if (!response.ok) throw new Error('fetch failed');
+        tasks = parseCSV(await response.text());
+      } catch (error) {
+        tasks = [
+          { task: 'Задача — пример', category: 'Пример', deadline: '2026-10-11', priority: 'high', status: 'planned', planned_hours: '1', actual_hours: '0' },
+          { task: 'Задача — готово', category: 'Пример', deadline: '2026-10-10', priority: 'medium', status: 'done', planned_hours: '2', actual_hours: '2' }
+        ];
+      }
+
+      renderStats();
+      renderFilters();
+      renderList();
+    }
+
+    loadTasks();
+  </script>
+</body>
+</html>

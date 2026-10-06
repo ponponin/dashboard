@@ -1,223 +1,474 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Интерактив</title>
-<style>
-:root{--bg:#090d19;--panel:#11182b;--panel2:#151e34;--text:#f4f7fb;--muted:#9aa8bf;--accent:#7c9cff;--good:#55d6a5;--warn:#ffc857;--danger:#ff7b8b;--line:#26324d}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 5%,#172442 0,#090d19 55%);color:var(--text);font:15px/1.45 Inter,system-ui,sans-serif}
-main{max-width:1100px;margin:auto;padding:26px 18px 50px}.top{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}
-a,.btn,button{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--panel);padding:9px 12px;border-radius:10px;font:inherit}
-button{cursor:pointer}.btn:hover,button:hover{border-color:var(--accent)}button:disabled{opacity:.5;cursor:not-allowed}
-h1{font-size:34px;margin:20px 0 4px}.muted{color:var(--muted)}
-.tabs{display:flex;gap:8px;margin:18px 0}.tab.active{border-color:var(--accent);background:#1b2745}
-.panel{background:rgba(17,24,43,.94);border:1px solid var(--line);border-radius:18px;padding:20px}
-.hidden{display:none}
-.slot-layout{display:grid;grid-template-columns:1fr 280px;gap:18px}.slot-machine{display:grid;gap:18px;place-items:center}
-.reels{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(560px,100%)}
-.reel{height:155px;display:grid;place-items:center;border-radius:16px;background:linear-gradient(#202a42,#11182b);border:3px solid #2a3858;box-shadow:inset 0 0 25px #080b13;font-size:70px;overflow:hidden}
-.reel.spin{animation:shake .12s linear infinite alternate}
-@keyframes shake{to{transform:translateY(4px)}}
-.slot-result{font-size:24px;font-weight:800;min-height:36px;text-align:center}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.credit-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:12px}.credit-row input{width:100%;min-width:0;color:var(--text);background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit}.stat{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px}.stat b{display:block;font-size:25px;margin-top:3px}
-.note{font-size:12px;padding:11px 12px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);margin-top:12px}
-.history{display:grid;gap:8px;max-height:260px;overflow:auto;margin-top:12px}.history-item{display:flex;justify-content:space-between;gap:10px;padding:9px;border:1px solid var(--line);border-radius:10px;background:var(--panel2)}
-.wheel-layout{display:grid;grid-template-columns:minmax(320px,1fr) 280px;gap:18px}.wheel-wrap{display:grid;place-items:center}.wheel-box{width:min(520px,88vw);aspect-ratio:1;position:relative}.wheel{width:100%;height:100%;border-radius:50%;border:8px solid #202a42;box-shadow:0 0 40px rgba(124,156,255,.18);transition:transform 4.4s cubic-bezier(.12,.7,.12,1)}
-.pointer{position:absolute;z-index:3;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:18px solid transparent;border-right:18px solid transparent;border-top:32px solid var(--good)}
-.center{position:absolute;inset:50% auto auto 50%;transform:translate(-50%,-50%);z-index:2;width:78px;height:78px;border-radius:50%;background:var(--panel);border:6px solid #202a42;display:grid;place-items:center;font-weight:800;font-size:12px}
-.choice{font-size:24px;font-weight:800;min-height:40px;text-align:center;margin-top:14px}.kind{font-size:12px;color:var(--muted);text-transform:uppercase;text-align:center;letter-spacing:.12em}
-.legend2{display:grid;gap:8px;margin-top:14px}.legend2 div{padding:9px 10px;border-radius:10px;background:var(--panel2);border:1px solid var(--line)}
-@media(max-width:800px){.slot-layout,.wheel-layout{grid-template-columns:1fr}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Интерактив</title>
+  <style>
+    :root {
+      --bg: #090d19;
+      --panel: #11182b;
+      --panel-2: #151e34;
+      --text: #f4f7fb;
+      --muted: #9aa8bf;
+      --accent: #7c9cff;
+      --good: #55d6a5;
+      --warn: #ffc857;
+      --danger: #ff7b8b;
+      --line: #26324d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 5%, #172442 0%, #090d19 55%);
+      color: var(--text);
+      font: 15px/1.45 Inter, system-ui, sans-serif;
+    }
+    main {
+      max-width: 1100px;
+      margin: auto;
+      padding: 26px 18px 50px;
+    }
+    .top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+    a, .btn, button {
+      color: var(--text);
+      text-decoration: none;
+      border: 1px solid var(--line);
+      background: var(--panel);
+      padding: 9px 12px;
+      border-radius: 10px;
+      font: inherit;
+    }
+    button { cursor: pointer; }
+    .btn:hover, button:hover { border-color: var(--accent); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    h1 { font-size: 34px; margin: 20px 0 4px; }
+    .muted { color: var(--muted); }
+    .tabs {
+      display: flex;
+      gap: 8px;
+      margin: 18px 0;
+      flex-wrap: wrap;
+    }
+    .tab.active { border-color: var(--accent); background: #1b2745; }
+    .panel {
+      background: rgba(17,24,43,.94);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 20px;
+    }
+    .hidden { display: none; }
+    .slot-layout { display: grid; grid-template-columns: 1fr 280px; gap: 18px; }
+    .slot-machine { display: grid; gap: 18px; place-items: center; }
+    .reels {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: min(560px, 100%);
+    }
+    .reel {
+      height: 155px;
+      display: grid;
+      place-items: center;
+      border-radius: 16px;
+      background: linear-gradient(#202a42, #11182b);
+      border: 3px solid #2a3858;
+      box-shadow: inset 0 0 25px #080b13;
+      font-size: 70px;
+      overflow: hidden;
+      user-select: none;
+    }
+    .reel.spin { animation: shake .12s linear infinite alternate; }
+    @keyframes shake { to { transform: translateY(4px); } }
+    .slot-result {
+      font-size: 24px;
+      font-weight: 800;
+      min-height: 36px;
+      text-align: center;
+    }
+    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .credit-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .credit-row input {
+      width: 100%;
+      min-width: 0;
+      color: var(--text);
+      background: #0b1221;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+    }
+    .note {
+      font-size: 12px;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      margin-top: 12px;
+      color: var(--muted);
+    }
+    .history {
+      display: grid;
+      gap: 8px;
+      max-height: 260px;
+      overflow: auto;
+      margin-top: 12px;
+    }
+    .history-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: rgba(17,24,43,.8);
+      font-size: 12px;
+    }
+    .wheel-layout { display: grid; grid-template-columns: minmax(320px,1fr) 280px; gap: 18px; }
+    .wheel-wrap { display: grid; place-items: center; }
+    .wheel-box {
+      width: min(520px, 88vw);
+      aspect-ratio: 1;
+      position: relative;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 12px solid rgba(255,255,255,0.04);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+    }
+    .wheel {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      transition: transform 4.2s cubic-bezier(.14,.85,.22,.97);
+    }
+    .pointer {
+      position: absolute;
+      z-index: 3;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-top: 32px solid #f5f7fb;
+      filter: drop-shadow(0 8px 12px rgba(0,0,0,.35));
+    }
+    .center {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      width: 78px;
+      height: 78px;
+      border-radius: 50%;
+      background: var(--panel);
+      border: 6px solid #202a42;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+    .choice {
+      font-size: 24px;
+      font-weight: 800;
+      min-height: 40px;
+      text-align: center;
+      margin-top: 14px;
+    }
+    .kind {
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      text-align: center;
+      letter-spacing: 0.12em;
+    }
+    .legend2 { display: grid; gap: 8px; margin-top: 14px; }
+    .legend2 div {
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+    }
+    @media (max-width: 800px) {
+      .slot-layout, .wheel-layout { grid-template-columns: 1fr; }
+    }
+  </style>
 </head>
 <body>
-<main>
-<div class="top">
-  <a href="./28.09/dashboard.html">← Актуальная неделя</a>
-  <a href="./reports.html">← Отчётник</a>
-</div>
-
-<h1>🎰 Интерактив</h1>
-<div class="muted">Два игровых режима. Игровые очки существуют только на этой странице и не меняют отчёт.</div>
-
-<div class="tabs">
-  <button class="tab active" data-tab="slot">🎰 Слот</button>
-  <button class="tab" data-tab="wheel">🎡 Колесо</button>
-</div>
-
-<section id="slotTab" class="panel">
-  <div class="slot-layout">
-    <div class="slot-machine">
-      <div class="reels">
-        <div class="reel" id="r0">7️⃣</div><div class="reel" id="r1">🍒</div><div class="reel" id="r2">🍌</div>
-      </div>
-      <button id="spinSlot" class="btn">Крутить слот</button>
-      <div class="slot-result" id="slotResult"></div>
+  <main>
+    <div class="top">
+      <a href="./reports.html">← Отчётник</a>
+      <a href="./dashboard.html">← Главная</a>
     </div>
-    <aside>
-      <div class="stat-grid">
-        <div class="stat"><div class="muted">Игровой баланс</div><b id="points">0</b><div class="muted">очков</div></div>
-        <div class="stat"><div class="muted">Решено часов</div><b id="hoursEntered">0</b><div class="muted">начислено</div></div>
-      </div>
-      <div class="credit-row">
-        <input id="hoursInput" type="number" min="0" step="0.1" placeholder="Сколько часов решал?">
-        <button id="creditHours">+ начислить</button>
-      </div>
-      <div class="note">1 час = 200 игровых очков. Баланс хранится только в браузере на этой странице и не влияет на отчётник.</div>
-      <div class="history" id="slotHistory"></div>
-    </aside>
-  </div>
-</section>
 
-<section id="wheelTab" class="panel hidden">
-  <div class="wheel-layout">
-    <div>
-      <div class="wheel-wrap">
-        <div class="wheel-box">
-          <div class="pointer"></div>
-          <div class="wheel" id="rewardWheel"></div>
-          <div class="center">GO</div>
+    <h1>🎰 Интерактив</h1>
+    <div class="muted">Два игровых режима. Игровые очки хранятся только в браузере на этой странице и не влияют на отчёт.</div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="slot">🎰 Слот</button>
+      <button class="tab" data-tab="wheel">🎡 Колесо</button>
+    </div>
+
+    <section id="slotTab" class="panel">
+      <div class="slot-layout">
+        <div class="slot-machine">
+          <div class="reels">
+            <div class="reel" id="r0">7️⃣</div>
+            <div class="reel" id="r1">🍒</div>
+            <div class="reel" id="r2">🍌</div>
+          </div>
+          <button id="spinSlot" class="btn">Крутить слот</button>
+          <div class="slot-result" id="slotResult"></div>
         </div>
+        <aside>
+          <div class="stat-grid">
+            <div class="stat">
+              <div class="muted">Игровой баланс</div>
+              <b id="points">0</b>
+              <div class="muted">очков</div>
+            </div>
+            <div class="stat">
+              <div class="muted">Решено часов</div>
+              <b id="hoursEntered">0</b>
+              <div class="muted">начислено</div>
+            </div>
+          </div>
+
+          <div class="credit-row">
+            <input id="hoursInput" type="number" min="0" step="0.1" placeholder="Сколько часов решал?">
+            <button id="creditHours">+ начислить</button>
+          </div>
+
+          <div class="note">1 час = 200 игровых очков. Баланс хранится только в браузере на этой странице и не влияет на отчёт.</div>
+          <div class="history" id="slotHistory"></div>
+        </aside>
       </div>
-      <button id="spinWheel" class="btn" style="display:block;margin:16px auto 0">Крутить колесо</button>
-      <div class="kind" id="wheelKind"></div>
-      <div class="choice" id="wheelResult"></div>
-    </div>
-    <aside>
-      <div class="note">Шансы 50/50: половина секторов — поощрения, половина — небольшие бытовые задания. Физические упражнения в качестве наказаний не используются.</div>
-      <div class="legend2">
-        <div>🎬 Серия сериала — до 30 мин</div>
-        <div>🎥 Фильм — 30 мин</div>
-        <div>📱 TikTok — 15 мин</div>
-        <div>🎮 Свободная игра — 20 мин</div>
-        <div>🧹 Уборка рабочего места — 15 мин</div>
-        <div>📚 Чтение — 20 мин</div>
-        <div>🗂️ Разбор файлов — 15 мин</div>
-        <div>📵 20 мин без соцсетей + одна мелкая задача</div>
+    </section>
+
+    <section id="wheelTab" class="panel hidden">
+      <div class="wheel-layout">
+        <div>
+          <div class="wheel-wrap">
+            <div class="wheel-box">
+              <div class="pointer"></div>
+              <div class="wheel" id="rewardWheel"></div>
+              <div class="center">GO</div>
+            </div>
+          </div>
+          <button id="spinWheel" class="btn" style="display:block;margin:16px auto 0;">Крутить колесо</button>
+          <div class="kind" id="wheelKind"></div>
+          <div class="choice" id="wheelResult"></div>
+        </div>
+
+        <aside>
+          <div class="note">Шансы 50/50: половина секторов — поощрения, половина — небольшие бытовые задания. Физические упражнения и отдых считаются бонусом, не обязательством.</div>
+          <div class="legend2">
+            <div>🎬 Серия сериала — до 30 мин</div>
+            <div>🎥 Фильм — 30 мин</div>
+            <div>📱 TikTok — 15 мин</div>
+            <div>🎮 Свободная игра — 20 мин</div>
+            <div>🧹 Уборка рабочего места — 15 мин</div>
+            <div>📚 Чтение — 20 мин</div>
+            <div>🗂️ Разбор файлов — 15 мин</div>
+            <div>📵 20 мин без соцсетей + одна мелкая задача</div>
+          </div>
+        </aside>
       </div>
-    </aside>
-  </div>
-</section>
-</main>
+    </section>
+  </main>
 
-<script>
-const $=id=>document.getElementById(id);
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const STORAGE_KEYS = {
+      points: 'dashboard_game_points',
+      hours: 'dashboard_game_hours',
+      history: 'dashboard_game_history'
+    };
 
-document.querySelectorAll(".tab").forEach(btn=>btn.onclick=()=>{
-  document.querySelectorAll(".tab").forEach(x=>x.classList.remove("active"));
-  btn.classList.add("active");
-  $("slotTab").classList.toggle("hidden",btn.dataset.tab!=="slot");
-  $("wheelTab").classList.toggle("hidden",btn.dataset.tab!=="wheel");
-});
-
-async function readCSV(path){
-  const r=await fetch(path+"?t="+Date.now(),{cache:"no-store"});
-  if(!r.ok)throw Error();
-  const lines=(await r.text()).trim().split(/\r?\n/);
-  const parse=line=>{const o=[];let c="",q=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(q&&line[i+1]==='"'){c+='"';i++}else q=!q}else if(ch===","&&!q){o.push(c);c=""}else c+=ch}o.push(c);return o};
-  const h=parse(lines.shift());return lines.filter(Boolean).map(line=>{const v=parse(line),o={};h.forEach((k,i)=>o[k]=v[i]??"");return o});
-}
-
-let points=Number(localStorage.getItem("dashboard_game_points")||0);
-let hoursEntered=Number(localStorage.getItem("dashboard_game_hours")||0);
-function renderBalance(){
-  $("points").textContent=points.toLocaleString("ru-RU");
-  $("hoursEntered").textContent=hoursEntered.toFixed(1);
-}
-$("creditHours").onclick=()=>{
-  const h=parseFloat($("hoursInput").value);
-  if(!Number.isFinite(h)||h<=0)return;
-  points+=Math.round(h*200);
-  hoursEntered+=h;
-  localStorage.setItem("dashboard_game_points",String(points));
-  localStorage.setItem("dashboard_game_hours",String(hoursEntered));
-  $("hoursInput").value="";
-  renderBalance();
-};
-renderBalance();
-
-const symbols=["7️⃣","🍒","🍋","🍉","🍌","⭐"];
-
-function spinSlot(){
-  if(points<200){
-    $("slotResult").textContent="Нужно минимум 200 очков.";
-    return;
-  }
-  points-=200;
-  localStorage.setItem("dashboard_game_points",String(points));
-  renderBalance();
-  ["r0","r1","r2"].forEach(id=>$(id).classList.add("spin"));
-  let ticks=0;
-  const timer=setInterval(()=>{
-    ["r0","r1","r2"].forEach(id=>{
-      $(id).textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    document.querySelectorAll('.tab').forEach((btn) => {
+      btn.onclick = () => {
+        document.querySelectorAll('.tab').forEach((x) => x.classList.remove('active'));
+        btn.classList.add('active');
+        $('slotTab').classList.toggle('hidden', btn.dataset.tab !== 'slot');
+        $('wheelTab').classList.toggle('hidden', btn.dataset.tab !== 'wheel');
+      };
     });
-    if(++ticks>=24){
-      clearInterval(timer);
-      ["r0","r1","r2"].forEach(id=>$(id).classList.remove("spin"));
-      const a=symbols[Math.floor(Math.random()*symbols.length)];
-      const b=symbols[Math.floor(Math.random()*symbols.length)];
-      const c=symbols[Math.floor(Math.random()*symbols.length)];
-      $("r0").textContent=a;
-      $("r1").textContent=b;
-      $("r2").textContent=c;
 
-      let prize=0;
-      let text="Проигрыш — −200 очков.";
-      if(a===b&&b===c&&a==="7️⃣"){
-        prize=600;
-        text="777 — +600 очков!";
-      }else if(a===b&&b===c&&a==="⭐"){
-        prize=400;
-        text="Три звезды — +400 очков!";
-      }else if(a===b&&b===c){
-        prize=300;
-        text="Три одинаковых — +300 очков!";
-      }else if(a===b||a===c||b===c){
-        prize=100;
-        text="Две одинаковых — +100 очков!";
+    let points = Number(localStorage.getItem(STORAGE_KEYS.points) || 0);
+    let hoursEntered = Number(localStorage.getItem(STORAGE_KEYS.hours) || 0);
+    let slotHistory = [];
+
+    function safeParseHistory() {
+      try {
+        const raw = JSON.parse(localStorage.getItem(STORAGE_KEYS.history) || '[]');
+        return Array.isArray(raw) ? raw : [];
+      } catch {
+        return [];
       }
-      points+=prize;
-      localStorage.setItem("dashboard_game_points",String(points));
-      renderBalance();
-      $("slotResult").textContent=text;
-      addSlotHistory(text);
     }
-  },95);
-}
-$("spinSlot").onclick=spinSlot;
 
-function addSlotHistory(text){
-  const h=$("slotHistory"),e=document.createElement("div");e.className="history-item";e.innerHTML="<span>"+text+"</span><span class='muted'>"+new Date().toLocaleTimeString("ru-RU",{hour:"2-digit",minute:"2-digit"})+"</span>";h.prepend(e);while(h.children.length>8)h.lastChild.remove();
-}
-$("spinSlot").onclick=spinSlot;
+    function renderBalance() {
+      $('points').textContent = points.toLocaleString('ru-RU');
+      $('hoursEntered').textContent = hoursEntered.toFixed(1);
+    }
 
-const wheelItems=[
-  {kind:"reward",text:"🎬 1 серия сериала — до 30 минут"},
-  {kind:"reward",text:"🎥 30 минут фильма"},
-  {kind:"reward",text:"📱 15 минут TikTok"},
-  {kind:"reward",text:"🎮 20 минут свободной игры"},
-  {kind:"task",text:"🧹 15 минут уборки рабочего места"},
-  {kind:"task",text:"📚 20 минут чтения"},
-  {kind:"task",text:"🗂️ 15 минут разбора файлов / рабочего стола"},
-  {kind:"task",text:"📵 20 минут без соцсетей + одна мелкая задача"}
-];
-const wheelColors=["#7c9cff","#55d6a5","#5bd0e6","#a98bff","#ffc857","#ff7b8b","#d8a56d","#f29ac2"];
-$("rewardWheel").style.background="conic-gradient("+wheelItems.map((_,i)=>wheelColors[i]+" "+(i*100/wheelItems.length)+"% "+((i+1)*100/wheelItems.length)+"%").join(",")+")";
-let wheelRotation=0,wheelBusy=false;
-$("spinWheel").onclick=()=>{
-  if(wheelBusy)return;
-  wheelBusy=true;$("wheelResult").textContent="";$("wheelKind").textContent="";
-  const idx=Math.floor(Math.random()*wheelItems.length);
-  const target=360*(5+Math.floor(Math.random()*3))+(360-((idx+.5)*360/wheelItems.length));
-  wheelRotation+=target;$("rewardWheel").style.transform="rotate("+wheelRotation+"deg)";
-  setTimeout(()=>{
-    const x=wheelItems[idx];$("wheelKind").textContent=x.kind==="reward"?"ПОЩРЕНИЕ":"ЗАДАНИЕ";$("wheelResult").textContent=x.text;
-    wheelBusy=false;
-  },4500);
-};
-initBank();
-</script>
+    function renderHistory() {
+      const list = $('slotHistory');
+      list.innerHTML = '';
+      slotHistory.slice(0, 10).forEach((entry) => {
+        const item = document.createElement('div');
+        item.className = 'history-item';
+        item.innerHTML = `<span>${entry.text}</span><span class="muted">${entry.time}</span>`;
+        list.appendChild(item);
+      });
+    }
+
+    function addSlotHistory(text) {
+      const entry = { text, time: new Date().toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }) };
+      slotHistory.unshift(entry);
+      slotHistory = slotHistory.slice(0, 10);
+      localStorage.setItem(STORAGE_KEYS.history, JSON.stringify(slotHistory));
+      renderHistory();
+    }
+
+    function initBank() {
+      points = Number(localStorage.getItem(STORAGE_KEYS.points) || 0);
+      hoursEntered = Number(localStorage.getItem(STORAGE_KEYS.hours) || 0);
+      slotHistory = safeParseHistory();
+      renderBalance();
+      renderHistory();
+    }
+
+    $('creditHours').onclick = () => {
+      const h = parseFloat($('hoursInput').value);
+      if (!Number.isFinite(h) || h <= 0) return;
+      points += Math.round(h * 200);
+      hoursEntered += h;
+      localStorage.setItem(STORAGE_KEYS.points, String(points));
+      localStorage.setItem(STORAGE_KEYS.hours, String(hoursEntered));
+      $('hoursInput').value = '';
+      renderBalance();
+      addSlotHistory(`+${Math.round(h * 200)} очков за ${h.toFixed(1)} ч`);
+    };
+
+    const symbols = ['7️⃣', '🍒', '🍋', '🍉', '🍌', '⭐'];
+
+    function spinSlot() {
+      if (points < 200) {
+        $('slotResult').textContent = 'Нужно минимум 200 очков.';
+        return;
+      }
+
+      points -= 200;
+      localStorage.setItem(STORAGE_KEYS.points, String(points));
+      renderBalance();
+
+      ['r0', 'r1', 'r2'].forEach((id) => $(id).classList.add('spin'));
+
+      let ticks = 0;
+      const timer = setInterval(() => {
+        ['r0', 'r1', 'r2'].forEach((id) => {
+          $(id).textContent = symbols[Math.floor(Math.random() * symbols.length)];
+        });
+
+        if (++ticks >= 24) {
+          clearInterval(timer);
+          ['r0', 'r1', 'r2'].forEach((id) => $(id).classList.remove('spin'));
+
+          const a = symbols[Math.floor(Math.random() * symbols.length)];
+          const b = symbols[Math.floor(Math.random() * symbols.length)];
+          const c = symbols[Math.floor(Math.random() * symbols.length)];
+
+          $('r0').textContent = a;
+          $('r1').textContent = b;
+          $('r2').textContent = c;
+
+          let prize = 0;
+          let text = 'Проигрыш — −200 очков.';
+
+          if (a === b && b === c && a === '7️⃣') {
+            prize = 600;
+            text = '777 — +600 очков!';
+          } else if (a === b && b === c && a === '⭐') {
+            prize = 400;
+            text = 'Три звезды — +400 очков!';
+          } else if (a === b && b === c) {
+            prize = 300;
+            text = 'Три одинаковых — +300 очков!';
+          } else if (a === b || a === c || b === c) {
+            prize = 100;
+            text = 'Две одинаковых — +100 очков!';
+          }
+
+          points += prize;
+          localStorage.setItem(STORAGE_KEYS.points, String(points));
+          renderBalance();
+          $('slotResult').textContent = text;
+          addSlotHistory(text);
+        }
+      }, 95);
+    }
+
+    $('spinSlot').onclick = spinSlot;
+
+    const wheelItems = [
+      { kind: 'reward', text: '🎬 1 серия сериала — до 30 минут' },
+      { kind: 'reward', text: '🎥 30 минут фильма' },
+      { kind: 'reward', text: '📱 15 минут TikTok' },
+      { kind: 'reward', text: '🎮 20 минут свободной игры' },
+      { kind: 'task', text: '🧹 15 минут уборки рабочего места' },
+      { kind: 'task', text: '📚 20 минут чтения' },
+      { kind: 'task', text: '🗂️ 15 минут разбора файлов / рабочего стола' },
+      { kind: 'task', text: '📵 20 минут без соцсетей + одна мелкая задача' }
+    ];
+    const wheelColors = ['#7c9cff', '#55d6a5', '#5bd0e6', '#a98bff', '#ffc857', '#ff7b8b', '#d8a56d', '#f29ac2'];
+    const wheel = $('rewardWheel');
+    let wheelRotation = 0;
+    let wheelBusy = false;
+
+    function buildWheel() {
+      const gradient = wheelItems.map((_, i) => {
+        const start = (i * 100) / wheelItems.length;
+        const end = ((i + 1) * 100) / wheelItems.length;
+        return `${wheelColors[i]} ${start}% ${end}%`;
+      }).join(', ');
+      wheel.style.background = `conic-gradient(${gradient})`;
+    }
+
+    $('spinWheel').onclick = () => {
+      if (wheelBusy) return;
+      wheelBusy = true;
+      $('wheelResult').textContent = '';
+      $('wheelKind').textContent = '';
+
+      const idx = Math.floor(Math.random() * wheelItems.length);
+      const extraTurns = 360 * (5 + Math.floor(Math.random() * 3));
+      const target = extraTurns + (360 - ((idx + 0.5) * 360 / wheelItems.length));
+      wheelRotation += target;
+      wheel.style.transform = `rotate(${wheelRotation}deg)`;
+
+      setTimeout(() => {
+        const item = wheelItems[idx];
+        $('wheelKind').textContent = item.kind === 'reward' ? 'ПОЩРЕНИЕ' : 'ЗАДАНИЕ';
+        $('wheelResult').textContent = item.text;
+        wheelBusy = false;
+      }, 4500);
+    };
+
+    buildWheel();
+    initBank();
+  </script>
 </body>
 </html>

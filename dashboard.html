@@ -1,1 +1,148 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="refresh" content="0; url=05.10/dashboard.html"><script>location.replace("05.10/dashboard.html")</script><title>Планировщик</title></head><body></body></html>
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Dashboard</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: rgba(17, 24, 39, 0.94);
+      --line: #2a3959;
+      --text: #eef4ff;
+      --muted: #9eaec9;
+      --accent: #7ea2ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #182642 0%, #0b1020 38%, #070b12 100%);
+      color: var(--text);
+      font: 15px/1.5 Inter, system-ui, sans-serif;
+    }
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 48px 20px 80px;
+    }
+    .eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 800;
+    }
+    h1 {
+      margin: 8px 0 0;
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      line-height: 1.05;
+      letter-spacing: -0.05em;
+    }
+    .subtitle {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 1.02rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 28px;
+    }
+    .card {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 22px 20px;
+      box-shadow: 0 18px 40px rgba(0,0,0,0.2);
+      text-decoration: none;
+      color: var(--text);
+      display: block;
+      transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(126, 162, 255, 0.7);
+      box-shadow: 0 18px 42px rgba(126, 162, 255, 0.12);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(126, 162, 255, 0.14);
+      color: #cfe0ff;
+      border: 1px solid rgba(126, 162, 255, 0.3);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .card h2 {
+      font-size: 1.45rem;
+      margin: 18px 0 8px;
+      letter-spacing: -0.03em;
+    }
+    .card p {
+      margin: 0;
+      color: var(--muted);
+    }
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .arrow { color: var(--accent); font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="eyebrow">personal dashboard</div>
+    <h1>Планировщик</h1>
+    <div class="subtitle">Набор страниц для оценки недели, задач и интерактива.</div>
+
+    <div class="grid">
+      <a class="card" href="./reports.html">
+        <div class="badge">reports</div>
+        <h2>Отчётник</h2>
+        <p>Графики, KPI, анализ недель и план-факт.</p>
+        <div class="meta"><span>weekly analysis</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="card" href="./05.10/dashboard.html">
+        <div class="badge">week</div>
+        <h2>Текущая неделя</h2>
+        <p>Подробная структура недели: расписание, задачи, фактическое время и состояние.</p>
+        <div class="meta"><span>current</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="card" href="./tasks.html">
+        <div class="badge">tasks</div>
+        <h2>Задачи</h2>
+        <p>Приоритеты, дедлайны, время и статус по пунктам.</p>
+        <div class="meta"><span>planner</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="card" href="./weekly.html">
+        <div class="badge">tracker</div>
+        <h2>Трекер недели</h2>
+        <p>Короткий обзор текущего периода: планы и базовые метрики.</p>
+        <div class="meta"><span>weekly tracker</span><span class="arrow">→</span></div>
+      </a>
+
+      <a class="card" href="./games.html">
+        <div class="badge">fun</div>
+        <h2>Интерактив</h2>
+        <p>Слот-машина и колесо наград с локальным хранением баланса.</p>
+        <div class="meta"><span>game mode</span><span class="arrow">→</span></div>
+      </a>
+    </div>
+  </main>
+</body>
+</html>
