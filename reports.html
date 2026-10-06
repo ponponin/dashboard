@@ -222,8 +222,10 @@ async function loadTopicProgress(){
   renderTopicProgress();
 }
 async function load(){
-  const idx=await csv("./data/weeks.csv");
-  data=[];for(let i=0;i<idx.length;i++)data.push(await loadWeek(idx[i],i,i===idx.length-1));
+  const idx0=await csv("./data/weeks.csv");
+  const today=new Date(),dow=(today.getDay()+6)%7; today.setDate(today.getDate()-dow); const currentWeek=today.toISOString().slice(0,10);
+  const idx=idx0.filter(r=>r.week_start<=currentWeek);
+  data=[];for(let i=0;i<idx.length;i++)data.push(await loadWeek(idx[i],i,idx[i].week_start===currentWeek));
   await loadTopicProgress();
   week.innerHTML=data.map((r,i)=>'<option value="'+i+'">'+weekPart(r.week_start)+" — "+weekPart(r.week_end)+'</option>').join("");
   week.value=String(Math.max(0,data.length-1));
