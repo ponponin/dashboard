@@ -66,6 +66,16 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
 .row-label{font-weight:650}.row-val{text-align:right;color:var(--muted);white-space:nowrap}
 .smallbar{height:9px;background:#202b42;border-radius:99px;overflow:hidden}.smallbar>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#6f91ec,#9bb5ff)}
 .empty{color:var(--muted);padding:12px 0}
+.topic-card{margin-top:14px;padding:20px}
+.topic-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-end}
+.topic-title{font-size:19px;font-weight:800}
+.topic-controls{display:grid;grid-template-columns:minmax(220px,360px) auto;gap:12px;align-items:center;margin-top:14px}
+.topic-count{font-size:15px;font-weight:800;color:var(--muted)}
+.hearts{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.heart{font-size:38px;line-height:1;font-family:Arial Black,Arial,sans-serif;color:#596173;text-shadow:2px 2px 0 #202739,0 0 0 #202739}
+.heart.filled{color:#e44747;text-shadow:2px 2px 0 #8e2a2a}
+.topic-note{margin-top:12px;color:var(--muted);font-size:12px}
+@media(max-width:620px){.topic-controls{grid-template-columns:1fr}.heart{font-size:32px}}
 @media(max-width:980px){.controls{grid-template-columns:1fr}.details{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.plot{gap:14px}.chart{gap:8px}}
 @media(max-width:620px){main{padding:22px 12px}.header{align-items:flex-start;flex-direction:column}h1{font-size:31px}.kpis{grid-template-columns:1fr}.split{grid-template-columns:1fr}.chart{height:330px}.barbox{height:235px}.week-link{min-height:285px}.row{grid-template-columns:105px 1fr 70px}.row-label{font-size:12px}}
 </style>
@@ -124,6 +134,18 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
     <div class="task-list" id="taskList"></div>
   </section>
 </div>
+
+<section class="card topic-card">
+  <div class="topic-head">
+    <div><div class="topic-title">Закрепление тем</div><div class="muted">Цель — решить по 10 задач на каждую тему.</div></div>
+    <div class="topic-count" id="topicCount">0/10</div>
+  </div>
+  <div class="topic-controls">
+    <select id="topicSelect"></select>
+  </div>
+  <div class="hearts" id="topicHearts"></div>
+  <div class="topic-note">Красное сердце = решённая задача. Серое = ещё нужно решить.</div>
+</section>
 </main>
 
 <script>
@@ -131,7 +153,8 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
 const labels={russian_hours:"Русский",du_hours:"ДЮ",stepanov_hours:"Степанов",team_hours:"Командка / тур Закл.",ftech_hours:"Физтех",reading_hours:"Чтение",english_hours:"Английский",literature_hours:"Литература",math_ege_hours:"Ботать"};
 const cats={RUS:"Русский",DU:"ДЮ",TR:"Степанов",TEAM:"Командка / тур Закл.",CP:"Программирование",FTECH:"Физтех",READ:"Чтение",ENG:"Английский",LIT:"Литература",MATH_EGE:"Ботать"};
 const metric=document.querySelector("#metric"),subject=document.querySelector("#subject"),week=document.querySelector("#week");
-let data=[],tasksByWeek={};
+let data=[],tasksByWeek={},topicProgress=[];
+const topicSelect=document.querySelector("#topicSelect");
 
 function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
 function esc(s){return String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
@@ -208,9 +231,36 @@ function renderDetail(){
     ?"По времени и по задачам неделя закрыта."
     :"Сравнение разделено: отдельный процент показывает часы, отдельный — реально закрытые задачи.";
 }
+function renderTopicProgress(){
+  if(!topicProgress.length){
+    topicSelect.innerHTML="";
+    document.querySelector("#topicCount").textContent="0/10";
+    document.querySelector("#topicHearts").innerHTML="";
+    return;
+  }
+  const idx=Math.max(0,Math.min(topicProgress.length-1,Number(topicSelect.value)||0));
+  const item=topicProgress[idx]||topicProgress[0];
+  const count=Math.max(0,Number(item.count)||0);
+  const filled=Math.min(10,count);
+  document.querySelector("#topicCount").textContent=filled+"/10";
+  document.querySelector("#topicHearts").innerHTML=Array.from({length:10},(_,i)=>'<span class="heart '+(i<filled?"filled":"")+'" aria-label="'+(i<filled?"решено":"не решено")+'">♥</span>').join("");
+}
+
+async function loadTopicProgress(){
+  try{
+    topicProgress=await csv("data/topic_progress.csv");
+    topicProgress=topicProgress.filter(x=>x.topic!==undefined&&x.topic!=="").map(x=>({topic:x.topic,count:Number(x.count)||0}));
+  }catch{
+    topicProgress=[];
+  }
+  topicSelect.innerHTML=topicProgress.map((x,i)=>'<option value="'+i+'">'+esc(x.topic)+'</option>').join("");
+  renderTopicProgress();
+}
+
 async function load(){
   data=await csv("data/stats.csv");
   await Promise.all(data.map(loadTasks));
+  await loadTopicProgress();
   week.innerHTML=data.map((r,i)=>'<option value="'+i+'">'+r.week_start.slice(8,10)+"."+r.week_start.slice(5,7)+" — "+r.week_end.slice(8,10)+"."+r.week_end.slice(5,7)+'</option>').join("");
   week.value=String(Math.max(0,data.length-1));
   document.querySelector("#updated").textContent=data.length?"последняя: "+data[data.length-1].week_start+" — "+data[data.length-1].week_end:"";
@@ -219,6 +269,7 @@ async function load(){
 metric.addEventListener("change",renderChart);
 subject.addEventListener("change",renderChart);
 week.addEventListener("change",renderDetail);
+topicSelect.addEventListener("change",renderTopicProgress);
 load().catch(e=>document.querySelector("#hint").textContent="Не удалось загрузить данные.");
 </script>
 </body>
