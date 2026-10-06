@@ -6,7 +6,7 @@
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
-<title>Планировщик — отчёт 05.10 · v2026-10-06-9</title>
+<title>Планировщик — отчёт 05.10 · v2026-10-06-10</title>
 <style>
 :root{--bg:#0b1020;--panel:#11182b;--panel2:#151e34;--text:#f4f7fb;--muted:#9aa8bf;--accent:#7c9cff;--good:#55d6a5;--warn:#ffc857;--danger:#ff7b8b;--line:#26324d}
 *{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#090d19,#111a2e);color:var(--text);font:15px/1.45 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -76,7 +76,7 @@ const tasks=allTasks.filter(r=>(r[8]||"WEEKLY")==="WEEKLY" && (!r[3] || r[3]<=we
 const planned={}; weeklyPlans.forEach(r=>{const c=(r[3]||"").toUpperCase();planned[c]=(planned[c]||0)+n(r[7])}); const actual={}; log.forEach(r=>{const c=(r[1]||"").toUpperCase();actual[c]=(actual[c]||0)+n(r[5])});
 const p=Object.values(planned).reduce((a,b)=>a+b,0), a=Object.values(actual).reduce((a,b)=>a+b,0);
 const progCats=["CP"]; const progPlan=progCats.reduce((s,c)=>s+(planned[c]||0),0); const progActual=progCats.reduce((s,c)=>s+(actual[c]||0),0); document.querySelector("#planned").textContent=p.toFixed(1)+" ч";document.querySelector("#actual").textContent=a.toFixed(1)+" ч";document.querySelector("#progHours").textContent=progActual.toFixed(1)+" / "+progPlan.toFixed(1)+" ч";document.querySelector("#ratio").textContent=p?(100*a/p).toFixed(0)+"%":"—";
-const stateTasks=tasks; const done=stateTasks.filter(r=>["done","completed"].includes((r[5]||"").toLowerCase())).length; document.querySelector("#doneTasks").textContent=done+"/"+stateTasks.length;
+const stateTasks=tasks.filter(r=>(r[8]||"WEEKLY")==="WEEKLY"); const done=stateTasks.filter(r=>["done","completed"].includes((r[5]||"").toLowerCase())).length; document.querySelector("#doneTasks").textContent=done+"/"+stateTasks.length;
 const statuses=[["Готово",done],["В плане",Math.max(0,stateTasks.length-done)]];document.querySelector("#statusTotal").textContent=stateTasks.length;document.querySelector("#statusDonut").style.background=donut(statuses.map(x=>x[1]),stateTasks.length);document.querySelector("#statusLegend").innerHTML=statuses.map((x,i)=>'<div class="legend-row"><i class="dot" style="background:'+colors[(i+3)%colors.length]+'"></i><span>'+x[0]+' — '+x[1]+'</span></div>').join("");
 const select=document.querySelector("#catFilter");if(!select.dataset.ready){Object.entries(labels).forEach(([k,v])=>{const o=document.createElement("option");o.value=k;o.textContent=v;select.appendChild(o)});select.value=activeCategory;select.addEventListener("change",e=>{activeCategory=e.target.value;render()});select.dataset.ready="1";}
 document.querySelector("#period").textContent="Неделя "+(schedule[0]?.[0]||"")+" — "+(schedule[schedule.length-1]?.[0]||"")+" · обновлено "+new Date().toLocaleString("ru-RU",{dateStyle:"short",timeStyle:"short"});
