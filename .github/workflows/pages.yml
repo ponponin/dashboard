@@ -1,7 +1,7 @@
 name: Deploy dashboard
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "fix/dashboard-cleanup"]
   workflow_dispatch:
 permissions:
   contents: read
@@ -33,3 +33,4 @@ jobs:
 # Automatic deploy verification trigger: 2026-10-06T12:44+05:00
 # Trigger after latest weekly fixes: 2026-10-06T12:48+05:00
 # Trigger deploy after fixing current-week data: 2026-10-06T12:50+05:00
+# Enable deployment for the dashboard cleanup branch preview: 2026-10-06T08:08+00:00
