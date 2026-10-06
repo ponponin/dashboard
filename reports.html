@@ -160,7 +160,8 @@ async function csv(path){const r=await fetch(path+"?v="+Date.now(),{cache:"no-st
 function weekPart(ws){return ws.slice(8,10)+"."+ws.slice(5,7)}
 async function loadWeek(row,i,current){
   const part=weekPart(row.week_start),base=current?"./"+part+"/data/":"./archive/"+part+"/data/";
-  const [plans,tasks,log,weekly]=await Promise.all([csv(base+"weekly_plans.csv"),csv(base+"tasks.csv"),csv(base+"log.csv"),csv(base+"weekly.csv")]);
+  const [plans,tasks,log]=await Promise.all([csv(base+"weekly_plans.csv"),csv(base+"tasks.csv"),csv(base+"log.csv")]);
+  let weekly=[];try{weekly=await csv(base+"weekly.csv")}catch{}
   const plannedRows=plans.filter(x=>x.week_start===row.week_start&&x.week_end===row.week_end);
   const planned={};for(const x of plannedRows){const c=(x.category||"").toUpperCase();planned[c]=(planned[c]||0)+num(x.planned_hours)}
   const actual={};for(const x of log){const c=(x.category||"").toUpperCase();actual[c]=(actual[c]||0)+num(x.hours)}
