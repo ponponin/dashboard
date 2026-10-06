@@ -3,83 +3,223 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
 <title>Отчётник по неделям</title>
 <style>
-:root{--bg:#080c15;--panel:#111827;--panel2:#172033;--text:#f6f8fc;--muted:#91a0b8;--line:#26334d;--accent:#8aa8ff;--good:#5fe0b0}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#1b2945 0,#0b1120 38%,#080c15 75%);color:var(--text);font:14px/1.5 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-main{max-width:1500px;margin:auto;padding:30px 20px 60px}.header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:18px}
-.eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}h1{font-size:40px;line-height:1.05;letter-spacing:-.035em;margin:5px 0 7px}.muted{color:var(--muted)}
-.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}.nav a{padding:9px 13px;border:1px solid var(--line);border-radius:11px;background:rgba(17,24,39,.9);color:var(--text);text-decoration:none}
-.controls{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;margin-bottom:14px}select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit}
-.card{background:rgba(17,24,39,.94);border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 36px rgba(0,0,0,.18)}.chart-card{padding:20px}
-.chart-head{display:flex;justify-content:space-between;gap:20px;align-items:flex-end}.chart-title{font-size:19px;font-weight:800}
-.chart-wrap{height:430px;margin-top:18px;position:relative;overflow-x:auto}.chart-inner{height:100%;min-width:760px;position:relative;padding:12px 18px 48px 62px}
-.gridline{position:absolute;left:62px;right:18px;border-top:1px dashed rgba(145,160,184,.2)}.ylabel{position:absolute;left:0;width:52px;text-align:right;color:var(--muted);font-size:11px;transform:translateY(-7px)}
-svg{position:absolute;left:62px;right:18px;top:12px;width:calc(100% - 80px);height:calc(100% - 60px);overflow:visible}
-.xlabels{position:absolute;left:62px;right:18px;bottom:5px;display:flex;justify-content:space-between;gap:8px}.xlabel{font-size:11px;color:var(--muted);text-align:center;min-width:70px}
-.point{cursor:pointer}.point.current{stroke:var(--good);stroke-width:4}.point.selected{stroke:var(--text);stroke-width:4}
-.tooltip{position:absolute;display:none;z-index:5;padding:9px 11px;border:1px solid var(--line);border-radius:10px;background:#0d1424;box-shadow:0 10px 28px rgba(0,0,0,.3);pointer-events:none;white-space:nowrap;font-size:12px}
-.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:13px;color:var(--muted)}.dot{width:9px;height:9px;border-radius:50%;display:inline-block;margin-right:6px;background:var(--accent)}.dot.current{background:var(--good)}
+:root{
+  --bg:#080c15;--panel:#111827;--panel2:#172033;--panel3:#1d2940;
+  --text:#f6f8fc;--muted:#91a0b8;--line:#26334d;--accent:#8aa8ff;
+  --good:#5fe0b0;--bad:#ff7d93;--warn:#ffd166;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 15% 0,#1b2945 0,#0b1120 38%,#080c15 75%);color:var(--text);font:14px/1.5 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{max-width:1500px;margin:auto;padding:30px 20px 60px}
+.header{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:18px}
+.eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}
+h1{font-size:40px;line-height:1.05;letter-spacing:-.035em;margin:5px 0 7px}
+.muted{color:var(--muted)}
+.nav{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.nav a{padding:9px 13px;border:1px solid var(--line);border-radius:11px;background:rgba(17,24,39,.9);color:var(--text);text-decoration:none}
+.nav a:hover{border-color:var(--accent)}
+.controls{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:10px;margin-bottom:14px}
+select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--line);background:var(--panel);color:var(--text);font:inherit}
+.card{background:rgba(17,24,39,.94);border:1px solid var(--line);border-radius:18px;box-shadow:0 12px 36px rgba(0,0,0,.18)}
+.chart-card{padding:20px}
+.chart-top{display:flex;justify-content:space-between;gap:20px;align-items:flex-end}
+.chart-title{font-size:19px;font-weight:800}
+.chart{height:390px;margin-top:18px;padding:0 4px;display:flex;align-items:stretch;gap:22px}
+.yaxis{width:45px;display:flex;flex-direction:column;justify-content:space-between;color:var(--muted);font-size:11px;padding:5px 0 35px;text-align:right}
+.plot{flex:1;display:flex;align-items:stretch;gap:26px;border-bottom:1px solid var(--line);position:relative;padding:8px 8px 0}
+.plot::before,.plot::after{content:"";position:absolute;left:0;right:0;border-top:1px dashed rgba(145,160,184,.18)}
+.plot::before{top:25%}.plot::after{top:50%}
+.week-col{position:relative;flex:1;min-width:90px;display:flex;justify-content:flex-end;flex-direction:column;align-items:center;z-index:1}
+.week-value{font-size:15px;font-weight:850;margin-bottom:8px;white-space:nowrap}
+.barbox{width:min(110px,72%);height:285px;display:flex;align-items:flex-end;justify-content:center}
+.bar{width:100%;min-height:5px;border-radius:12px 12px 5px 5px;background:linear-gradient(180deg,#97b1ff,#6689ec);position:relative;box-shadow:0 8px 18px rgba(102,137,236,.16)}
+.bar.current{background:linear-gradient(180deg,#75e4bb,#45b98e);box-shadow:0 8px 18px rgba(69,185,142,.18)}
+.bar span{position:absolute;left:50%;top:-28px;transform:translateX(-50%);font-size:11px;color:var(--muted);white-space:nowrap}
+.week-label{margin-top:10px;font-weight:750}
+.week-link{color:inherit;text-decoration:none;display:flex;flex-direction:column;align-items:center;width:100%;min-height:335px}
+.week-link:hover .week-label{color:var(--accent)}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:13px;color:var(--muted)}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:var(--accent);margin-right:6px}.dot.current{background:var(--good)}
 .hint{margin-top:13px;padding:12px 14px;border-radius:12px;background:var(--panel2);color:#c4cee0}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}.kpi{padding:16px}.kpi-label{font-size:12px;color:var(--muted)}.kpi-value{font-size:28px;font-weight:850;margin-top:2px}.kpi-sub{font-size:12px;color:var(--muted);margin-top:2px}
-.details{display:grid;grid-template-columns:1.1fr .9fr;gap:12px;margin-top:14px}.detail{padding:18px}.detail-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:14px}.detail-title{font-size:17px;font-weight:800}
-.status{padding:5px 9px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted)}.status.good{color:var(--good);border-color:#2c6e5a}.status.bad{color:#ff7d93;border-color:#73404a}.status.warn{color:#ffd166;border-color:#705b2d}
-.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}.mini{background:var(--panel2);border:1px solid var(--line);border-radius:13px;padding:14px}.mini-label{font-size:12px;color:var(--muted)}.mini-value{font-size:25px;font-weight:850;margin-top:3px}
-.progress{height:9px;border-radius:99px;background:#202b42;overflow:hidden;margin-top:10px}.progress>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#789cff,#9ab6ff)}.progress.good>i{background:linear-gradient(90deg,#48c99a,#79e5bd)}
-.task-list{display:grid;gap:8px;max-height:355px;overflow:auto}.task{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:10px 12px}.task-name{font-weight:650}.task-cat{font-size:12px;color:var(--muted);margin-top:2px}.tag{font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;white-space:nowrap;color:var(--muted)}.tag.done{color:var(--good);border-color:#2c6e5a}
-.breakdown{display:grid;gap:10px}.row{display:grid;grid-template-columns:150px 1fr 92px;gap:10px;align-items:center}.row-label{font-weight:650}.row-val{text-align:right;color:var(--muted);white-space:nowrap}.smallbar{height:9px;background:#202b42;border-radius:99px;overflow:hidden}.smallbar>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#6f91ec,#9bb5ff)}
-@media(max-width:980px){.controls{grid-template-columns:1fr}.details{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}}@media(max-width:620px){main{padding:22px 12px}.header{align-items:flex-start;flex-direction:column}h1{font-size:31px}.kpis{grid-template-columns:1fr}.split{grid-template-columns:1fr}}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.kpi{padding:16px}.kpi-label{font-size:12px;color:var(--muted)}.kpi-value{font-size:28px;font-weight:850;margin-top:2px}.kpi-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.details{display:grid;grid-template-columns:1.1fr .9fr;gap:12px;margin-top:14px}
+.detail{padding:18px}
+.detail-head{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-bottom:14px}
+.detail-title{font-size:17px;font-weight:800}
+.status{padding:5px 9px;border-radius:999px;border:1px solid var(--line);font-size:12px;color:var(--muted)}
+.status.good{color:var(--good);border-color:#2c6e5a}.status.bad{color:var(--bad);border-color:#73404a}.status.warn{color:var(--warn);border-color:#705b2d}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.mini{background:var(--panel2);border:1px solid var(--line);border-radius:13px;padding:14px}
+.mini-label{font-size:12px;color:var(--muted)}.mini-value{font-size:25px;font-weight:850;margin-top:3px}
+.progress{height:9px;border-radius:99px;background:#202b42;overflow:hidden;margin-top:10px}.progress>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#789cff,#9ab6ff)}
+.progress.good>i{background:linear-gradient(90deg,#48c99a,#79e5bd)}
+.task-list{display:grid;gap:8px;max-height:355px;overflow:auto;padding-right:2px}
+.task{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;background:var(--panel2);border:1px solid var(--line);border-radius:11px;padding:10px 12px}
+.task-name{font-weight:650}.task-cat{font-size:12px;color:var(--muted);margin-top:2px}
+.tag{font-size:11px;padding:4px 8px;border:1px solid var(--line);border-radius:999px;white-space:nowrap;color:var(--muted)}
+.tag.done{color:var(--good);border-color:#2c6e5a}
+.breakdown{display:grid;gap:10px}
+.row{display:grid;grid-template-columns:150px 1fr 92px;gap:10px;align-items:center}
+.row-label{font-weight:650}.row-val{text-align:right;color:var(--muted);white-space:nowrap}
+.smallbar{height:9px;background:#202b42;border-radius:99px;overflow:hidden}.smallbar>i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#6f91ec,#9bb5ff)}
+.empty{color:var(--muted);padding:12px 0}
+@media(max-width:980px){.controls{grid-template-columns:1fr}.details{grid-template-columns:1fr}.kpis{grid-template-columns:1fr 1fr}.plot{gap:14px}.chart{gap:8px}}
+@media(max-width:620px){main{padding:22px 12px}.header{align-items:flex-start;flex-direction:column}h1{font-size:31px}.kpis{grid-template-columns:1fr}.split{grid-template-columns:1fr}.chart{height:330px}.barbox{height:235px}.week-link{min-height:285px}.row{grid-template-columns:105px 1fr 70px}.row-label{font-size:12px}}
 </style>
 </head>
 <body>
 <main>
-<section class="header"><div><div class="eyebrow">личный отчётник</div><h1>Отчётник по неделям</h1><div class="muted">График по неделям с переключением показателя и подробностями выбранной недели.</div></div><div class="muted" id="updated">Загрузка…</div></section>
-<div class="nav"><a href="./05.10/dashboard.html">→ Актуальная неделя</a></div>
-<div class="controls">
-<select id="metric"><option value="plan">Выполнение плана, %</option><option value="tasks">Выполнение задач, %</option><option value="total">Все часы за неделю</option><option value="programming">Программирование, ч</option><option value="subject">Часы по предмету</option></select>
-<select id="subject" hidden><option value="russian_hours">Русский</option><option value="ДЮ_hours">ДЮ</option><option value="stepanov_hours">Степанов</option><option value="team_hours">Командка / тур Закл.</option><option value="ftech_hours">Физтех</option><option value="reading_hours">Чтение</option><option value="english_hours">Английский</option><option value="literature_hours">Литература</option><option value="math_ege_hours">Сложные задачи / ЕГЭ математика</option></select>
-<select id="week"></select>
-</div>
-<section class="card chart-card">
-<div class="chart-head"><div><div class="chart-title" id="chartTitle"></div><div class="muted" id="chartSub"></div></div><div class="muted">Нажми точку или неделю для подробностей.</div></div>
-<div class="chart-wrap"><div class="chart-inner" id="chartInner"><div id="grid"></div><div class="tooltip" id="tooltip"></div><svg id="svg" viewBox="0 0 1000 330" preserveAspectRatio="none"></svg><div class="xlabels" id="xlabels"></div></div></div>
-<div class="legend"><span><i class="dot"></i>прошлая / завершённая</span><span><i class="dot current"></i>актуальная</span></div>
-<div class="hint" id="hint"></div>
+<section class="header">
+  <div><div class="eyebrow">личный отчётник</div><h1>Отчётник по неделям</h1><div class="muted">Один экран для сравнения недель: время, задачи, предметы и причины отставания.</div></div>
+  <div class="muted" id="updated">Загрузка…</div>
 </section>
+<div class="nav"><a href="./05.10/dashboard.html">→ Актуальная неделя</a></div>
+
+<div class="controls">
+  <select id="metric">
+    <option value="plan">Выполнение по времени, %</option>
+    <option value="tasks">Выполнение задач, %</option>
+    <option value="total">Все часы за неделю</option>
+    <option value="programming">Программирование, ч</option>
+    <option value="subject">Часы по предмету</option>
+  </select>
+  <select id="subject" hidden>
+    <option value="russian_hours">Русский</option><option value="du_hours">ДЮ</option><option value="stepanov_hours">Степанов</option>
+    <option value="team_hours">Командка / тур Закл.</option><option value="ftech_hours">Физтех</option><option value="reading_hours">Чтение</option>
+    <option value="english_hours">Английский</option><option value="literature_hours">Литература</option><option value="math_ege_hours">Ботать</option>
+  </select>
+  <select id="week"></select>
+</div>
+
+<section class="card chart-card">
+  <div class="chart-top">
+    <div><div class="chart-title" id="chartTitle"></div><div class="muted" id="chartSub"></div></div>
+    <div class="muted">Нажми на неделю под графиком, чтобы открыть её отчёт.</div>
+  </div>
+  <div class="chart">
+    <div class="yaxis" id="yaxis"></div>
+    <div class="plot" id="plot"></div>
+  </div>
+  <div class="legend"><span><i class="dot"></i>прошлая / завершённая</span><span><i class="dot current"></i>актуальная</span></div>
+  <div class="hint" id="hint"></div>
+</section>
+
 <div class="kpis" id="kpis"></div>
+
 <div class="details">
-<section class="card detail"><div class="detail-head"><div><div class="detail-title">Разбор недели</div><div class="muted" id="detailPeriod"></div></div><div class="status" id="overall"></div></div>
-<div class="split"><div class="mini"><div class="mini-label">По времени</div><div class="mini-value" id="timeValue">—</div><div class="muted" id="timeMeta"></div><div class="progress"><i id="timeBar"></i></div></div><div class="mini"><div class="mini-label">По задачам</div><div class="mini-value" id="taskValue">—</div><div class="muted" id="taskMeta"></div><div class="progress good"><i id="taskBar"></i></div></div></div>
-<div style="margin-top:14px"><div class="detail-title" style="font-size:14px">По направлениям</div><div class="breakdown" id="breakdown" style="margin-top:10px"></div></div></section>
-<section class="card detail"><div class="detail-head"><div><div class="detail-title">Задачи</div><div class="muted">Статус недельных задач выбранной недели.</div></div></div><div class="task-list" id="taskList"></div></section>
+  <section class="card detail">
+    <div class="detail-head"><div><div class="detail-title">Разбор недели</div><div class="muted" id="detailPeriod"></div></div><div class="status" id="overall"></div></div>
+    <div class="split">
+      <div class="mini"><div class="mini-label">По времени</div><div class="mini-value" id="timeValue">—</div><div class="muted" id="timeMeta"></div><div class="progress"><i id="timeBar"></i></div></div>
+      <div class="mini"><div class="mini-label">По задачам</div><div class="mini-value" id="taskValue">—</div><div class="muted" id="taskMeta"></div><div class="progress good"><i id="taskBar"></i></div></div>
+    </div>
+    <div style="margin-top:14px"><div class="detail-title" style="font-size:14px">По направлениям</div><div class="breakdown" id="breakdown" style="margin-top:10px"></div></div>
+  </section>
+
+  <section class="card detail">
+    <div class="detail-head"><div><div class="detail-title">Задачи</div><div class="muted">Отдельно видно, где часы набраны, но задача не закрыта.</div></div></div>
+    <div class="task-list" id="taskList"></div>
+  </section>
 </div>
 </main>
+
 <script>
 "use strict";
-const labels={russian_hours:"Русский",ДЮ_hours:"ДЮ",stepanov_hours:"Степанов",team_hours:"Командка / тур Закл.",ftech_hours:"Физтех",reading_hours:"Чтение",english_hours:"Английский",literature_hours:"Литература",math_ege_hours:"Сложные задачи / ЕГЭ математика"};
+const labels={russian_hours:"Русский",du_hours:"ДЮ",stepanov_hours:"Степанов",team_hours:"Командка / тур Закл.",ftech_hours:"Физтех",reading_hours:"Чтение",english_hours:"Английский",literature_hours:"Литература",math_ege_hours:"Ботать"};
+const cats={RUS:"Русский",DU:"ДЮ",TR:"Степанов",TEAM:"Командка / тур Закл.",CP:"Программирование",FTECH:"Физтех",READ:"Чтение",ENG:"Английский",LIT:"Литература",MATH_EGE:"Ботать"};
 const metric=document.querySelector("#metric"),subject=document.querySelector("#subject"),week=document.querySelector("#week");
-let data=[],tasksByWeek={},plansByWeek={},selectedIndex=0;
+let data=[],tasksByWeek={};
+
 function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
 function esc(s){return String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
 function parseCSV(s){const rows=[];let row=[],cur="",q=false;for(let i=0;i<s.length;i++){const c=s[i];if(c==='"'){if(q&&s[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===','&&!q){row.push(cur);cur=""}else if((c==="\n"||c==="\r")&&!q){if(c==="\r"&&s[i+1]==="\n")i++;row.push(cur);cur="";if(row.some(x=>x!==""))rows.push(row);row=[]}else cur+=c}row.push(cur);if(row.some(x=>x!==""))rows.push(row);return rows}
 async function csv(path){const r=await fetch(path+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error(path);const rows=parseCSV(await r.text()),h=rows.shift()||[];return rows.map(v=>{const o={};h.forEach((k,i)=>o[k]=v[i]??"");return o})}
-function taskPath(ws){const p=ws.slice(8,10)+"."+ws.slice(5,7);return ws===data[data.length-1].week_start?"data/tasks.csv":"archive/"+p+"/data/tasks.csv"}
-function planPath(ws){const p=ws.slice(8,10)+"."+ws.slice(5,7);return ws===data[data.length-1].week_start?"data/weekly_plans.csv":"archive/"+p+"/data/weekly_plans.csv"}
-async function loadTasks(row){try{const all=(await csv(taskPath(row.week_start))).filter(x=>(x.type||"WEEKLY")==="WEEKLY");tasksByWeek[row.week_start]={all,done:all.filter(x=>["done","completed"].includes((x.status||"").toLowerCase()))}}catch{tasksByWeek[row.week_start]={all:[],done:[]}}try{plansByWeek[row.week_start]=await csv(planPath(row.week_start))}catch{plansByWeek[row.week_start]=[]}}
-function taskStats(row){const t=tasksByWeek[row.week_start]||{all:[],done:[]};const total=t.all.length,done=t.done.length;return{done,total,pct:total?100*done/total:0}}
-function taskPct(row){return taskStats(row).pct}
-function value(row){if(metric.value==="plan")return num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100;if(metric.value==="tasks")return taskPct(row);if(metric.value==="total")return num(row.work_hours);if(metric.value==="programming")return num(row.programming_hours);return num(row[subject.value])}
-function title(){return metric.value==="plan"?"Выполнение плана":metric.value==="tasks"?"Выполнение задач":metric.value==="total"?"Все часы за неделю":metric.value==="programming"?"Программирование":labels[subject.value]}
-function unit(){return metric.value==="plan"||metric.value==="tasks"?"%":" ч"}
-function maxFor(){const m=Math.max(1,...data.map(value));if(metric.value==="plan"||metric.value==="tasks")return Math.max(100,Math.ceil(m/20)*20);if(m<=5)return 5;if(m<=10)return 10;if(m<=20)return 20;return Math.ceil(m/5)*5}
-function renderChart(){subject.hidden=metric.value!=="subject";const max=maxFor(),w=1000,h=330,pad=12;document.querySelector("#chartTitle").textContent=title();document.querySelector("#chartSub").textContent=data.length?data[0].week_start+" — "+data[data.length-1].week_end:"";document.querySelector("#grid").innerHTML=[0,20,40,60,80,100].map(pct=>{const y=pad+(100-pct)/100*(h-2*pad);const v=max*pct/100;return '<div class="gridline" style="top:'+y+'px"></div><div class="ylabel" style="top:'+y+'px">'+v.toFixed(v%1?1:0)+unit()+'</div>'}).join("");const pts=data.map((r,i)=>{const x=data.length===1?500:pad+i*(w-2*pad)/(data.length-1),v=value(r),y=h-pad-(Math.min(max,Math.max(0,v))/max)*(h-2*pad);return{x,y,v,r,i}});const path=pts.map((p,i)=>(i?"L":"M")+p.x.toFixed(1)+" "+p.y.toFixed(1)).join(" ");document.querySelector("#svg").innerHTML='<path d="'+path+'" fill="none" stroke="#8aa8ff" stroke-width="3" vector-effect="non-scaling-stroke"/>'+pts.map(p=>'<circle class="point '+(p.i===data.length-1?"current ":"")+(p.i===selectedIndex?"selected":"")+'" cx="'+p.x+'" cy="'+p.y+'" r="6" fill="#8aa8ff" data-i="'+p.i+'"></circle>').join("");document.querySelector("#xlabels").innerHTML=data.map((r,i)=>'<div class="xlabel"><a href="./'+r.week_start.slice(8,10)+"."+r.week_start.slice(5,7)+'/dashboard.html" style="color:inherit;text-decoration:none">'+r.week_start.slice(8,10)+"."+r.week_start.slice(5,7)+'</a></div>').join("");document.querySelectorAll(".point").forEach(el=>el.addEventListener("click",()=>{selectedIndex=Number(el.dataset.i);week.value=String(selectedIndex);renderChart();renderDetail()}));document.querySelector("#hint").textContent=metric.value==="tasks"?"Задачи считаются отдельно от часов: график показывает долю выполненных недельных задач.":"График показывает каждую неделю отдельно, без агрегации; актуальная неделя выделена.";
+function taskPath(ws){const p=ws.slice(8,10)+"."+ws.slice(5,7);return ws===data[data.length-1].week_start?p+"/data/tasks.csv":"archive/"+p+"/data/tasks.csv"}
+async function loadTasks(row){
+  try{
+    const all=(await csv(taskPath(row.week_start))).filter(x=>(x.type||"WEEKLY")==="WEEKLY");
+    const done=all.filter(x=>["done","completed"].includes((x.status||"").toLowerCase()));
+    tasksByWeek[row.week_start]={all,done};
+  }catch{tasksByWeek[row.week_start]={all:[],done:[]}}
 }
-function renderDetail(){const row=data[selectedIndex]||data[data.length-1];if(!row)return;const percentTime=num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100,tp=taskPct(row),tm=taskStats(row);document.querySelector("#detailPeriod").textContent=row.week_start+" — "+row.week_end;document.querySelector("#timeValue").textContent=percentTime.toFixed(1)+"%";document.querySelector("#timeMeta").textContent=num(row.work_hours).toFixed(1)+" ч факта из "+num(row.planned_hours).toFixed(1)+" ч плана";document.querySelector("#taskValue").textContent=tp.toFixed(1)+"%";document.querySelector("#taskMeta").textContent=tm.done+" из "+tm.total+" задач выполнено";document.querySelector("#timeBar").style.width=Math.min(100,percentTime)+"%";document.querySelector("#taskBar").style.width=Math.min(100,tp)+"%";const overall=document.querySelector("#overall");overall.className="status "+(percentTime>=100&&tp>=100?"good":percentTime>=100||tp>=100?"warn":"bad");overall.textContent=percentTime>=100&&tp>=100?"План закрыт":percentTime>=100||tp>=100?"Показатели расходятся":"Есть отставание";const map=[["russian_hours","Русский"],["ДЮ_hours","ДЮ"],["stepanov_hours","Степанов"],["team_hours","Командка / тур Закл."],["ftech_hours","Физтех"],["reading_hours","Чтение"],["english_hours","Английский"],["literature_hours","Литература"],["math_ege_hours","Сложные задачи / ЕГЭ математика"],["programming_hours","Программирование"]];document.querySelector("#breakdown").innerHTML=map.filter(x=>num(row[x[0]])>0||x[0]==="russian_hours").map(x=>{const v=num(row[x[0]]),total=num(row.work_hours),pct=total?v/total*100:0;return '<div class="row"><div class="row-label">'+x[1]+'</div><div class="smallbar"><i style="width:'+Math.min(100,pct)+'%"></i></div><div class="row-val">'+v.toFixed(1)+' ч</div></div>'}).join("");const t=tasksByWeek[row.week_start]||{all:[],done:[]};document.querySelector("#taskList").innerHTML=[...t.done.map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+esc(x.category||"")+'</div></div><span class="tag done">готово</span></div>'),...t.all.filter(x=>!["done","completed"].includes((x.status||"").toLowerCase())).map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+esc(x.category||"")+'</div></div><span class="tag">в плане</span></div>')].join("")||'<div class="muted">Нет недельных задач в данных.</div>';document.querySelector("#kpis").innerHTML=[["План",num(row.planned_hours).toFixed(1)+" ч","недельный объём"],["Факт",num(row.work_hours).toFixed(1)+" ч","реально сделано"],["Время",percentTime.toFixed(1)+"%","факт / план"],["Задачи",tm.done+"/"+tm.total,tp.toFixed(1)+"% задач выполнено"]].map(x=>'<div class="card kpi"><div class="kpi-label">'+x[0]+'</div><div class="kpi-value">'+x[1]+'</div><div class="kpi-sub">'+x[2]+'</div></div>').join("")}
-async function load(){data=await csv("data/stats.csv");await Promise.all(data.map(loadTasks));week.innerHTML=data.map((r,i)=>'<option value="'+i+'">'+r.week_start.slice(8,10)+"."+r.week_start.slice(5,7)+" — "+r.week_end.slice(8,10)+"."+r.week_end.slice(5,7)+'</option>').join("");selectedIndex=data.length-1;week.value=String(selectedIndex);document.querySelector("#updated").textContent=data.length?"последняя: "+data[data.length-1].week_start+" — "+data[data.length-1].week_end:"";renderChart();renderDetail()}
-metric.addEventListener("change",renderChart);subject.addEventListener("change",renderChart);week.addEventListener("change",()=>{selectedIndex=Number(week.value);renderChart();renderDetail()});load().catch(()=>document.querySelector("#hint").textContent="Не удалось загрузить данные.");
+function taskPct(row){const t=tasksByWeek[row.week_start]||{all:[],done:[]};return t.all.length?100*t.done.length/t.all.length:0}
+function value(row){
+  if(metric.value==="plan")return num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100;
+  if(metric.value==="tasks")return taskPct(row);
+  if(metric.value==="total")return num(row.work_hours);
+  if(metric.value==="programming")return num(row.programming_hours);
+  return num(row[subject.value]);
+}
+function chartTitle(){return metric.value==="plan"?"Выполнение по времени":metric.value==="tasks"?"Выполнение задач":metric.value==="total"?"Все часы за неделю":metric.value==="programming"?"Программирование":labels[subject.value]}
+function suffix(){return metric.value==="plan"||metric.value==="tasks"?"%":" ч"}
+function maxFor(vals){const m=Math.max(1,...vals);if(metric.value==="plan"||metric.value==="tasks")return Math.max(100,Math.ceil(m/20)*20);if(m<=5)return 5;if(m<=10)return 10;if(m<=20)return 20;return Math.ceil(m/5)*5}
+function renderChart(){
+  subject.hidden=metric.value!=="subject";
+  const vals=data.map(value),max=maxFor(vals);
+  document.querySelector("#chartTitle").textContent=chartTitle();
+  document.querySelector("#chartSub").textContent=data.length?data[0].week_start+" — "+data[data.length-1].week_end:"";
+  document.querySelector("#yaxis").innerHTML=[100,80,60,40,20,0].map(p=>{
+    const v=max*p/100;return '<span>'+((metric.value==="plan"||metric.value==="tasks")?v.toFixed(v%1?1:0)+"%":v.toFixed(v%1?1:0)+" ч")+'</span>'
+  }).join("");
+  document.querySelector("#plot").innerHTML=data.map((r,i)=>{
+    const v=value(r),h=Math.max(2,v/max*285),part=r.week_start.slice(8,10)+"."+r.week_start.slice(5,7);
+    const href="./"+part+"/dashboard.html";
+    return '<div class="week-col"><a class="week-link" href="'+href+'"><div class="week-value">'+v.toFixed(1)+suffix()+'</div><div class="barbox"><div class="bar '+(i===data.length-1?"current":"")+'" style="height:'+h+'px"><span>'+v.toFixed(1)+suffix()+'</span></div></div><div class="week-label">'+part+'</div></a></div>'
+  }).join("");
+}
+function renderDetail(){
+  const row=data[Number(week.value)]||data[data.length-1];if(!row)return;
+  const t=tasksByWeek[row.week_start]||{all:[],done:[]};
+  const tp=value({...row}); const percentTime=num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100;
+  const percentTasks=taskPct(row);
+  document.querySelector("#detailPeriod").textContent=row.week_start+" — "+row.week_end;
+  document.querySelector("#timeValue").textContent=percentTime.toFixed(1)+"%";
+  document.querySelector("#timeMeta").textContent=num(row.work_hours).toFixed(1)+" ч факта из "+num(row.planned_hours).toFixed(1)+" ч плана";
+  document.querySelector("#taskValue").textContent=percentTasks.toFixed(1)+"%";
+  document.querySelector("#taskMeta").textContent=t.done.length+" из "+t.all.length+" недельных задач закрыто";
+  document.querySelector("#timeBar").style.width=Math.min(100,percentTime)+"%";
+  document.querySelector("#taskBar").style.width=Math.min(100,percentTasks)+"%";
+  const overall=document.querySelector("#overall");
+  overall.className="status "+(percentTime>=100&&percentTasks>=100?"good":percentTime>=100||percentTasks>=100?"warn":"bad");
+  overall.textContent=percentTime>=100&&percentTasks>=100?"План закрыт":percentTime>=100||percentTasks>=100?"Показатели расходятся":"Есть отставание";
+  const map=[["russian_hours","Русский"],["du_hours","ДЮ"],["stepanov_hours","Степанов"],["team_hours","Командка / тур Закл."],["ftech_hours","Физтех"],["reading_hours","Чтение"],["english_hours","Английский"],["literature_hours","Литература"],["math_ege_hours","Ботать"],["programming_hours","Программирование"]];
+  document.querySelector("#breakdown").innerHTML=map.filter(x=>num(row[x[0]])>0||x[0]==="russian_hours").map(x=>{
+    const v=num(row[x[0]]),total=num(row.work_hours),pct=total?v/total*100:0;
+    return '<div class="row"><div class="row-label">'+x[1]+'</div><div class="smallbar"><i style="width:'+Math.min(100,pct)+'%"></i></div><div class="row-val">'+v.toFixed(1)+' ч</div></div>'
+  }).join("");
+  const pending=t.all.filter(x=>!["done","completed"].includes((x.status||"").toLowerCase()));
+  const done=t.done;
+  document.querySelector("#taskList").innerHTML=[
+    ...done.map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+(cats[x.category]||esc(x.category||""))+'</div></div><span class="tag done">готово</span></div>'),
+    ...pending.map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+(cats[x.category]||esc(x.category||""))+'</div></div><span class="tag">не закрыта</span></div>')
+  ].join("")||'<div class="empty">Нет недельных задач в данных.</div>';
+  document.querySelector("#kpis").innerHTML=[
+    ["План",num(row.planned_hours).toFixed(1)+" ч","недельный объём"],
+    ["Факт",num(row.work_hours).toFixed(1)+" ч","реально сделано"],
+    ["Время",percentTime.toFixed(1)+"%","факт / план"],
+    ["Задачи",t.done.length+"/"+t.all.length,percentTasks.toFixed(1)+"% закрыто"]
+  ].map(x=>'<div class="card kpi"><div class="kpi-label">'+x[0]+'</div><div class="kpi-value">'+x[1]+'</div><div class="kpi-sub">'+x[2]+'</div></div>').join("");
+  document.querySelector("#hint").textContent=percentTime>100&&percentTasks<100
+    ?"Эта неделя перевыполнена по часам, но не по задачам. Например, дополнительные часы ДЮ не превращают задачу по русскому в выполненную."
+    :percentTime>=100&&percentTasks>=100
+    ?"По времени и по задачам неделя закрыта."
+    :"Сравнение разделено: отдельный процент показывает часы, отдельный — реально закрытые задачи.";
+}
+async function load(){
+  data=await csv("data/stats.csv");
+  await Promise.all(data.map(loadTasks));
+  week.innerHTML=data.map((r,i)=>'<option value="'+i+'">'+r.week_start.slice(8,10)+"."+r.week_start.slice(5,7)+" — "+r.week_end.slice(8,10)+"."+r.week_end.slice(5,7)+'</option>').join("");
+  week.value=String(Math.max(0,data.length-1));
+  document.querySelector("#updated").textContent=data.length?"последняя: "+data[data.length-1].week_start+" — "+data[data.length-1].week_end:"";
+  renderChart();renderDetail();
+}
+metric.addEventListener("change",renderChart);
+subject.addEventListener("change",renderChart);
+week.addEventListener("change",renderDetail);
+load().catch(e=>document.querySelector("#hint").textContent="Не удалось загрузить данные.");
 </script>
 </body>
 </html>
