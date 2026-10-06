@@ -150,23 +150,27 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
 
 <script>
 "use strict";
-const labels={russian_hours:"Русский",du_hours:"ДЮ",stepanov_hours:"Степанов",team_hours:"Командка / тур Закл.",ftech_hours:"Физтех",reading_hours:"Чтение",english_hours:"Английский",literature_hours:"Литература",math_ege_hours:"Ботать"};
-const cats={RUS:"Русский",DU:"ДЮ",TR:"Степанов",TEAM:"Командка / тур Закл.",CP:"Программирование",FTECH:"Физтех",READ:"Чтение",ENG:"Английский",LIT:"Литература",MATH_EGE:"Ботать"};
-const metric=document.querySelector("#metric"),subject=document.querySelector("#subject"),week=document.querySelector("#week");
+const labels={RUS:"Русский",ДЮ:"ДЮ",TR:"Степанов",TEAM:"Командка / тур Закл.",CP:"Программирование",FTECH:"Физтех",READ:"Чтение",ENG:"Английский",LIT:"Литература",MATH_EGE:"Сложные задачи / ЕГЭ математика",ГЕОГРАФИЯ:"География"};
+const metric=document.querySelector("#metric"),subject=document.querySelector("#subject"),week=document.querySelector("#week"),topicSelect=document.querySelector("#topicSelect");
 let data=[],tasksByWeek={},topicProgress=[];
-const topicSelect=document.querySelector("#topicSelect");
-
 function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
 function esc(s){return String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
-function parseCSV(s){const rows=[];let row=[],cur="",q=false;for(let i=0;i<s.length;i++){const c=s[i];if(c==='"'){if(q&&s[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===','&&!q){row.push(cur);cur=""}else if((c==="\n"||c==="\r")&&!q){if(c==="\r"&&s[i+1]==="\n")i++;row.push(cur);cur="";if(row.some(x=>x!==""))rows.push(row);row=[]}else cur+=c}row.push(cur);if(row.some(x=>x!==""))rows.push(row);return rows}
-async function csv(path){const r=await fetch(path+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error(path);const rows=parseCSV(await r.text()),h=rows.shift()||[];return rows.map(v=>{const o={};h.forEach((k,i)=>o[k]=v[i]??"");return o})}
-function taskPath(ws){const p=ws.slice(8,10)+"."+ws.slice(5,7);return ws===data[data.length-1].week_start?p+"/data/tasks.csv":"archive/"+p+"/data/tasks.csv"}
-async function loadTasks(row){
-  try{
-    const all=(await csv(taskPath(row.week_start))).filter(x=>(x.type||"WEEKLY")==="WEEKLY");
-    const done=all.filter(x=>["done","completed"].includes((x.status||"").toLowerCase()));
-    tasksByWeek[row.week_start]={all,done};
-  }catch{tasksByWeek[row.week_start]={all:[],done:[]}}
+function parseCSV(s){const rows=[];let row=[],cur="",q=false;for(let i=0;i<s.length;i++){const c=s[i];if(c==='"'){if(q&&s[i+1]==='"'){cur+='"';i++}else q=!q}else if(c===','&&!q){row.push(cur);cur=""}else if((c==="\n"||c==="\r")&&!q){if(c==="\r"&&s[i+1]==="\n")i++;row.push(cur);cur="";if(row.some(x=>x!==""))rows.push(row);row=[]}else cur+=c}if(cur!==""||row.length){row.push(cur);if(row.some(x=>x!==""))rows.push(row)}return rows}
+async function csv(path){const r=await fetch(path+"?v="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error(path);const rows=parseCSV(await r.text()),h=rows.shift()||[];return rows.map(v=>{const o={};h.forEach((k,i)=>o[k]=v[i]??"");return o})}
+function weekPart(ws){return ws.slice(8,10)+"."+ws.slice(5,7)}
+async function loadWeek(row,i,current){
+  const part=weekPart(row.week_start),base=current?"./"+part+"/data/":"./archive/"+part+"/data/";
+  const [plans,tasks,log,weekly]=await Promise.all([csv(base+"weekly_plans.csv"),csv(base+"tasks.csv"),csv(base+"log.csv"),csv(base+"weekly.csv")]);
+  const plannedRows=plans.filter(x=>x.week_start===row.week_start&&x.week_end===row.week_end);
+  const planned={};for(const x of plannedRows){const c=(x.category||"").toUpperCase();planned[c]=(planned[c]||0)+num(x.planned_hours)}
+  const actual={};for(const x of log){const c=(x.category||"").toUpperCase();actual[c]=(actual[c]||0)+num(x.hours)}
+  const weeklyTasks=tasks.filter(x=>(x.type||"WEEKLY")==="WEEKLY"&&(!x.deadline||x.deadline<=row.week_end));
+  const done=weeklyTasks.filter(x=>["done","completed"].includes((x.status||"").toLowerCase()));
+  const w=weekly[0]||{};
+  const out={...row,planned_hours:Object.values(planned).reduce((a,b)=>a+b,0),work_hours:Object.values(actual).reduce((a,b)=>a+b,0),programming_hours:actual.CP||0,solved_week:done.length,cf_rating:w.cf_rating||row.cf_rating||"",div_results:w.div_results||row.div_results||""};
+  for(const c of Object.keys(actual)) out[(c||"").toLowerCase()+"_hours"]=actual[c]||0;
+  tasksByWeek[row.week_start]={all:weeklyTasks,done,base};
+  return out;
 }
 function taskPct(row){const t=tasksByWeek[row.week_start]||{all:[],done:[]};return t.all.length?100*t.done.length/t.all.length:0}
 function value(row){
@@ -184,20 +188,13 @@ function renderChart(){
   const vals=data.map(value),max=maxFor(vals);
   document.querySelector("#chartTitle").textContent=chartTitle();
   document.querySelector("#chartSub").textContent=data.length?data[0].week_start+" — "+data[data.length-1].week_end:"";
-  document.querySelector("#yaxis").innerHTML=[100,80,60,40,20,0].map(p=>{
-    const v=max*p/100;return '<span>'+((metric.value==="plan"||metric.value==="tasks")?v.toFixed(v%1?1:0)+"%":v.toFixed(v%1?1:0)+" ч")+'</span>'
-  }).join("");
-  document.querySelector("#plot").innerHTML=data.map((r,i)=>{
-    const v=value(r),h=Math.max(2,v/max*285),part=r.week_start.slice(8,10)+"."+r.week_start.slice(5,7);
-    const href="./"+part+"/dashboard.html";
-    return '<div class="week-col"><a class="week-link" href="'+href+'"><div class="week-value">'+v.toFixed(1)+suffix()+'</div><div class="barbox"><div class="bar '+(i===data.length-1?"current":"")+'" style="height:'+h+'px"><span>'+v.toFixed(1)+suffix()+'</span></div></div><div class="week-label">'+part+'</div></a></div>'
-  }).join("");
+  document.querySelector("#yaxis").innerHTML=[100,80,60,40,20,0].map(p=>{const v=max*p/100;return "<span>"+((metric.value==="plan"||metric.value==="tasks")?v.toFixed(v%1?1:0)+"%":v.toFixed(v%1?1:0)+" ч")+"</span>"}).join("");
+  document.querySelector("#plot").innerHTML=data.map((r,i)=>{const v=value(r),h=Math.max(2,v/max*285),part=weekPart(r.week_start),href="./"+part+"/dashboard.html";return '<div class="week-col"><a class="week-link" href="'+href+'"><div class="week-value">'+v.toFixed(1)+suffix()+'</div><div class="barbox"><div class="bar '+(i===data.length-1?"current":"")+'" style="height:'+h+'px"><span>'+v.toFixed(1)+suffix()+'</span></div></div><div class="week-label">'+part+'</div></a></div>'}).join("");
 }
 function renderDetail(){
   const row=data[Number(week.value)]||data[data.length-1];if(!row)return;
   const t=tasksByWeek[row.week_start]||{all:[],done:[]};
-  const tp=value({...row}); const percentTime=num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100;
-  const percentTasks=taskPct(row);
+  const percentTime=num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100,percentTasks=taskPct(row);
   document.querySelector("#detailPeriod").textContent=row.week_start+" — "+row.week_end;
   document.querySelector("#timeValue").textContent=percentTime.toFixed(1)+"%";
   document.querySelector("#timeMeta").textContent=num(row.work_hours).toFixed(1)+" ч факта из "+num(row.planned_hours).toFixed(1)+" ч плана";
@@ -205,72 +202,36 @@ function renderDetail(){
   document.querySelector("#taskMeta").textContent=t.done.length+" из "+t.all.length+" недельных задач закрыто";
   document.querySelector("#timeBar").style.width=Math.min(100,percentTime)+"%";
   document.querySelector("#taskBar").style.width=Math.min(100,percentTasks)+"%";
-  const overall=document.querySelector("#overall");
-  overall.className="status "+(percentTime>=100&&percentTasks>=100?"good":percentTime>=100||percentTasks>=100?"warn":"bad");
-  overall.textContent=percentTime>=100&&percentTasks>=100?"План закрыт":percentTime>=100||percentTasks>=100?"Показатели расходятся":"Есть отставание";
-  const map=[["russian_hours","Русский"],["du_hours","ДЮ"],["stepanov_hours","Степанов"],["team_hours","Командка / тур Закл."],["ftech_hours","Физтех"],["reading_hours","Чтение"],["english_hours","Английский"],["literature_hours","Литература"],["math_ege_hours","Ботать"],["programming_hours","Программирование"]];
-  document.querySelector("#breakdown").innerHTML=map.filter(x=>num(row[x[0]])>0||x[0]==="russian_hours").map(x=>{
-    const v=num(row[x[0]]),total=num(row.work_hours),pct=total?v/total*100:0;
-    return '<div class="row"><div class="row-label">'+x[1]+'</div><div class="smallbar"><i style="width:'+Math.min(100,pct)+'%"></i></div><div class="row-val">'+v.toFixed(1)+' ч</div></div>'
-  }).join("");
-  const pending=t.all.filter(x=>!["done","completed"].includes((x.status||"").toLowerCase()));
-  const done=t.done;
-  document.querySelector("#taskList").innerHTML=[
-    ...done.map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+(cats[x.category]||esc(x.category||""))+'</div></div><span class="tag done">готово</span></div>'),
-    ...pending.map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+(cats[x.category]||esc(x.category||""))+'</div></div><span class="tag">не закрыта</span></div>')
-  ].join("")||'<div class="empty">Нет недельных задач в данных.</div>';
-  document.querySelector("#kpis").innerHTML=[
-    ["План",num(row.planned_hours).toFixed(1)+" ч","недельный объём"],
-    ["Факт",num(row.work_hours).toFixed(1)+" ч","реально сделано"],
-    ["Время",percentTime.toFixed(1)+"%","факт / план"],
-    ["Задачи",t.done.length+"/"+t.all.length,percentTasks.toFixed(1)+"% закрыто"]
-  ].map(x=>'<div class="card kpi"><div class="kpi-label">'+x[0]+'</div><div class="kpi-value">'+x[1]+'</div><div class="kpi-sub">'+x[2]+'</div></div>').join("");
-  document.querySelector("#hint").textContent=percentTime>100&&percentTasks<100
-    ?"Эта неделя перевыполнена по часам, но не по задачам. Например, дополнительные часы ДЮ не превращают задачу по русскому в выполненную."
-    :percentTime>=100&&percentTasks>=100
-    ?"По времени и по задачам неделя закрыта."
-    :"Сравнение разделено: отдельный процент показывает часы, отдельный — реально закрытые задачи.";
+  const overall=document.querySelector("#overall");overall.className="status "+(percentTime>=100&&percentTasks>=100?"good":percentTime>=100||percentTasks>=100?"warn":"bad");overall.textContent=percentTime>=100&&percentTasks>=100?"План закрыт":percentTime>=100||percentTasks>=100?"Показатели расходятся":"Есть отставание";
+  const map=[["russian_hours","Русский"],["дю_hours","ДЮ"],["tr_hours","Степанов"],["team_hours","Командка / тур Закл."],["ftech_hours","Физтех"],["read_hours","Чтение"],["eng_hours","Английский"],["lit_hours","Литература"],["math_ege_hours","Ботать"],["cp_hours","Программирование"],["география_hours","География"]];
+  document.querySelector("#breakdown").innerHTML=map.filter(x=>num(row[x[0]])>0||x[0]==="russian_hours").map(x=>{const v=num(row[x[0]]),total=num(row.work_hours),pct=total?v/total*100:0;return '<div class="row"><div class="row-label">'+x[1]+'</div><div class="smallbar"><i style="width:'+Math.min(100,pct)+'%"></i></div><div class="row-val">'+v.toFixed(1)+' ч</div></div>'}).join("");
+  document.querySelector("#taskList").innerHTML=[...t.done.map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+esc(labels[(x.category||"").toUpperCase()]||x.category||"")+'</div></div><span class="tag done">готово</span></div>'),...t.all.filter(x=>!["done","completed"].includes((x.status||"").toLowerCase())).map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+esc(labels[(x.category||"").toUpperCase()]||x.category||"")+'</div></div><span class="tag">не закрыта</span></div>')].join("")||'<div class="empty">Нет недельных задач в данных.</div>';
+  document.querySelector("#kpis").innerHTML=[["План",num(row.planned_hours).toFixed(1)+" ч","недельный объём"],["Факт",num(row.work_hours).toFixed(1)+" ч","реально сделано"],["Время",percentTime.toFixed(1)+"%","факт / план"],["Задачи",t.done.length+"/"+t.all.length,percentTasks.toFixed(1)+"% закрыто"]].map(x=>'<div class="card kpi"><div class="kpi-label">'+x[0]+'</div><div class="kpi-value">'+x[1]+'</div><div class="kpi-sub">'+x[2]+'</div></div>').join("");
+  document.querySelector("#hint").textContent=percentTime>100&&percentTasks<100?"Эта неделя перевыполнена по часам, но не по задачам.":percentTime>=100&&percentTasks>=100?"По времени и по задачам неделя закрыта.":"Сравнение разделено: отдельный процент показывает часы, отдельный — реально закрытые задачи.";
 }
 function renderTopicProgress(){
-  if(!topicProgress.length){
-    topicSelect.innerHTML="";
-    document.querySelector("#topicCount").textContent="0/10";
-    document.querySelector("#topicHearts").innerHTML="";
-    return;
-  }
-  const idx=Math.max(0,Math.min(topicProgress.length-1,Number(topicSelect.value)||0));
-  const item=topicProgress[idx]||topicProgress[0];
-  const count=Math.max(0,Number(item.count)||0);
-  const filled=Math.min(10,count);
+  if(!topicProgress.length){topicSelect.innerHTML="";document.querySelector("#topicCount").textContent="0/10";document.querySelector("#topicHearts").innerHTML="";return}
+  const idx=Math.max(0,Math.min(topicProgress.length-1,Number(topicSelect.value)||0)),item=topicProgress[idx]||topicProgress[0],count=Math.max(0,Number(item.count)||0),filled=Math.min(10,count);
   document.querySelector("#topicCount").textContent=filled+"/10";
   document.querySelector("#topicHearts").innerHTML=Array.from({length:10},(_,i)=>'<span class="heart '+(i<filled?"filled":"")+'" aria-label="'+(i<filled?"решено":"не решено")+'">♥</span>').join("");
 }
-
 async function loadTopicProgress(){
-  try{
-    topicProgress=await csv("data/topic_progress.csv");
-    topicProgress=topicProgress.filter(x=>x.topic!==undefined&&x.topic!=="").map(x=>({topic:x.topic,count:Number(x.count)||0}));
-  }catch{
-    topicProgress=[];
-  }
+  topicProgress=await csv("./data/topic_progress.csv");
+  topicProgress=topicProgress.filter(x=>x.topic).map(x=>({topic:x.topic,count:Number(x.count)||0}));
   topicSelect.innerHTML=topicProgress.map((x,i)=>'<option value="'+i+'">'+esc(x.topic)+'</option>').join("");
   renderTopicProgress();
 }
-
 async function load(){
-  data=await csv("data/stats.csv");
-  await Promise.all(data.map(loadTasks));
+  const idx=await csv("./data/weeks.csv");
+  data=[];for(let i=0;i<idx.length;i++)data.push(await loadWeek(idx[i],i,i===idx.length-1));
   await loadTopicProgress();
-  week.innerHTML=data.map((r,i)=>'<option value="'+i+'">'+r.week_start.slice(8,10)+"."+r.week_start.slice(5,7)+" — "+r.week_end.slice(8,10)+"."+r.week_end.slice(5,7)+'</option>').join("");
+  week.innerHTML=data.map((r,i)=>'<option value="'+i+'">'+weekPart(r.week_start)+" — "+weekPart(r.week_end)+'</option>').join("");
   week.value=String(Math.max(0,data.length-1));
-  document.querySelector("#updated").textContent=data.length?"последняя: "+data[data.length-1].week_start+" — "+data[data.length-1].week_end:"";
+  document.querySelector("#updated").textContent=data.length?"источник: страницы недель":"";
   renderChart();renderDetail();
 }
-metric.addEventListener("change",renderChart);
-subject.addEventListener("change",renderChart);
-week.addEventListener("change",renderDetail);
-topicSelect.addEventListener("change",renderTopicProgress);
-load().catch(e=>document.querySelector("#hint").textContent="Не удалось загрузить данные.");
+metric.addEventListener("change",renderChart);subject.addEventListener("change",renderChart);week.addEventListener("change",renderDetail);topicSelect.addEventListener("change",renderTopicProgress);
+load().catch(e=>{console.error(e);document.querySelector("#hint").textContent="Не удалось загрузить данные недель.";});
 </script>
 </body>
 </html>

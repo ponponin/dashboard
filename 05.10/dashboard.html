@@ -64,7 +64,7 @@ log:[["2026-10-06","CP","Программирование — дорешка С�
 };
 
 function parseCSV(s){return s.trim().split(/\r?\n/).slice(1).map(line=>{const out=[];let cur="",q=false;for(let i=0;i<line.length;i++){const c=line[i];if(c=='"'){if(q&&line[i+1]=='"'){cur+='"';i++}else q=!q}else if(c===','&&!q){out.push(cur);cur=""}else cur+=c}out.push(cur);return out})}
-async function get(path,key){try{const r=await fetch("../"+path+"?t="+Date.now());if(!r.ok)throw Error();return parseCSV(await r.text())}catch(e){return fallback[key]||[]}}
+async function get(path,key){try{const r=await fetch(path+"?t="+Date.now(),{cache:"no-store"});if(!r.ok)throw Error();return parseCSV(await r.text())}catch(e){return fallback[key]||[]}}
 function n(v){const x=parseFloat(v);return Number.isFinite(x)?x:0}
 function esc(s){return String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
 function donut(values,total){let start=0;const parts=[];values.forEach((v,i)=>{const p=total?100*v/total:0;parts.push(colors[i%colors.length]+" "+start+"% "+(start+p)+"%");start+=p});return parts.length?"conic-gradient("+parts.join(",")+")":"#202a42"}
