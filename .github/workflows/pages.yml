@@ -31,5 +31,5 @@ jobs:
 # Force redeploy after synchronizing the current-week plan.
 # Force deployment trigger: 2026-10-06T12:38+05:00
 # Automatic deploy verification trigger: 2026-10-06T12:44+05:00
-\n# Trigger after latest weekly fixes: 2026-10-06T12:48+05:00\n
+# Trigger after latest weekly fixes: 2026-10-06T12:48+05:00
 # Trigger deploy after fixing current-week data: 2026-10-06T12:50+05:00
