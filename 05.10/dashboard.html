@@ -100,7 +100,7 @@ fetch("../data/codeforces.json?t="+Date.now(),{cache:"no-store"}).then(r=>r.json
 });
 document.querySelector("#log").innerHTML=log.length?log.map(r=>'<tr><td>'+esc(r[0])+'</td><td>'+esc(labels[r[1]]||r[1])+'</td><td>'+esc(r[2])+"</td><td>"+n(r[5]).toFixed(1)+"</td></tr>").join(""):'<tr><td colspan="4" class="empty">Пока нет фактических записей.</td></tr>';
 }
-document.querySelector("#refresh").addEventListener("click",()=>render().catch(e=>{console.error(e)}));
+document.querySelector("#refresh").addEventListener("click",()=>{render().catch(e=>{console.error(e)});window.open("https://github.com/ponponin/dashboard/actions/workflows/pages.yml","_blank","noopener");});
 render().catch(e=>{console.error(e);document.querySelector("#period").textContent="Не удалось загрузить данные — показаны последние сохранённые значения";});
 </script>
 </body>
