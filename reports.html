@@ -101,7 +101,6 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
     <option value="team_hours">Командка / тур Закл.</option><option value="ftech_hours">Физтех</option><option value="reading_hours">Чтение</option>
     <option value="english_hours">Английский</option><option value="literature_hours">Литература</option><option value="math_ege_hours">Ботать</option>
   </select>
-  <select id="week"></select>
 </div>
 
 <section class="card chart-card">
@@ -151,7 +150,7 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
 <script>
 "use strict";
 const labels={RUS:"Русский",ДЮ:"ДЮ",TR:"Степанов",TEAM:"Командка / тур Закл.",CP:"Программирование",FTECH:"Физтех",READ:"Чтение",ENG:"Английский",LIT:"Литература",MATH_EGE:"Сложные задачи / ЕГЭ математика",ГЕОГРАФИЯ:"География"};
-const metric=document.querySelector("#metric"),subject=document.querySelector("#subject"),week=document.querySelector("#week"),topicSelect=document.querySelector("#topicSelect");
+const metric=document.querySelector("#metric"),subject=document.querySelector("#subject"),topicSelect=document.querySelector("#topicSelect");
 let data=[],tasksByWeek={},topicProgress=[];
 function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
 function esc(s){return String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
@@ -193,7 +192,7 @@ function renderChart(){
   document.querySelector("#plot").innerHTML=data.map((r,i)=>{const v=value(r),h=Math.max(2,v/max*285),part=weekPart(r.week_start),href="./"+part+"/dashboard.html";return '<div class="week-col"><a class="week-link" href="'+href+'"><div class="week-value">'+v.toFixed(1)+suffix()+'</div><div class="barbox"><div class="bar '+(i===data.length-1?"current":"")+'" style="height:'+h+'px"><span>'+v.toFixed(1)+suffix()+'</span></div></div><div class="week-label">'+part+'</div></a></div>'}).join("");
 }
 function renderDetail(){
-  const row=data[Number(week.value)]||data[data.length-1];if(!row)return;
+  const row=data[data.length-1];if(!row)return;
   const t=tasksByWeek[row.week_start]||{all:[],done:[]};
   const percentTime=num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100,percentTasks=taskPct(row);
   document.querySelector("#detailPeriod").textContent=row.week_start+" — "+row.week_end;
@@ -225,7 +224,7 @@ async function loadTopicProgress(){
 async function load(){
   const idx0=await csv("./data/weeks.csv");
   const today=new Date(),dow=(today.getDay()+6)%7; today.setDate(today.getDate()-dow); const currentWeek=today.toISOString().slice(0,10);
-  const idx=idx0.filter(r=>r.week_start<=currentWeek);
+  const idx=idx0.filter(r=>r.week_start<=currentWeek).slice(-4);
   data=[];for(let i=0;i<idx.length;i++)data.push(await loadWeek(idx[i],i,idx[i].week_start===currentWeek));
   await loadTopicProgress();
   week.innerHTML=data.map((r,i)=>'<option value="'+i+'">'+weekPart(r.week_start)+" — "+weekPart(r.week_end)+'</option>').join("");
@@ -233,7 +232,7 @@ async function load(){
   document.querySelector("#updated").textContent=data.length?"источник: страницы недель":"";
   renderChart();renderDetail();
 }
-metric.addEventListener("change",renderChart);subject.addEventListener("change",renderChart);week.addEventListener("change",renderDetail);topicSelect.addEventListener("change",renderTopicProgress);
+metric.addEventListener("change",renderChart);subject.addEventListener("change",renderChart);topicSelect.addEventListener("change",renderTopicProgress);
 load().catch(e=>{console.error(e);document.querySelector("#hint").textContent="Не удалось загрузить данные недель.";});
 </script>
 </body>
