@@ -227,8 +227,6 @@ async function load(){
   const idx=idx0.filter(r=>r.week_start<=currentWeek).slice(-4);
   data=[];for(let i=0;i<idx.length;i++)data.push(await loadWeek(idx[i],i,idx[i].week_start===currentWeek));
   await loadTopicProgress();
-  week.innerHTML=data.map((r,i)=>'<option value="'+i+'">'+weekPart(r.week_start)+" — "+weekPart(r.week_end)+'</option>').join("");
-  week.value=String(Math.max(0,data.length-1));
   document.querySelector("#updated").textContent=data.length?"источник: страницы недель":"";
   renderChart();renderDetail();
 }
