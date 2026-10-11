@@ -167,7 +167,7 @@ async function loadWeek(row,i,current){
   const weeklyTasks=tasks.filter(x=>(x.type||"WEEKLY")==="WEEKLY"&&(!x.deadline||x.deadline<=row.week_end));
   const done=weeklyTasks.filter(x=>["done","completed"].includes((x.status||"").toLowerCase()));
   const w=weekly[0]||{};
-  const out={...row,planned_hours:Object.values(planned).reduce((a,b)=>a+b,0),work_hours:Object.values(actual).reduce((a,b)=>a+b,0),programming_hours:actual.CP||0,solved_week:done.length,cf_rating:w.cf_rating||row.cf_rating||"",div_results:w.div_results||row.div_results||""};
+  const out={...row,planned_hours:Object.values(planned).reduce((a,b)=>a+b,0),work_hours:Object.values(actual).reduce((a,b)=>a+b,0),programming_hours:(actual.CP||0)+(actual.TEAM||0)+(actual.DIV2||0),solved_week:done.length,cf_rating:w.cf_rating||row.cf_rating||"",div_results:w.div_results||row.div_results||""};
   for(const c of Object.keys(actual)) out[(c||"").toLowerCase()+"_hours"]=actual[c]||0;
   tasksByWeek[row.week_start]={all:weeklyTasks,done,base};
   return out;
