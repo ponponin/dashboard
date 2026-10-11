@@ -31,4 +31,4 @@ week_start,week_end,id,category,task,priority,status,planned_hours,actual_hours
 2026-10-12,2026-10-18,W211,RUS,ЕГЭ русский — практика задания 8,high,planned,1.5,0
 2026-10-12,2026-10-18,W212,MATH_EGE,ЕГЭ математика — сложные задачи,medium,planned,1.5,0
 2026-10-12,2026-10-18,W213,CP,Программирование — воскресенье,high,planned,3,0
-2026-10-12,2026-10-18,W214,READ,Чтение перед сном — рутина,medium,planned,2.5,0
+2026-10-12,2026-10-18,W214,READ,Чтение перед сном — рутина,medium,planned,1.5,0
