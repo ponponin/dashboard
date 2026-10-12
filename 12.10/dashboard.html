@@ -64,7 +64,7 @@ function n(v){const x=parseFloat(v);return Number.isFinite(x)?x:0}
 function esc(s){return String(s??"").replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]))}
 function donut(values,total){let start=0;const parts=[];values.forEach((v,i)=>{const p=total?100*v/total:0;parts.push(colors[i%colors.length]+" "+start+"% "+(start+p)+"%");start+=p});return parts.length?"conic-gradient("+parts.join(",")+")":"#202a42"}
 async function render(){
-const [schedule,allTasks,log,weekly,allWeeklyPlans]=await Promise.all([get("data/schedule.csv","schedule"),get("data/tasks.csv","tasks"),get("data/log.csv","log"),get("data/weekly.csv","weekly"),get("data/weekly_plans.csv","weeklyPlans")]);
+const [schedule,allTasks,log,weekly,allWeeklyPlans]=await Promise.all([get("../data/schedule.csv","schedule"),get("../data/tasks.csv","tasks"),get("../data/log.csv","log"),get("../data/weekly.csv","weekly"),get("../data/weekly_plans.csv","weeklyPlans")]);
 const weekStart=schedule[0]?.[0]||"2026-10-05"; const weekEnd=schedule[schedule.length-1]?.[0]||"2026-10-11";
 const weeklyPlans=allWeeklyPlans.filter(r=>r[0]===weekStart&&r[1]===weekEnd);
 const tasks=allTasks.filter(r=>(!r[3] || r[3]<=weekEnd) || (r[8]||"WEEKLY")==="DEADLINE");
