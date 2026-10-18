@@ -43,7 +43,7 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
 .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:13px;color:var(--muted)}
 .dot{width:9px;height:9px;border-radius:50%;display:inline-block;background:var(--accent);margin-right:6px}.dot.current{background:var(--good)}
 .hint{margin-top:13px;padding:12px 14px;border-radius:12px;background:var(--panel2);color:#c4cee0}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:14px}
 .kpi{padding:16px}.kpi-label{font-size:12px;color:var(--muted)}.kpi-value{font-size:28px;font-weight:850;margin-top:2px}.kpi-sub{font-size:12px;color:var(--muted);margin-top:2px}
 .details{display:grid;grid-template-columns:1.1fr .9fr;gap:12px;margin-top:14px}
 .detail{padding:18px}
@@ -97,6 +97,8 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
     <option value="plan">Выполнение по времени, %</option>
     <option value="tasks">Выполнение задач, %</option>
     <option value="total">Все часы за неделю</option>
+    <option value="study">Учёба, ч</option>
+    <option value="extras">Допы, ч</option>
     <option value="programming">Программирование, ч</option>
     <option value="subject">Часы по предмету</option>
   </select>
@@ -149,7 +151,9 @@ select{width:100%;padding:11px 13px;border-radius:11px;border:1px solid var(--li
 
 <script>
 "use strict";
-const labels={RUS:"Русский",ДЮ:"ДЮ",TR:"Степанов",TEAM:"Командка / тур Закл.",CP:"Программирование",FTECH:"Физтех",READ:"Чтение",ENG:"Английский",LIT:"Литература",MATH_EGE:"Сложные задачи / ЕГЭ математика",ГЕОГРАФИЯ:"География"};
+const labels={RUS:"Русский ЕГЭ",ДЮ:"ДЮ",TR:"Степанов",TEAM:"Командка / тур Закл.",CP:"Программирование",FTECH:"Физтех",OLYMPIAD_MATH:"Олимпиадная математика",READ:"Чтение",ENG:"Школьный английский",LIT:"Литература",CHGK:"ЧГК",FOOTBALL:"Футбол",THEATER:"Театр",WALK:"Прогулка",INF:"Школьная информатика",SCHOOL:"Школа",MATH_EGE:"Сложные задачи / ЕГЭ математика",ГЕОГРАФИЯ:"География",HISTORY:"История"};
+const extraCategories=new Set(["CHGK","READ","WALK","FOOTBALL","THEATER","ENG","LIT","INF","SCHOOL"]);
+const isExtraCategory=c=>extraCategories.has((c||"").toUpperCase());
 const metric=document.querySelector("#metric"),subject=document.querySelector("#subject");
 let data=[],tasksByWeek={},topicProgress=[];
 function num(v){const n=Number(v);return Number.isFinite(n)?n:0}
@@ -164,10 +168,14 @@ async function loadWeek(row,i,current){
   const plannedRows=plans.filter(x=>x.week_start===row.week_start&&x.week_end===row.week_end);
   const planned={};for(const x of plannedRows){const c=(x.category||"").toUpperCase();planned[c]=(planned[c]||0)+num(x.planned_hours)}
   const actual={};for(const x of log){const c=(x.category||"").toUpperCase();actual[c]=(actual[c]||0)+num(x.hours)}
+  const planned_study_hours=Object.entries(planned).filter(([c])=>!isExtraCategory(c)).reduce((s,[,v])=>s+v,0);
+  const planned_extras_hours=Object.entries(planned).filter(([c])=>isExtraCategory(c)).reduce((s,[,v])=>s+v,0);
+  const study_hours=log.filter(x=>!isExtraCategory(x.category)).reduce((s,x)=>s+num(x.hours),0);
+  const extras_hours=log.filter(x=>isExtraCategory(x.category)).reduce((s,x)=>s+num(x.hours),0);
   const weeklyTasks=tasks.filter(x=>(x.type||"WEEKLY")==="WEEKLY"&&(!x.deadline||x.deadline<=row.week_end));
   const done=weeklyTasks.filter(x=>["done","completed"].includes((x.status||"").toLowerCase()));
   const w=weekly[0]||{};
-  const out={...row,planned_hours:Object.values(planned).reduce((a,b)=>a+b,0),work_hours:Object.values(actual).reduce((a,b)=>a+b,0),programming_hours:(actual.CP||0)+(actual.TEAM||0)+(actual.DIV2||0),solved_week:done.length,cf_rating:w.cf_rating||row.cf_rating||"",div_results:w.div_results||row.div_results||""};
+  const out={...row,planned_hours:Object.values(planned).reduce((a,b)=>a+b,0),work_hours:Object.values(actual).reduce((a,b)=>a+b,0),planned_study_hours,planned_extras_hours,study_hours,extras_hours,programming_hours:(actual.CP||0)+(actual.DIV2||0),solved_week:done.length,cf_rating:w.cf_rating||row.cf_rating||"",div_results:w.div_results||row.div_results||""};
   for(const c of Object.keys(actual)) out[(c||"").toLowerCase()+"_hours"]=actual[c]||0;
   tasksByWeek[row.week_start]={all:weeklyTasks,done,base};
   return out;
@@ -177,10 +185,12 @@ function value(row){
   if(metric.value==="plan")return num(row.work_hours)/Math.max(.0001,num(row.planned_hours))*100;
   if(metric.value==="tasks")return taskPct(row);
   if(metric.value==="total")return num(row.work_hours);
+  if(metric.value==="study")return num(row.study_hours);
+  if(metric.value==="extras")return num(row.extras_hours);
   if(metric.value==="programming")return num(row.programming_hours);
   return num(row[subject.value]);
 }
-function chartTitle(){return metric.value==="plan"?"Выполнение по времени":metric.value==="tasks"?"Выполнение задач":metric.value==="total"?"Все часы за неделю":metric.value==="programming"?"Программирование":labels[subject.value]}
+function chartTitle(){return metric.value==="plan"?"Выполнение по времени":metric.value==="tasks"?"Выполнение задач":metric.value==="total"?"Все часы за неделю":metric.value==="study"?"Учёба, ч":metric.value==="extras"?"Допы, ч":metric.value==="programming"?"Программирование":labels[subject.value]}
 function suffix(){return metric.value==="plan"||metric.value==="tasks"?"%":" ч"}
 function maxFor(vals){const m=Math.max(1,...vals);if(metric.value==="plan"||metric.value==="tasks")return Math.max(100,Math.ceil(m/20)*20);if(m<=5)return 5;if(m<=10)return 10;if(m<=20)return 20;return Math.ceil(m/5)*5}
 function renderChart(){
@@ -203,10 +213,11 @@ function renderDetail(){
   document.querySelector("#timeBar").style.width=Math.min(100,percentTime)+"%";
   document.querySelector("#taskBar").style.width=Math.min(100,percentTasks)+"%";
   const overall=document.querySelector("#overall");overall.className="status "+(percentTime>=100&&percentTasks>=100?"good":percentTime>=100||percentTasks>=100?"warn":"bad");overall.textContent=percentTime>=100&&percentTasks>=100?"План закрыт":percentTime>=100||percentTasks>=100?"Показатели расходятся":"Есть отставание";
-  const map=[["russian_hours","Русский"],["дю_hours","ДЮ"],["tr_hours","Степанов"],["team_hours","Командка / тур Закл."],["ftech_hours","Физтех"],["read_hours","Чтение"],["eng_hours","Английский"],["lit_hours","Литература"],["math_ege_hours","Ботать"],["cp_hours","Программирование"],["география_hours","География"]];
-  document.querySelector("#breakdown").innerHTML=map.filter(x=>num(row[x[0]])>0||x[0]==="russian_hours").map(x=>{const v=num(row[x[0]]),total=num(row.work_hours),pct=total?v/total*100:0;return '<div class="row"><div class="row-label">'+x[1]+'</div><div class="smallbar"><i style="width:'+Math.min(100,pct)+'%"></i></div><div class="row-val">'+v.toFixed(1)+' ч</div></div>'}).join("");
+  const map=[["russian_hours","Русский ЕГЭ","RUS"],["дю_hours","ДЮ","ДЮ"],["tr_hours","Степанов","TR"],["team_hours","Командка / тур Закл.","TEAM"],["ftech_hours","Физтех","FTECH"],["olympiad_math_hours","Олимпиадная математика","OLYMPIAD_MATH"],["math_ege_hours","ЕГЭ математика","MATH_EGE"],["cp_hours","Программирование","CP"],["inf_hours","Школьная информатика","INF"],["chkg_hours","ЧГК","CHGK"],["read_hours","Чтение","READ"],["eng_hours","Школьный английский","ENG"],["lit_hours","Литература","LIT"],["football_hours","Футбол","FOOTBALL"],["theater_hours","Театр","THEATER"],["walk_hours","Прогулка","WALK"],["школа_hours","Школьные дела","SCHOOL"],["география_hours","География","ГЕОГРАФИЯ"],["история_hours","История","HISTORY"]];
+  const makeBreakdown=(extras)=>{const items=map.filter(x=>isExtraCategory(x[2])===extras&&num(row[x[0]])>0);const total=extras?num(row.extras_hours):num(row.study_hours);return '<div class="bucket-title">'+(extras?"Допы":"Учёба")+' — '+total.toFixed(1)+' ч</div>'+(items.map(x=>{const v=num(row[x[0]]),pct=total?v/total*100:0;return '<div class="row"><div class="row-label">'+x[1]+'</div><div class="smallbar"><i style="width:'+Math.min(100,pct)+'%"></i></div><div class="row-val">'+v.toFixed(1)+' ч</div></div>'}).join("")||'<div class="empty">Пока нет учтённых часов.</div>')};
+  document.querySelector("#breakdown").innerHTML=makeBreakdown(false)+makeBreakdown(true);
   document.querySelector("#taskList").innerHTML=[...t.done.map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+esc(labels[(x.category||"").toUpperCase()]||x.category||"")+'</div></div><span class="tag done">готово</span></div>'),...t.all.filter(x=>!["done","completed"].includes((x.status||"").toLowerCase())).map(x=>'<div class="task"><div><div class="task-name">'+esc(x.task)+'</div><div class="task-cat">'+esc(labels[(x.category||"").toUpperCase()]||x.category||"")+'</div></div><span class="tag">не закрыта</span></div>')].join("")||'<div class="empty">Нет недельных задач в данных.</div>';
-  document.querySelector("#kpis").innerHTML=[["План",num(row.planned_hours).toFixed(1)+" ч","недельный объём"],["Факт",num(row.work_hours).toFixed(1)+" ч","реально сделано"],["Время",percentTime.toFixed(1)+"%","факт / план"],["Задачи",t.done.length+"/"+t.all.length,percentTasks.toFixed(1)+"% закрыто"]].map(x=>'<div class="card kpi"><div class="kpi-label">'+x[0]+'</div><div class="kpi-value">'+x[1]+'</div><div class="kpi-sub">'+x[2]+'</div></div>').join("");
+  document.querySelector("#kpis").innerHTML=[["План",num(row.planned_hours).toFixed(1)+" ч","учёба + допы"],["Всего",num(row.work_hours).toFixed(1)+" ч","учтённые часы"],["Учёба",num(row.study_hours).toFixed(1)+" ч",num(row.planned_study_hours).toFixed(1)+" ч по плану"],["Допы",num(row.extras_hours).toFixed(1)+" ч",num(row.planned_extras_hours).toFixed(1)+" ч по плану"],["Время",percentTime.toFixed(1)+"%","факт / план"],["Задачи",t.done.length+"/"+t.all.length,percentTasks.toFixed(1)+"% закрыто"]].map(x=>'<div class="card kpi"><div class="kpi-label">'+x[0]+'</div><div class="kpi-value">'+x[1]+'</div><div class="kpi-sub">'+x[2]+'</div></div>').join("");
   document.querySelector("#hint").textContent=percentTime>100&&percentTasks<100?"Эта неделя перевыполнена по часам, но не по задачам.":percentTime>=100&&percentTasks>=100?"По времени и по задачам неделя закрыта.":"Сравнение разделено: отдельный процент показывает часы, отдельный — реально закрытые задачи.";
 }
 function renderTopicProgress(){
