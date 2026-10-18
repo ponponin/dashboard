@@ -1,4 +1,4 @@
-week_start,week_end,planned_hours,plan_percent,work_hours,programming_hours,russian_hours,ДЮ_hours,stepanov_hours,team_hours,ftech_hours,reading_hours,english_hours,literature_hours,math_ege_hours,solved_week,vsosh_region_score,vsosh_region_max,vsosh_final_score,vsosh_final_max,cf_rating,div_results,notes,study_hours,extras_hours,study_hours,extras_hours
-2026-09-28,2026-10-04,14.5,113.8,16.5,8.5,0,6,2,5,0,1.5,0,0,0,2,,,,,1589,,Фактически 16 ч; план 14.5 ч,15,1.5,15,1.5
-2026-10-05,2026-10-11,29,77.6,22.5,10.5,1.5,4,0,6,5,0,0,0,1.5,6,,,,,1589,,Факт 22,22.5,0,22.5,0
-2026-10-12,2026-10-18,28,73.2,20.5,4,0,6,0,0,0,0.5,0,0,0,1,,,,,1589,,"Учёба 17,5 ч; допы 3 ч. Программирование 4 ч, Тургор 5 ч — олимпиадная математика. География и история сданы; четверг пропущен из-за сна. Время футбола, ЧГК, театра и прогулки пока не указано.",17.5,3,17.5,3
+week_start,week_end,planned_hours,plan_percent,work_hours,programming_hours,russian_hours,ДЮ_hours,stepanov_hours,team_hours,ftech_hours,reading_hours,english_hours,literature_hours,math_ege_hours,solved_week,vsosh_region_score,vsosh_region_max,vsosh_final_score,vsosh_final_max,cf_rating,div_results,notes,study_hours,extras_hours
+2026-09-28,2026-10-04,14.5,113.8,16.5,1.5,0,2,2,5,0,1.5,0,0,0,2,,,,,1589,,"Фактически 16,5 ч: учёба 15 ч, допы 1,5 ч.",15,1.5
+2026-10-05,2026-10-11,29,77.6,22.5,4.5,1.5,4,0,6,5,0,0,0,1.5,6,,,,,1589,,"Факт 22,5 ч; учёба 22,5 ч, допы 0 ч; тур Закла — 6 ч.",22.5,0
+2026-10-12,2026-10-18,28,73.2,20.5,4,0,6,2.5,0,0,0.5,0,0,0,1,,,,,1589,,"Учёба 17,5 ч; допы 3 ч. Программирование 4 ч, Тургор 5 ч — олимпиадная математика. География и история сданы; четверг пропущен из-за сна. Время футбола, ЧГК, театра и прогулки пока не указано.",17.5,3
