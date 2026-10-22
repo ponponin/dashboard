@@ -1,6 +1,6 @@
 {
   "handle": "pon",
-  "updated_at": "2026-10-22T04:38:34.169Z",
+  "updated_at": "2026-10-22T11:46:12.640Z",
   "rating": 1589,
   "history": [
     {
@@ -235,51 +235,17 @@
       "rank": 1000,
       "ratingUpdateTimeSeconds": 1789234500,
       "oldRating": 1491,
-      "newRating": 1549
-    },
-    {
-      "contestId": 2267,
-      "contestName": "Codeforces Round 1123 (Div. 2)",
-      "handle": "pon",
-      "rank": 5736,
-      "ratingUpdateTimeSeconds": 1790355000,
-      "oldRating": 1549,
-      "newRating": 1468
-    },
-    {
-      "contestId": 2269,
-      "contestName": "Codeforces Round 1124 (Div. 2)",
-      "handle": "pon",
-      "rank": 399,
-      "ratingUpdateTimeSeconds": 1790442300,
-      "oldRating": 1468,
       "newRating": 1589
     }
   ],
   "recent_divs": [
     {
-      "name": "Codeforces Round 1124 (Div. 2)",
-      "date": "2026-09-26",
-      "rank": 399,
-      "oldRating": 1468,
-      "newRating": 1589,
-      "delta": 121
-    },
-    {
-      "name": "Codeforces Round 1123 (Div. 2)",
-      "date": "2026-09-25",
-      "rank": 5736,
-      "oldRating": 1549,
-      "newRating": 1468,
-      "delta": -81
-    },
-    {
       "name": "Codeforces Round 1120 (Div. 2)",
       "date": "2026-09-12",
       "rank": 1000,
       "oldRating": 1491,
-      "newRating": 1549,
-      "delta": 58
+      "newRating": 1589,
+      "delta": 98
     },
     {
       "name": "Codeforces Round 1118 (Div. 2)",
@@ -296,6 +262,22 @@
       "oldRating": 1386,
       "newRating": 1476,
       "delta": 90
+    },
+    {
+      "name": "Codeforces Round 1052 (Div. 2)",
+      "date": "2025-09-21",
+      "rank": 6358,
+      "oldRating": 1456,
+      "newRating": 1389,
+      "delta": -67
+    },
+    {
+      "name": "Codeforces Round 1049 (Div. 2)",
+      "date": "2025-09-09",
+      "rank": 4032,
+      "oldRating": 1458,
+      "newRating": 1456,
+      "delta": -2
     }
   ]
 }
