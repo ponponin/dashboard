@@ -1,7 +1,7 @@
 {
   "handle": "pon",
-  "updated_at": "2026-10-22T11:46:12.640Z",
-  "rating": 1589,
+  "updated_at": "2026-10-22T17:06:59.567Z",
+  "rating": 1549,
   "history": [
     {
       "contestId": 1672,
@@ -235,7 +235,7 @@
       "rank": 1000,
       "ratingUpdateTimeSeconds": 1789234500,
       "oldRating": 1491,
-      "newRating": 1589
+      "newRating": 1549
     }
   ],
   "recent_divs": [
@@ -244,8 +244,8 @@
       "date": "2026-09-12",
       "rank": 1000,
       "oldRating": 1491,
-      "newRating": 1589,
-      "delta": 98
+      "newRating": 1549,
+      "delta": 58
     },
     {
       "name": "Codeforces Round 1118 (Div. 2)",
