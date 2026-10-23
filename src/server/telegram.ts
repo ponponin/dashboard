@@ -1,10 +1,12 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { SCHOOL_SCHEDULE_11B } from '../data/schoolSchedule.ts';
+import { getRandomChgkQuestion, getRandomChgkFact, type ChgkQuestion } from '../data/chgkDatabase.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const CONFIG_FILE = path.resolve(__dirname, '../../data/telegram_config.json');
+const CONFIG_FILE = path.resolve(process.cwd(), 'data/telegram_config.json');
 
 export interface TelegramConfig {
   botToken: string;
@@ -16,13 +18,23 @@ export interface TelegramConfig {
   dashboardUrl?: string; // AI Studio dashboard URL for pinned message
   lastDailySentDate?: string; // YYYY-MM-DD
   sentAlerts?: Record<string, string>; // `${taskId}_${daysLeft}` -> ISO timestamp
+  activeHost?: 'railway' | 'dev' | 'both'; // Railway (24/7) vs AI Studio local container
+  lastUpdateOffset?: number;
+  geminiApiKey?: string;
 }
 
 export function loadTelegramConfig(): TelegramConfig {
   try {
     if (fs.existsSync(CONFIG_FILE)) {
       const raw = fs.readFileSync(CONFIG_FILE, 'utf-8');
-      return JSON.parse(raw);
+      const parsed = JSON.parse(raw);
+      if (!parsed.activeHost) {
+        parsed.activeHost = 'railway';
+      }
+      if (!parsed.geminiApiKey && process.env.GEMINI_API_KEY) {
+        parsed.geminiApiKey = process.env.GEMINI_API_KEY;
+      }
+      return parsed;
     }
   } catch (err) {
     console.warn('Error reading telegram config:', err);
@@ -39,7 +51,9 @@ export function loadTelegramConfig(): TelegramConfig {
     dailyTime: process.env.TELEGRAM_DAILY_TIME || '07:00',
     olympiadReminders: true,
     dashboardUrl: process.env.TELEGRAM_DASHBOARD_URL || '',
-    sentAlerts: {}
+    sentAlerts: {},
+    activeHost: (process.env.TELEGRAM_ACTIVE_HOST as any) || 'railway',
+    geminiApiKey: process.env.GEMINI_API_KEY || ''
   };
 }
 
@@ -55,6 +69,9 @@ export function saveTelegramConfig(config: TelegramConfig): void {
   }
 }
 
+// Global outgoing message deduplication cache
+const recentOutgoingMessages = new Map<string, number>();
+
 export async function sendTelegramMessage(
   botToken: string, 
   chatId: string, 
@@ -63,6 +80,23 @@ export async function sendTelegramMessage(
 ): Promise<{ success: boolean; messageId?: number; error?: string }> {
   if (!botToken || !chatId) {
     return { success: false, error: 'Не указан Bot Token или Chat ID' };
+  }
+
+  // Deduplicate identical outgoing messages to the same chat within 2.5 seconds
+  const dedupKey = `${String(chatId).trim()}:${text.slice(0, 150)}`;
+  const now = Date.now();
+  const lastSent = recentOutgoingMessages.get(dedupKey) || 0;
+  if (now - lastSent < 2500) {
+    console.warn('[Telegram] Dropped duplicate outgoing message within 2.5s:', text.slice(0, 50));
+    return { success: true };
+  }
+  recentOutgoingMessages.set(dedupKey, now);
+
+  // Prune cache
+  if (recentOutgoingMessages.size > 200) {
+    for (const [k, t] of recentOutgoingMessages.entries()) {
+      if (now - t > 10000) recentOutgoingMessages.delete(k);
+    }
   }
 
   try {
@@ -86,6 +120,24 @@ export async function sendTelegramMessage(
 
     const data = await res.json();
     if (!res.ok || !data.ok) {
+      // Automatic fallback if HTML entities fail to parse (e.g. unescaped math or brackets from AI)
+      if (data.description && (data.description.includes("can't parse entities") || data.description.includes('parse'))) {
+        console.warn('[Telegram] HTML parse error, retrying without HTML parse_mode:', data.description);
+        const plainText = text.replace(/<[^>]*>/g, '');
+        const fallbackRes = await fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ...bodyPayload,
+            parse_mode: undefined,
+            text: plainText
+          })
+        });
+        const fallbackData = await fallbackRes.json();
+        if (fallbackRes.ok && fallbackData.ok) {
+          return { success: true, messageId: fallbackData.result?.message_id };
+        }
+      }
       return { success: false, error: data.description || `HTTP ${res.status}` };
     }
 
@@ -191,8 +243,6 @@ export async function detectTelegramChatId(botToken: string): Promise<{ success:
     return { success: false, error: err.message };
   }
 }
-
-import { getRandomChgkQuestion, getRandomChgkFact, ChgkQuestion } from '../data/chgkDatabase';
 
 export async function getEkbWeather(): Promise<string> {
   try {
@@ -320,4 +370,112 @@ function escapeHtml(text: string): string {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;');
 }
+
+export const MAIN_MENU_KEYBOARD = {
+  keyboard: [
+    [{ text: '📅 На сегодня' }, { text: '🗓️ На завтра' }],
+    [{ text: '📆 Выбрать день' }, { text: '🏆 Олимпиады' }],
+    [{ text: '🧠 Вопрос ЧГК' }, { text: '💡 Факт ЧГК' }],
+    [{ text: '🤖 Спросить Gemini' }]
+  ],
+  resize_keyboard: true,
+  persistent: true
+};
+
+export const CHGK_QUESTION_KEYBOARD = {
+  inline_keyboard: [
+    [
+      { text: '💡 Показать ответ', callback_data: 'chgk_show_answer' },
+      { text: '⏱️ 60 сек (минута)', callback_data: 'chgk_timer_60' }
+    ],
+    [
+      { text: '⏭️ Следующий вопрос', callback_data: 'chgk_next' }
+    ]
+  ]
+};
+
+export const CHGK_ANSWER_KEYBOARD = {
+  inline_keyboard: [
+    [
+      { text: '⏭️ Следующий вопрос', callback_data: 'chgk_next' }
+    ]
+  ]
+};
+
+export const DAYS_INLINE_KEYBOARD = {
+  inline_keyboard: [
+    [
+      { text: 'Пн (Понедельник)', callback_data: 'sch_Mon' },
+      { text: 'Вт (Вторник)', callback_data: 'sch_Tue' }
+    ],
+    [
+      { text: 'Ср (Среда)', callback_data: 'sch_Wed' },
+      { text: 'Чт (Четверг)', callback_data: 'sch_Thu' }
+    ],
+    [
+      { text: 'Пт (Пятница)', callback_data: 'sch_Fri' },
+      { text: 'Сб (Суббота)', callback_data: 'sch_Sat' }
+    ],
+    [
+      { text: 'Вс (Воскресенье)', callback_data: 'sch_Sun' }
+    ]
+  ]
+};
+
+export function formatDaySchedule(dayId: string): string {
+  const dayNames: Record<string, string> = {
+    'Mon': 'Понедельник',
+    'Tue': 'Вторник',
+    'Wed': 'Среда',
+    'Thu': 'Четверг',
+    'Fri': 'Пятница',
+    'Sat': 'Суббота',
+    'Sun': 'Воскресенье'
+  };
+
+  const dayName = dayNames[dayId] || dayId;
+  const lessons = SCHOOL_SCHEDULE_11B.filter(l => l.day === dayId);
+
+  let msg = `📅 <b>Расписание уроков 11Б — ${dayName}:</b>\n\n`;
+
+  if (lessons.length === 0) {
+    if (dayId === 'Sun') {
+      msg += `🎉 <i>В воскресенье уроков в школе нет!</i>\n\n`;
+      msg += `⚡ <b>Планы на воскресенье:</b>\n`;
+      msg += `• Дорешка Степанова — олимпиадное программирование (4ч)\n`;
+      msg += `• ЕГЭ Русский язык — курс Stepik (1.5ч)\n`;
+      msg += `• Отдых и подготовка к новой неделе 🦾\n`;
+    } else {
+      msg += `<i>Нет уроков в этот день.</i>\n\n`;
+    }
+  } else {
+    lessons.forEach(l => {
+      const noteStr = l.note ? ` <i>(${l.note})</i>` : '';
+      msg += `<b>${l.lessonNumber}.</b> <code>${l.timeStart}–${l.timeEnd}</code> — <b>${escapeHtml(l.subject)}</b> (${l.room})${noteStr}\n`;
+    });
+    msg += `\n`;
+  }
+
+  // Evening activities for that day
+  const eveningActivities: Record<string, string[]> = {
+    'Mon': ['15:30–17:00: ЧГК — тренировка (1.5ч)', '19:00–21:00: ДЮ — олимпиадная математика (2ч)'],
+    'Tue': ['18:00–21:00: Дорешка олимпиадных задач / Степанов (3ч)'],
+    'Wed': ['17:00–19:30: Олимпиадная математика / Физтех (2.5ч)'],
+    'Thu': ['16:00–18:00: ЧГК — командный турнир (2ч)', '20:00–21:30: Литература & английский дедлайны (1.5ч)'],
+    'Fri': ['18:00–21:00: Олимпиадное программирование — тренировка (3ч)'],
+    'Sat': ['15:00–18:00: Codeforces контест / тренировочный тур (3ч)'],
+    'Sun': ['12:00–16:00: Дорешка Степанова (4ч)', '17:00–18:30: ЕГЭ Русский Stepik (1.5ч)']
+  };
+
+  const evening = eveningActivities[dayId];
+  if (evening && evening.length > 0) {
+    msg += `⚡ <b>План после школы:</b>\n`;
+    evening.forEach(act => {
+      msg += `• ${escapeHtml(act)}\n`;
+    });
+  }
+
+  return msg;
+}
+
 
