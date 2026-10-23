@@ -1,4 +1,5 @@
 id,task,category,deadline,priority,status,planned_hours,actual_hours,type,notes
+OLY281,иннопа матеша,OLYMPIAD,2026-10-25,very_high,planned,0,0,DEADLINE,
 W201,ДЮ — понедельник,ДЮ,2026-10-18,high,done,2,4,WEEKLY,понедельник 19:00–21:00; занятие фактически 4 часа
 W202,ЧГК — тренировка,CHGK,2026-10-18,high,done,1.5,1.5,WEEKLY,понедельник 15:30–17:00; тренировка состоялась
 W203,Степанов,TR,2026-10-18,high,done,2.5,2.5,WEEKLY,вторник 17:00–19:30
