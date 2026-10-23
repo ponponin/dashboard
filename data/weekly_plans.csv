@@ -43,7 +43,7 @@ week_start,week_end,id,category,task,priority,status,planned_hours,actual_hours
 2026-10-19,2026-10-25,W309,MATH_EGE,ЕГЭ профильная математика — сложные задачи (№19),medium,planned,2,0
 2026-10-19,2026-10-25,W310,OLYMPIAD_MATH,Прога,medium,planned,2.5,0
 2026-10-19,2026-10-25,W311,READ,Чтение перед сном — рутина,low,planned,1,0
-2026-10-19,2026-10-25,W315,CP,Codeforces Div. 2 Round (24.10 16:05–18:05 UTC+5),high,skipped,2,0
+2026-10-19,2026-10-25,W315,CP,Codeforces Div. 2 Round (24.10 16:05–18:05 UTC+5),high,planned,2,0
 2026-10-19,2026-10-25,W313,LIT,Литература: 1-й стих наизусть (сдать в пт),high,skipped,1,0
 2026-10-19,2026-10-25,W307,TEAM,Тур Закла 2016 года (суббота),high,planned,5,0
 2026-01-19,2026-01-25,W401,OLYMPIAD,25.01 олимпиада иннополис 10-13,very_high,planned,3,0
