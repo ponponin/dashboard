@@ -47,5 +47,3 @@ week_start,week_end,id,category,task,priority,status,planned_hours,actual_hours
 2026-10-19,2026-10-25,W307,TEAM,Тур Закла 2016 года (суббота),high,planned,5,0
 2026-01-19,2026-01-25,W401,OLYMPIAD,25.01 олимпиада иннополис 10-13,very_high,planned,3,0
 2026-10-19,2026-10-25,W634,OLYMPIAD,25.01 олимпиада иннополис 10-13,very_high,planned,3,0
-2026-10-19,2026-10-25,W314,LIT,Литература: 2-й стих наизусть (сдать в сб),high,planned,1,0
-2026-10-19,2026-10-25,W310,OLYMPIAD_MATH,Олимпиадная математика — теория и разбор задач (вс),medium,planned,2.5,0
