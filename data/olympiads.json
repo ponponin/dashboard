@@ -1,0 +1,1248 @@
+[
+  {
+    "id": "admission",
+    "name": "Поступление 2027: правила",
+    "subject": "Другое",
+    "level": "РСОШ / ВсОШ",
+    "date": "2026-11-15",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://pk.mipt.ru/bachelor/2027_olympiads/",
+    "description": "Проверить приказ «БВИ только победителям»; 20 янв — сверить правила приёма вузов. | ○ Проверить, принят ли приказ «БВИ только победителям»: 2026-11-15; ○ Вузы публикуют списки олимпиад для БВИ и 100 баллов: 2027-01-20",
+    "priority": "high",
+    "status": "todo",
+    "state": "Проверить приказ «БВИ только победителям»; 20 янв — сверить правила приёма вузов.",
+    "stages": [
+      {
+        "id": "order-bvi",
+        "stage": "Проверить, принят ли приказ «БВИ только победителям»",
+        "kind": "milestone",
+        "date": "2026-11-15",
+        "confidence": "check",
+        "done": false,
+        "note": "Проект №171214. Если примут — призёрам перечневых олимпиад достанутся только 100 баллов."
+      },
+      {
+        "id": "rules-2027",
+        "stage": "Вузы публикуют списки олимпиад для БВИ и 100 баллов",
+        "kind": "milestone",
+        "date": "2027-01-20",
+        "confidence": "exact",
+        "done": false,
+        "note": "Сверь МФТИ, ВШЭ, ИТМО, Иннополис, МГУ ВМК, МИФИ, Бауманку: какие профили и классы засчитывают."
+      }
+    ]
+  },
+  {
+    "id": "ft-math",
+    "name": "Физтех — математика",
+    "subject": "Математика",
+    "level": "I ур. · МФТИ: 100 баллов, БВИ победителям",
+    "date": "2026-10-11",
+    "regStatus": "submitted",
+    "regDeadline": "2026-10-31",
+    "regUrl": "https://olymp-online.mipt.ru/event/449",
+    "description": "Есть диплом 1-го тура → готовимся к финалу. Нет → пишем 2-й и 3-й туры. | ✓ 1-й отборочный онлайн-тур по математике: 2026-10-11; ○ Если нет диплома: регистрация на 2-й тур: 2026-10-31; ○ Если нет диплома: 2-й онлайн-тур: 2026-11-01",
+    "priority": "high",
+    "status": "participate",
+    "state": "Есть диплом 1-го тура → готовимся к финалу. Нет → пишем 2-й и 3-й туры.",
+    "stages": [
+      {
+        "id": "ft-math-r1",
+        "stage": "1-й отборочный онлайн-тур по математике",
+        "kind": "round",
+        "date": "2026-10-11",
+        "time": "10:00",
+        "confidence": "exact",
+        "done": true,
+        "resultsInfo": "Победители и призёры тура — до начала следующего тура, т.е. до 1 ноя (регламент Физтеха)",
+        "result": "pending"
+      },
+      {
+        "id": "ft-math-reg2",
+        "stage": "Если нет диплома: регистрация на 2-й тур",
+        "kind": "reg",
+        "date": "2026-10-31",
+        "time": "08:00",
+        "confidence": "exact",
+        "done": true,
+        "note": "Если уже есть подтверждённый аккаунт — повторная регистрация не нужна, но проверь запись на тур."
+      },
+      {
+        "id": "ft-math-r2",
+        "stage": "Если нет диплома: 2-й онлайн-тур",
+        "kind": "round",
+        "date": "2026-11-01",
+        "time": "08:00",
+        "confidence": "exact",
+        "done": true,
+        "note": "4 часа: ответы до 12:05 МСК, решения до 13:05 МСК.",
+        "resultsInfo": "До начала следующего тура, т.е. до 7 ноя (регламент Физтеха)"
+      },
+      {
+        "id": "ft-math-reg3",
+        "stage": "Если нет диплома: регистрация на 3-й тур (11 класс)",
+        "kind": "reg",
+        "date": "2026-11-06",
+        "time": "10:00",
+        "confidence": "exact",
+        "done": true
+      },
+      {
+        "id": "ft-math-r3",
+        "stage": "Если нет диплома: 3-й онлайн-тур (11 класс)",
+        "kind": "round",
+        "date": "2026-11-07",
+        "time": "10:00",
+        "confidence": "exact",
+        "done": true,
+        "note": "Туры независимые: в финал — победители и призёры любого тура.",
+        "resultsInfo": "Срок не объявлен — olymp-online.mipt.ru"
+      },
+      {
+        "id": "ft-math-final",
+        "stage": "Заключительный этап по математике",
+        "kind": "final",
+        "date": "2027-02-14",
+        "dateEnd": "2027-02-15",
+        "confidence": "approx",
+        "done": true,
+        "note": "Допуск: диплом любого онлайн-тура."
+      }
+    ]
+  },
+  {
+    "id": "ftcode",
+    "name": "Физтех.Код будущего",
+    "subject": "Информатика",
+    "level": "II ур. · в списке МФТИ (профили уточнят)",
+    "date": "2026-09-28",
+    "regStatus": "submitted",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://olimpiada.ru/activity/5898",
+    "description": "○ I отборочный этап (длинный онлайн-этап, информатика и программирование): 2026-09-28–2026-11-05; ○ II отборочный этап: 2026-11-20–2027-01-25",
+    "priority": "high",
+    "status": "active",
+    "state": "",
+    "stages": [
+      {
+        "id": "ftcode-r1",
+        "stage": "I отборочный этап (длинный онлайн-этап, информатика и программирование)",
+        "kind": "round",
+        "date": "2026-09-28",
+        "dateEnd": "2026-11-05",
+        "confidence": "check",
+        "done": true,
+        "note": "Срок закрытия — по olimpiada.ru, точный проверь в личном кабинете. Реши задачи заранее, не в последний день.",
+        "resultsInfo": "Срок не объявлен — личный кабинет; II этап стартует 20 ноя"
+      },
+      {
+        "id": "ftcode-r2",
+        "stage": "II отборочный этап",
+        "kind": "round",
+        "date": "2026-11-20",
+        "dateEnd": "2027-01-25",
+        "confidence": "approx",
+        "done": true
+      }
+    ]
+  },
+  {
+    "id": "infopen",
+    "name": "Открытая олимпиада по программированию",
+    "subject": "Информатика",
+    "level": "I ур. · ИТМО, МГУ, ВШЭ, МИФИ",
+    "date": "2026-12-01",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://inf-open.ru/",
+    "description": "○ Отборочный тур (один длинный, ~9 задач): 2026-12-01–2027-01-15; ○ Заключительный этап: 2027-03-01–2027-03-10",
+    "priority": "high",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "infopen-r1",
+        "stage": "Отборочный тур (один длинный, ~9 задач)",
+        "kind": "round",
+        "date": "2026-12-01",
+        "dateEnd": "2027-01-15",
+        "confidence": "approx",
+        "done": true,
+        "note": "График сезона ещё не опубликован."
+      },
+      {
+        "id": "infopen-final",
+        "stage": "Заключительный этап",
+        "kind": "final",
+        "date": "2027-03-01",
+        "dateEnd": "2027-03-10",
+        "confidence": "approx",
+        "done": false
+      }
+    ]
+  },
+  {
+    "id": "inno-inf",
+    "name": "Иннополис — информатика",
+    "subject": "Информатика",
+    "level": "II ур. · Иннополис",
+    "date": "2026-11-22",
+    "regStatus": "submitted",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://dovuz.innopolis.university/pre-olympiads/innopolis-open/informatics",
+    "description": "○ 1-й отборочный тур по информатике (онлайн, прокторинг, 3 часа): 2026-11-22; ○ 2-й отборочный тур по информатике: 2026-12-26; ○ Финал (очно): 2027-02-12–2027-02-14",
+    "priority": "mid",
+    "status": "participate",
+    "state": "",
+    "stages": [
+      {
+        "id": "inno-inf-r1",
+        "stage": "1-й отборочный тур по информатике (онлайн, прокторинг, 3 часа)",
+        "kind": "round",
+        "date": "2026-11-22",
+        "time": "10:00",
+        "confidence": "exact",
+        "done": true,
+        "resultsInfo": "Срок не объявлен — письмо и сайт организатора"
+      },
+      {
+        "id": "inno-inf-r2",
+        "stage": "2-й отборочный тур по информатике",
+        "kind": "round",
+        "date": "2026-12-26",
+        "confidence": "exact",
+        "done": true,
+        "note": "Для финала достаточно стать призёром одного из туров. Накануне, 25 дек, — пробный тур."
+      },
+      {
+        "id": "inno-inf-final",
+        "stage": "Финал (очно)",
+        "kind": "final",
+        "date": "2027-02-12",
+        "dateEnd": "2027-02-14",
+        "confidence": "exact",
+        "done": true
+      },
+      {
+        "id": "inno-inf-trial",
+        "stage": "Пробный тур — проверка платформы и прокторинга",
+        "kind": "trial",
+        "date": "2026-11-21",
+        "confidence": "exact",
+        "done": true,
+        "note": "Проверить камеру, платформу и вход."
+      }
+    ]
+  },
+  {
+    "id": "inno-math",
+    "name": "Иннополис — математика",
+    "subject": "Математика",
+    "level": "II ур. · 100 баллов",
+    "date": "2026-10-24",
+    "regStatus": "submitted",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://dovuz.innopolis.university/pre-olympiads/innopolis-open",
+    "description": "✓ 1-й отборочный тур по математике (дистанционно): 2026-10-24–2026-10-25; ○ 2-й отборочный тур по математике (независимый, онлайн, прокторинг, 3 часа): 2026-11-29; ○ Финал по математике (очно, Иннополис): 2027-03-05–2027-03-07",
+    "priority": "mid",
+    "status": "participate",
+    "state": "",
+    "stages": [
+      {
+        "id": "inno-math-r1",
+        "stage": "1-й отборочный тур по математике (дистанционно)",
+        "kind": "round",
+        "date": "2026-10-24",
+        "dateEnd": "2026-10-25",
+        "confidence": "check",
+        "done": true,
+        "resultsInfo": "Срок не объявлен — письмо и сайт организатора",
+        "result": "pending"
+      },
+      {
+        "id": "inno-math-r2",
+        "stage": "2-й отборочный тур по математике (независимый, онлайн, прокторинг, 3 часа)",
+        "kind": "round",
+        "date": "2026-11-29",
+        "time": "10:00",
+        "confidence": "exact",
+        "done": true,
+        "note": "В финал — по лучшему результату из двух туров."
+      },
+      {
+        "id": "inno-math-final",
+        "stage": "Финал по математике (очно, Иннополис)",
+        "kind": "final",
+        "date": "2027-03-05",
+        "dateEnd": "2027-03-07",
+        "confidence": "approx",
+        "done": true
+      }
+    ]
+  },
+  {
+    "id": "itmo-open",
+    "name": "Открытая олимпиада ИТМО — информатика",
+    "subject": "Информатика",
+    "level": "I ур. · ИТМО",
+    "date": "2026-12-03",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://olymp.itmo.ru",
+    "description": "○ Отборочный этап по информатике (3 тура для 10–11): 2026-12-03–2027-01-19",
+    "priority": "mid",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "itmo-open-r1",
+        "stage": "Отборочный этап по информатике (3 тура для 10–11)",
+        "kind": "round",
+        "date": "2026-12-03",
+        "dateEnd": "2027-01-19",
+        "confidence": "approx",
+        "done": true,
+        "note": "Часть отбора — тест по школьной информатике (системы счисления, кодирование)."
+      }
+    ]
+  },
+  {
+    "id": "izumrud-inf",
+    "name": "Изумруд — информатика",
+    "subject": "Информатика",
+    "level": "II/III ур.",
+    "date": "2026-10-25",
+    "regStatus": "submitted",
+    "regDeadline": "2027-01-20",
+    "regUrl": "https://dovuz.urfu.ru/olymps/izumrud",
+    "description": "○ Отборочный этап по информатике (онлайн): 2026-10-25–2027-01-19; ○ Регистрация на заключительный этап: 2027-01-20–2027-01-24; ○ Заключительный этап (очно): 2027-01-31–2027-02-02",
+    "priority": "low",
+    "status": "active",
+    "state": "",
+    "stages": [
+      {
+        "id": "izumrud-inf",
+        "stage": "Отборочный этап по информатике (онлайн)",
+        "kind": "round",
+        "date": "2026-10-25",
+        "dateEnd": "2027-01-19",
+        "confidence": "exact",
+        "done": false,
+        "note": "Не откладывай на конец окна.",
+        "resultsInfo": "Итоги отбора — к регистрации на финал 20–24 янв 2027"
+      },
+      {
+        "id": "izumrud-freg",
+        "stage": "Регистрация на заключительный этап",
+        "kind": "reg",
+        "date": "2027-01-20",
+        "dateEnd": "2027-01-24",
+        "confidence": "exact",
+        "done": false,
+        "note": "Нужна по каждому предмету, где прошёл отбор."
+      },
+      {
+        "id": "izumrud-final",
+        "stage": "Заключительный этап (очно)",
+        "kind": "final",
+        "date": "2027-01-31",
+        "dateEnd": "2027-02-02",
+        "confidence": "approx",
+        "done": false,
+        "note": "Даты по предметам уточни в расписании УрФУ — финалы по информатике и математике могут пересечься."
+      }
+    ]
+  },
+  {
+    "id": "izumrud-math",
+    "name": "Изумруд — математика",
+    "subject": "Математика",
+    "level": "II/III ур.",
+    "date": "2026-10-25",
+    "regStatus": "submitted",
+    "regDeadline": "2027-01-20",
+    "regUrl": "https://dovuz.urfu.ru/olymps/izumrud",
+    "description": "○ Отборочный этап по математике (онлайн): 2026-10-25–2027-01-19; ○ Регистрация на заключительный этап: 2027-01-20–2027-01-24; ○ Заключительный этап (очно): 2027-01-31–2027-02-02",
+    "priority": "low",
+    "status": "active",
+    "state": "",
+    "stages": [
+      {
+        "id": "izumrud-math",
+        "stage": "Отборочный этап по математике (онлайн)",
+        "kind": "round",
+        "date": "2026-10-25",
+        "dateEnd": "2027-01-19",
+        "confidence": "exact",
+        "done": false,
+        "note": "Не откладывай на конец окна.",
+        "resultsInfo": "Итоги отбора — к регистрации на финал 20–24 янв 2027"
+      },
+      {
+        "id": "izumrud-freg-m",
+        "stage": "Регистрация на заключительный этап",
+        "kind": "reg",
+        "date": "2027-01-20",
+        "dateEnd": "2027-01-24",
+        "confidence": "exact",
+        "done": false,
+        "note": "Нужна по каждому предмету, где прошёл отбор."
+      },
+      {
+        "id": "izumrud-final-m",
+        "stage": "Заключительный этап (очно)",
+        "kind": "final",
+        "date": "2027-01-31",
+        "dateEnd": "2027-02-02",
+        "confidence": "approx",
+        "done": false,
+        "note": "Даты по предметам уточни в расписании УрФУ — финалы по информатике и математике могут пересечься."
+      }
+    ]
+  },
+  {
+    "id": "izumrud-phys",
+    "name": "Изумруд — физика",
+    "subject": "Физика",
+    "level": "II/III ур.",
+    "date": "2026-10-25",
+    "regStatus": "submitted",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://dovuz.urfu.ru/olymps/izumrud",
+    "description": "○ Отборочный этап по физике (онлайн): 2026-10-25–2027-01-19",
+    "priority": "low",
+    "status": "active",
+    "state": "",
+    "stages": [
+      {
+        "id": "izumrud-phys-sel",
+        "stage": "Отборочный этап по физике (онлайн)",
+        "kind": "round",
+        "date": "2026-10-25",
+        "dateEnd": "2027-01-19",
+        "confidence": "exact",
+        "done": false,
+        "resultsInfo": "Итоги отбора — к регистрации на финал 20–24 янв 2027"
+      }
+    ]
+  },
+  {
+    "id": "izumrud-rus",
+    "name": "Изумруд — русский язык",
+    "subject": "Русский язык",
+    "level": "II/III ур.",
+    "date": "2026-10-25",
+    "regStatus": "submitted",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://dovuz.urfu.ru/olymps/izumrud",
+    "description": "○ Отборочный этап по русскому языку (онлайн): 2026-10-25–2027-01-19",
+    "priority": "low",
+    "status": "active",
+    "state": "",
+    "stages": [
+      {
+        "id": "izumrud-rus-sel",
+        "stage": "Отборочный этап по русскому языку (онлайн)",
+        "kind": "round",
+        "date": "2026-10-25",
+        "dateEnd": "2027-01-19",
+        "confidence": "exact",
+        "done": true,
+        "resultsInfo": "Итоги отбора — к регистрации на финал 20–24 янв 2027"
+      }
+    ]
+  },
+  {
+    "id": "lomo-inf",
+    "name": "Ломоносов — информатика",
+    "subject": "Информатика",
+    "level": "II ур. · МФТИ: в списке 7",
+    "date": "2026-11-14",
+    "regStatus": "open",
+    "regDeadline": "2026-10-25",
+    "regUrl": "https://olymp.msu.ru/",
+    "description": "○ Регистрация (информатика): 2026-10-25–2026-11-13; ○ Отборочный этап по информатике (онлайн): 2026-11-14–2026-11-21",
+    "priority": "mid",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "lomo-reg",
+        "stage": "Регистрация (информатика)",
+        "kind": "reg",
+        "date": "2026-10-25",
+        "dateEnd": "2026-11-13",
+        "confidence": "check",
+        "done": false,
+        "note": "Не тяни до последнего дня."
+      },
+      {
+        "id": "lomo-inf-r1",
+        "stage": "Отборочный этап по информатике (онлайн)",
+        "kind": "round",
+        "date": "2026-11-14",
+        "dateEnd": "2026-11-21",
+        "time": "12:00",
+        "confidence": "approx",
+        "done": false,
+        "note": "График 2026/27 опубликован на olymp.msu.ru — сверь."
+      }
+    ]
+  },
+  {
+    "id": "lomo-math",
+    "name": "Ломоносов — математика",
+    "subject": "Математика",
+    "level": "I ур. · 100 баллов; МФТИ: в списке 7",
+    "date": "2026-11-29",
+    "regStatus": "open",
+    "regDeadline": "2026-10-25",
+    "regUrl": "https://olymp.msu.ru/",
+    "description": "○ Регистрация (математика): 2026-10-25–2026-11-13; ○ Отборочный этап по математике (онлайн): 2026-11-29–2026-12-06; ○ Заключительный этап по математике: 2027-03-27",
+    "priority": "high",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "lomo-reg-m",
+        "stage": "Регистрация (математика)",
+        "kind": "reg",
+        "date": "2026-10-25",
+        "dateEnd": "2026-11-13",
+        "confidence": "check",
+        "done": false,
+        "note": "Не тяни до последнего дня."
+      },
+      {
+        "id": "lomo-math-r1",
+        "stage": "Отборочный этап по математике (онлайн)",
+        "kind": "round",
+        "date": "2026-11-29",
+        "dateEnd": "2026-12-06",
+        "time": "12:00",
+        "confidence": "approx",
+        "done": false,
+        "note": "График 2026/27 опубликован на olymp.msu.ru — сверь."
+      },
+      {
+        "id": "lomo-math-final",
+        "stage": "Заключительный этап по математике",
+        "kind": "final",
+        "date": "2027-03-27",
+        "confidence": "approx",
+        "done": false
+      }
+    ]
+  },
+  {
+    "id": "mmo",
+    "name": "МОШ — математика",
+    "subject": "Математика",
+    "level": "I ур. · 100 баллов",
+    "date": "2027-01-15",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://mos.olimpiada.ru/",
+    "description": "○ Отборочный этап для 11 классов: 2027-01-15–2027-02-15",
+    "priority": "mid",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "mmo-r1",
+        "stage": "Отборочный этап для 11 классов",
+        "kind": "round",
+        "date": "2027-01-15",
+        "dateEnd": "2027-02-15",
+        "confidence": "approx",
+        "done": false,
+        "note": "Следи за датой на сайте."
+      }
+    ]
+  },
+  {
+    "id": "mosh-inf",
+    "name": "МОШ — информатика",
+    "subject": "Информатика",
+    "level": "I ур. · МФТИ: БВИ победителям; МГУ ВМК: БВИ и призёрам",
+    "date": "2027-02-14",
+    "regStatus": "open",
+    "regDeadline": "2027-02-01",
+    "regUrl": "https://mos-inf.olimpiada.ru/",
+    "description": "Призёр прошлого года — проверить по регламенту 2026/27 допуск сразу в финал; если подтвердится, отбор не нужен. | ○ Регистрация на олимпиаду по информатике, 10–11 классы: 2027-02-01–2027-02-13; ○ 1-й отборочный тур по информатике, 10–11 классы: 2027-02-14; ○ 2-й отборочный тур по информатике, 10–11 классы: 2027-02-28",
+    "priority": "high",
+    "status": "todo",
+    "state": "Призёр прошлого года — проверить по регламенту 2026/27 допуск сразу в финал; если подтвердится, отбор не нужен.",
+    "stages": [
+      {
+        "id": "mosh-inf-reg",
+        "stage": "Регистрация на олимпиаду по информатике, 10–11 классы",
+        "kind": "reg",
+        "date": "2027-02-01",
+        "dateEnd": "2027-02-13",
+        "confidence": "check",
+        "done": false,
+        "note": "Новости — Telegram @InfMosh."
+      },
+      {
+        "id": "mosh-inf-r1",
+        "stage": "1-й отборочный тур по информатике, 10–11 классы",
+        "kind": "round",
+        "date": "2027-02-14",
+        "confidence": "exact",
+        "done": true,
+        "note": "Пропустить, если допуск в финал подтвердится.",
+        "resultsInfo": "Ориентир: ~через неделю после тура (в 2026: тур 23 фев → итоги 2 мар)"
+      },
+      {
+        "id": "mosh-inf-r2",
+        "stage": "2-й отборочный тур по информатике, 10–11 классы",
+        "kind": "round",
+        "date": "2027-02-28",
+        "confidence": "exact",
+        "done": true,
+        "note": "Пропустить, если допуск в финал подтвердится.",
+        "resultsInfo": "Ориентир: ~через неделю после тура (в 2026: тур 9 мар → итоги 16 мар)"
+      },
+      {
+        "id": "mosh-inf-final",
+        "stage": "Очный тур (заключительный), 10–11 классы",
+        "kind": "final",
+        "date": "2027-03-28",
+        "confidence": "exact",
+        "done": true,
+        "note": "Проверить, есть ли площадка вне Москвы, иначе планировать поездку.",
+        "resultsInfo": "Ориентир: начало апреля (в 2026 итоги финала — 4 апр, mos-inf.olimpiada.ru)"
+      }
+    ]
+  },
+  {
+    "id": "nerc-school",
+    "name": "Олимпиада по информатике и программированию (ИТМО)",
+    "subject": "Информатика",
+    "level": "I ур. · ИТМО, МГУ, ВШЭ",
+    "date": "2027-02-01",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://nerc.itmo.ru/school",
+    "description": "○ Отборочный этап (две волны онлайн): 2027-02-01–2027-02-28",
+    "priority": "mid",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "nerc-school-r1",
+        "stage": "Отборочный этап (две волны онлайн)",
+        "kind": "round",
+        "date": "2027-02-01",
+        "dateEnd": "2027-02-28",
+        "confidence": "approx",
+        "done": false,
+        "note": "В прошлом сезоне туры были 28 янв и 12 фев."
+      }
+    ]
+  },
+  {
+    "id": "ommo",
+    "name": "ОММО",
+    "subject": "Математика",
+    "level": "II/III ур.",
+    "date": "2027-01-11",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://olympiads.mccme.ru/omo/",
+    "description": "○ Отборочный этап (заочно): 2027-01-11–2027-02-14",
+    "priority": "low",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "ommo-r1",
+        "stage": "Отборочный этап (заочно)",
+        "kind": "round",
+        "date": "2027-01-11",
+        "dateEnd": "2027-02-14",
+        "confidence": "approx",
+        "done": false
+      }
+    ]
+  },
+  {
+    "id": "pvg-math",
+    "name": "Покори Воробьёвы горы! — математика",
+    "subject": "Математика",
+    "level": "I ур. · 100 баллов",
+    "date": "2026-12-15",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://pvg.mk.ru",
+    "description": "○ Отборочный этап по математике (онлайн): 2026-12-15–2027-01-19",
+    "priority": "mid",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "pvg-math-r1",
+        "stage": "Отборочный этап по математике (онлайн)",
+        "kind": "round",
+        "date": "2026-12-15",
+        "dateEnd": "2027-01-19",
+        "confidence": "approx",
+        "done": false,
+        "note": "Расписание сезона ещё не опубликовано."
+      }
+    ]
+  },
+  {
+    "id": "rosatom-inf",
+    "name": "Росатом — информатика",
+    "subject": "Информатика",
+    "level": "I ур. · МФТИ: БВИ победителям",
+    "date": "2026-11-06",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://olymp.mephi.ru/rosatom/about",
+    "description": "○ Дистанционный отбор по информатике: 2026-11-06–2026-11-25; ○ II дистанционный отбор по информатике: 2026-12-29–2027-01-18",
+    "priority": "high",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "rosatom-inf-r1",
+        "stage": "Дистанционный отбор по информатике",
+        "kind": "round",
+        "date": "2026-11-06",
+        "dateEnd": "2026-11-25",
+        "confidence": "approx",
+        "done": false,
+        "note": "Расписание информатики ожидается в ноябре.",
+        "resultsInfo": "Итоги отборочных туров — январь 2027 (olymp.mephi.ru)"
+      },
+      {
+        "id": "rosatom-inf-r2",
+        "stage": "II дистанционный отбор по информатике",
+        "kind": "round",
+        "date": "2026-12-29",
+        "dateEnd": "2027-01-18",
+        "confidence": "approx",
+        "done": false,
+        "resultsInfo": "Итоги отборочных туров — январь 2027 (olymp.mephi.ru)"
+      }
+    ]
+  },
+  {
+    "id": "rosatom-math",
+    "name": "Росатом — математика",
+    "subject": "Математика",
+    "level": "II ур. · 100 баллов",
+    "date": "2026-11-17",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://olymp.mephi.ru/rosatom/about",
+    "description": "○ Дистанционный отборочный тур по математике: 2026-11-17–2026-12-21; ○ Очный отборочный тур по математике (Москва и регионы): 2026-11-28–2026-11-29; ○ Заключительный этап (физика и математика): 2027-02-06–2027-02-07",
+    "priority": "mid",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "rosatom-math-dist",
+        "stage": "Дистанционный отборочный тур по математике",
+        "kind": "round",
+        "date": "2026-11-17",
+        "dateEnd": "2026-12-21",
+        "confidence": "exact",
+        "done": true,
+        "resultsInfo": "Итоги отборочных туров — январь 2027 (olymp.mephi.ru)"
+      },
+      {
+        "id": "rosatom-math-och",
+        "stage": "Очный отборочный тур по математике (Москва и регионы)",
+        "kind": "round",
+        "date": "2026-11-28",
+        "dateEnd": "2026-11-29",
+        "confidence": "check",
+        "done": true,
+        "note": "Проверь, есть ли площадка в Екатеринбурге или рядом.",
+        "resultsInfo": "Итоги отборочных туров — январь 2027 (olymp.mephi.ru)"
+      },
+      {
+        "id": "rosatom-final",
+        "stage": "Заключительный этап (физика и математика)",
+        "kind": "final",
+        "date": "2027-02-06",
+        "dateEnd": "2027-02-07",
+        "confidence": "exact",
+        "done": false
+      }
+    ]
+  },
+  {
+    "id": "spbu-math",
+    "name": "СПбГУ — математика",
+    "subject": "Математика",
+    "level": "уточни уровень",
+    "date": "2026-10-25",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://www.olympiada.spbu.ru/",
+    "description": "○ Отборочный этап по математике (онлайн): 2026-10-25–2026-12-01",
+    "priority": "low",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "spbu-math",
+        "stage": "Отборочный этап по математике (онлайн)",
+        "kind": "round",
+        "date": "2026-10-25",
+        "dateEnd": "2026-12-01",
+        "confidence": "exact",
+        "done": false,
+        "resultsInfo": "Публикация результатов 22 мар – 5 апр 2027 (postupashkin)"
+      }
+    ]
+  },
+  {
+    "id": "tc",
+    "name": "Технокубок",
+    "subject": "Информатика",
+    "level": "I ур. · ИТМО, МГУ, МИФИ; МФТИ — 100 баллов",
+    "date": "2026-11-16",
+    "regStatus": "open",
+    "regDeadline": "2026-11-06",
+    "regUrl": "https://techno-cup.ru/",
+    "description": "Раунды независимые — достаточно написать любой. | ○ Регистрация: 2026-11-06–2026-12-07; ○ 1-й отборочный раунд (онлайн): 2026-11-16; ○ 2-й отборочный раунд (онлайн): 2026-12-07",
+    "priority": "mid",
+    "status": "todo",
+    "state": "Раунды независимые — достаточно написать любой.",
+    "stages": [
+      {
+        "id": "tc-reg",
+        "stage": "Регистрация",
+        "kind": "reg",
+        "date": "2026-11-06",
+        "dateEnd": "2026-12-07",
+        "confidence": "approx",
+        "done": false
+      },
+      {
+        "id": "tc-r1",
+        "stage": "1-й отборочный раунд (онлайн)",
+        "kind": "round",
+        "date": "2026-11-16",
+        "confidence": "approx",
+        "done": false
+      },
+      {
+        "id": "tc-r2",
+        "stage": "2-й отборочный раунд (онлайн)",
+        "kind": "round",
+        "date": "2026-12-07",
+        "confidence": "approx",
+        "done": false
+      },
+      {
+        "id": "tc-r3",
+        "stage": "3-й отборочный раунд (онлайн)",
+        "kind": "round",
+        "date": "2026-12-22",
+        "confidence": "approx",
+        "done": false
+      },
+      {
+        "id": "tc-offline",
+        "stage": "Второй отборочный этап (очно, 25+ площадок)",
+        "kind": "round",
+        "date": "2027-02-08",
+        "confidence": "approx",
+        "done": false,
+        "note": "Выбери площадку в Екатеринбурге при регистрации на этап."
+      },
+      {
+        "id": "tc-final",
+        "stage": "Финал (МФТИ / МГТУ)",
+        "kind": "final",
+        "date": "2027-03-13",
+        "dateEnd": "2027-03-15",
+        "confidence": "approx",
+        "done": false
+      }
+    ]
+  },
+  {
+    "id": "turgor",
+    "name": "Турнир городов",
+    "subject": "Математика",
+    "level": "I ур. · БВИ в МФТИ (в списке 7, только победителям, ЕГЭ от 85) и ВШЭ",
+    "date": "2026-10-18",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://cdoosh.ru/turgor/",
+    "description": "Весенний тур тоже писать: итог считается по осеннему и весеннему турам. | ✓ Осенний тур, сложный вариант: 2026-10-18; ○ Весенний тур (базовый и сложный вариант): 2027-02-28–2027-03-14",
+    "priority": "high",
+    "status": "todo",
+    "state": "Весенний тур тоже писать: итог считается по осеннему и весеннему турам.",
+    "stages": [
+      {
+        "id": "turgor-autumn-hard",
+        "stage": "Осенний тур, сложный вариант",
+        "kind": "round",
+        "date": "2026-10-18",
+        "confidence": "exact",
+        "done": true,
+        "resultsInfo": "Срок не объявлен — личный кабинет my.turgor.ru",
+        "result": "pending"
+      },
+      {
+        "id": "turgor-spring",
+        "stage": "Весенний тур (базовый и сложный вариант)",
+        "kind": "round",
+        "date": "2027-02-28",
+        "dateEnd": "2027-03-14",
+        "confidence": "check",
+        "done": true
+      }
+    ]
+  },
+  {
+    "id": "urkop",
+    "name": "УрКОП → ВКОШП",
+    "subject": "Информатика",
+    "level": "не в перечне · командная",
+    "date": "2026-11-14",
+    "regStatus": "submitted",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://olimpiada.ru/activity/226",
+    "description": "Цель — выход на ВКОШП. | ○ Финал Уральской командной олимпиады по программированию: 2026-11-14; ○ Финал Всероссийской командной олимпиады по программированию: 2026-12-11–2026-12-12",
+    "priority": "mid",
+    "status": "participate",
+    "state": "Цель — выход на ВКОШП.",
+    "stages": [
+      {
+        "id": "urkop-final",
+        "stage": "Финал Уральской командной олимпиады по программированию",
+        "kind": "final",
+        "date": "2026-11-14",
+        "confidence": "exact",
+        "done": false,
+        "note": "Командный.",
+        "resultsInfo": "Командная олимпиада: таблица результатов в день финала; решение о ВКОШП — по итогам"
+      },
+      {
+        "id": "vkoshp-final",
+        "stage": "Финал Всероссийской командной олимпиады по программированию",
+        "kind": "final",
+        "date": "2026-12-11",
+        "dateEnd": "2026-12-12",
+        "confidence": "check",
+        "done": false,
+        "note": "Зависит от итогов УрКОП."
+      }
+    ]
+  },
+  {
+    "id": "vp-inf",
+    "name": "Высшая проба — информатика",
+    "subject": "Информатика",
+    "level": "I ур. · ВШЭ ПМИ: БВИ победителям (ЕГЭ инф 90+)",
+    "date": "2026-11-19",
+    "regStatus": "submitted",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://olymp.hse.ru/mmo",
+    "description": "○ Отборочный этап по информатике (онлайн, прокторинг, 2 часа): 2026-11-19; ○ Заключительный этап: 2027-02-05–2027-02-15",
+    "priority": "high",
+    "status": "participate",
+    "state": "",
+    "stages": [
+      {
+        "id": "vp-inf-r1",
+        "stage": "Отборочный этап по информатике (онлайн, прокторинг, 2 часа)",
+        "kind": "round",
+        "date": "2026-11-19",
+        "time": "11:00",
+        "confidence": "exact",
+        "done": false,
+        "note": "Запасная дата 14 ноя 16:00 Екб — занят (УрКОП). Начав тур в одну дату, во вторую доступ закроется. Прокторинг: камера, документ с фото, правила — https://olymp.hse.ru/mmo/instr-first/",
+        "resultsInfo": "Срок не объявлен; приглашения на финал — до 5 фев (hse.ru)"
+      },
+      {
+        "id": "vp-inf-final",
+        "stage": "Заключительный этап",
+        "kind": "final",
+        "date": "2027-02-05",
+        "dateEnd": "2027-02-15",
+        "confidence": "exact",
+        "done": false,
+        "resultsInfo": "Обычно в начале апреля (по прошлым сезонам)"
+      }
+    ]
+  },
+  {
+    "id": "vp-math",
+    "name": "Высшая проба — математика",
+    "subject": "Математика",
+    "level": "I ур. · 100 баллов",
+    "date": "2026-09-25",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://olymp.hse.ru/mmo",
+    "description": "✓ 1-й тур отборочного этапа по математике: 2026-09-25–2026-10-11; ○ Если прошёл: 2-й тур по математике (онлайн, прокторинг): 2026-11-20",
+    "priority": "high",
+    "status": "todo",
+    "state": "",
+    "stages": [
+      {
+        "id": "vp-math-r1",
+        "stage": "1-й тур отборочного этапа по математике",
+        "kind": "round",
+        "date": "2026-09-25",
+        "dateEnd": "2026-10-11",
+        "confidence": "exact",
+        "done": true,
+        "note": "Проход во 2-й тур — по проходным баллам.",
+        "resultsInfo": "Проходные баллы — к началу ноября (olimpiada.ru)",
+        "result": "pending"
+      },
+      {
+        "id": "vp-math-r2",
+        "stage": "Если прошёл: 2-й тур по математике (онлайн, прокторинг)",
+        "kind": "round",
+        "date": "2026-11-20",
+        "time": "09:00",
+        "confidence": "exact",
+        "done": true,
+        "note": "Прокторинг — правила: https://olymp.hse.ru/mmo/instr-first/",
+        "resultsInfo": "Срок не объявлен; приглашения на финал — до 5 фев; города финала — в декабре (hse.ru)"
+      }
+    ]
+  },
+  {
+    "id": "vsesib-inf",
+    "name": "Всесибирская — информатика",
+    "subject": "Информатика",
+    "level": "I ур. · МФТИ: БВИ победителям",
+    "date": "2026-11-08",
+    "regStatus": "submitted",
+    "regDeadline": "2026-11-06",
+    "regUrl": "https://sesc.nsu.ru/olymp-vsesib/",
+    "description": "✓ Регистрация на отборочный этап по информатике: 2026-11-06; ○ Отборочный этап по информатике (очно, СУНЦ УрФУ, 5 часов): 2026-11-08; ○ Регистрация на заключительный этап: 2027-02-01–2027-02-19",
+    "priority": "high",
+    "status": "participate",
+    "state": "",
+    "stages": [
+      {
+        "id": "vsesib-inf-reg",
+        "stage": "Регистрация на отборочный этап по информатике",
+        "kind": "reg",
+        "date": "2026-11-06",
+        "time": "07:00",
+        "confidence": "check",
+        "done": true
+      },
+      {
+        "id": "vsesib-inf-r1",
+        "stage": "Отборочный этап по информатике (очно, СУНЦ УрФУ, 5 часов)",
+        "kind": "round",
+        "date": "2026-11-08",
+        "time": "07:00",
+        "confidence": "exact",
+        "done": false,
+        "note": "Приехать заранее на регистрацию. Взять карточку участника и паспорт, перекус и воду.",
+        "resultsInfo": "Итоги отбора — 25 дек 2026 (codolymp)"
+      },
+      {
+        "id": "vsesib-inf-freg",
+        "stage": "Регистрация на заключительный этап",
+        "kind": "reg",
+        "date": "2027-02-01",
+        "dateEnd": "2027-02-19",
+        "confidence": "approx",
+        "done": false
+      },
+      {
+        "id": "vsesib-inf-final",
+        "stage": "Заключительный этап по информатике",
+        "kind": "final",
+        "date": "2027-02-21",
+        "confidence": "approx",
+        "done": false,
+        "resultsInfo": "Срок не объявлен — смотри sesc.nsu.ru"
+      }
+    ]
+  },
+  {
+    "id": "vsosh-econ",
+    "name": "ВсОШ — экономика",
+    "subject": "Экономика",
+    "level": "ВсОШ · БВИ на эконом. направления, 100 баллов",
+    "date": "2026-10-23",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://zsfond.ru/vsosh/",
+    "description": "Итоги школьного нужны для допуска на МЭ. На РЭ проход уже есть. | ✓ Школьный этап: 2026-10-23; ○ Муниципальный этап: 2026-11-25; ○ Региональный этап: 2027-01-26",
+    "priority": "mid",
+    "status": "todo",
+    "state": "Итоги школьного нужны для допуска на МЭ. На РЭ проход уже есть.",
+    "stages": [
+      {
+        "id": "vsosh-econ-school",
+        "stage": "Школьный этап",
+        "kind": "round",
+        "date": "2026-10-23",
+        "confidence": "check",
+        "done": true,
+        "note": "Дату написания уточни.",
+        "resultsInfo": "Предварительные результаты — в личном кабинете платформы через 7 дней после тура, апелляция 2 дня (zsfond.ru)",
+        "result": "pending"
+      },
+      {
+        "id": "vsosh-econ-mun",
+        "stage": "Муниципальный этап",
+        "kind": "round",
+        "date": "2026-11-25",
+        "time": "08:00",
+        "confidence": "exact",
+        "done": false,
+        "note": "Только если пройду по итогам школьного. Место — у ответственного в школе.",
+        "resultsInfo": "Предварительные баллы до 1 дек, итоговые до 8 дек 2026 (график Минобра Свердл. обл.)"
+      },
+      {
+        "id": "vsosh-econ-reg",
+        "stage": "Региональный этап",
+        "kind": "round",
+        "date": "2027-01-26",
+        "confidence": "exact",
+        "done": false,
+        "note": "Документы: паспорт, справка из школы, согласия — формы на zsfond.ru.",
+        "resultsInfo": "Протоколы — не позднее 14 дней после тура (zsfond.ru)"
+      },
+      {
+        "id": "vsosh-econ-final",
+        "stage": "Заключительный этап",
+        "kind": "final",
+        "date": "2027-03-15",
+        "dateEnd": "2027-04-30",
+        "confidence": "approx",
+        "done": false,
+        "note": "Даты по предметам объявит Минпросвещения."
+      }
+    ]
+  },
+  {
+    "id": "vsosh-inf",
+    "name": "ВсОШ — информатика",
+    "subject": "Информатика",
+    "level": "ВсОШ · БВИ во все вузы, и призёрам",
+    "date": "2026-10-21",
+    "regStatus": "submitted",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://zsfond.ru/vsosh/",
+    "description": "На РЭ проход уже есть, МЭ — для интереса. | ✓ Школьный этап (Сириус), программирование: 2026-10-21; ○ Муниципальный этап, информатика (программирование), 10–11 классы: 2026-12-10; ○ Региональный этап: 2027-01-23–2027-01-25",
+    "priority": "high",
+    "status": "participate",
+    "state": "На РЭ проход уже есть, МЭ — для интереса.",
+    "stages": [
+      {
+        "id": "vsosh-inf-school",
+        "stage": "Школьный этап (Сириус), программирование",
+        "kind": "round",
+        "date": "2026-10-21",
+        "confidence": "exact",
+        "done": true,
+        "resultsInfo": "Предварительные результаты в личном кабинете Сириуса через 7 дней после тура (~28 окт), апелляция 2 дня (zsfond.ru)",
+        "result": "pending"
+      },
+      {
+        "id": "vsosh-inf-mun",
+        "stage": "Муниципальный этап, информатика (программирование), 10–11 классы",
+        "kind": "round",
+        "date": "2026-12-10",
+        "time": "08:00",
+        "confidence": "exact",
+        "done": false,
+        "note": "Место — у ответственного в школе.",
+        "resultsInfo": "Предварительные баллы до 15 дек, итоговые до 21 дек 2026 (график Минобра Свердл. обл.)"
+      },
+      {
+        "id": "vsosh-inf-reg",
+        "stage": "Региональный этап",
+        "kind": "round",
+        "date": "2027-01-23",
+        "dateEnd": "2027-01-25",
+        "confidence": "exact",
+        "done": false,
+        "note": "Документы: паспорт, справка из школы, согласия — формы на zsfond.ru.",
+        "resultsInfo": "Протоколы — не позднее 14 дней после тура (zsfond.ru)"
+      },
+      {
+        "id": "vsosh-inf-final",
+        "stage": "Заключительный этап",
+        "kind": "final",
+        "date": "2027-03-15",
+        "dateEnd": "2027-04-30",
+        "confidence": "approx",
+        "done": false,
+        "note": "Даты по предметам объявит Минпросвещения."
+      }
+    ]
+  },
+  {
+    "id": "vsosh-math",
+    "name": "ВсОШ — математика",
+    "subject": "Математика",
+    "level": "ВсОШ · БВИ на мат. направления, 100 баллов",
+    "date": "2026-10-16",
+    "regStatus": "open",
+    "regDeadline": "Уточняется",
+    "regUrl": "https://zsfond.ru/vsosh/",
+    "description": "На РЭ проход уже есть, МЭ — для интереса. | ✓ Школьный этап (Сириус): 2026-10-16; ○ Муниципальный этап, математика: 2026-12-07; ○ Региональный этап: 2027-02-02–2027-02-03",
+    "priority": "high",
+    "status": "todo",
+    "state": "На РЭ проход уже есть, МЭ — для интереса.",
+    "stages": [
+      {
+        "id": "vsosh-math-school",
+        "stage": "Школьный этап (Сириус)",
+        "kind": "round",
+        "date": "2026-10-16",
+        "confidence": "exact",
+        "done": true,
+        "resultsInfo": "Предварительные результаты в личном кабинете Сириуса через 7 дней после тура (~23 окт) — уже должны быть (zsfond.ru)",
+        "result": "pending"
+      },
+      {
+        "id": "vsosh-math-mun",
+        "stage": "Муниципальный этап, математика",
+        "kind": "round",
+        "date": "2026-12-07",
+        "time": "08:00",
+        "confidence": "exact",
+        "done": false,
+        "note": "Место — у ответственного в школе.",
+        "resultsInfo": "Предварительные баллы до 12 дек, итоговые до 21 дек 2026 (график Минобра Свердл. обл.)"
+      },
+      {
+        "id": "vsosh-math-reg",
+        "stage": "Региональный этап",
+        "kind": "round",
+        "date": "2027-02-02",
+        "dateEnd": "2027-02-03",
+        "confidence": "exact",
+        "done": false,
+        "note": "Документы: паспорт, справка из школы, согласия — формы на zsfond.ru.",
+        "resultsInfo": "Протоколы — не позднее 14 дней после тура (zsfond.ru)"
+      },
+      {
+        "id": "vsosh-math-final",
+        "stage": "Заключительный этап",
+        "kind": "final",
+        "date": "2027-03-15",
+        "dateEnd": "2027-04-30",
+        "confidence": "approx",
+        "done": false,
+        "note": "Даты по предметам объявит Минпросвещения."
+      }
+    ]
+  }
+]
