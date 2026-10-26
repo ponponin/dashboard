@@ -1,58 +1,24 @@
 id,task,category,deadline,priority,status,planned_hours,actual_hours,type,notes
-OLY281,иннопа матеша,OLYMPIAD,2026-10-25,very_high,planned,0,0,DEADLINE,
-W201,ДЮ — понедельник,ДЮ,2026-10-18,high,done,2,4,WEEKLY,понедельник 19:00–21:00; занятие фактически 4 часа
-W202,ЧГК — тренировка,CHGK,2026-10-18,high,done,1.5,1.5,WEEKLY,понедельник 15:30–17:00; тренировка состоялась
-W203,Степанов,TR,2026-10-18,high,done,2.5,2.5,WEEKLY,вторник 17:00–19:30
-W204,Дорешка — программирование,CP,2026-10-18,high,done,1,0.5,WEEKLY,вторник; план 1 час
-W205,Программирование — среда,CP,2026-10-18,medium,skipped,1,0,WEEKLY,не выполнено: после уроков пользователь пошёл на день рождения
-W207,ДЮ — среда,ДЮ,2026-10-18,high,done,2,2,WEEKLY,среда 19:00–21:00
-W208,Тур Закла 2016 года,TEAM,2026-10-18,high,skipped,5,0,WEEKLY,"Не удалось заниматься: после школы уснул, поел и снова спать до утра"
-W209,Пересказ по английскому №1,ENG,2026-10-16,high,skipped,2,0,WEEKLY,не отмечен в отчёте; после школы футбольный турнир
-W210,Дорешка Степанова — декартач,CP,2026-10-18,high,done,2.5,2.5,WEEKLY,"пятница; сдана E базового декартача, F продвинутого решена, код ещё не дописан"
-W211,ЕГЭ русский — практика задания 8,RUS,2026-10-18,high,skipped,1.5,0,WEEKLY,суббота занята отборочным ЧГК и театром
-W212,ЕГЭ математика — сложные задачи,MATH_EGE,2026-10-18,medium,skipped,1.5,0,WEEKLY,суббота занята отборочным ЧГК и театром
-W213,Тургор — отборочный тур,OLYMPIAD_MATH,2026-10-18,high,done,3,5,WEEKLY,воскресенье; фактически 5 часов
-W214,Чтение перед сном — рутина,READ,2026-10-18,medium,partial,1.5,0.5,WEEKLY,прочитано 30 минут в среду; недельная цель полностью не выполнена
-W215,Дорешка перед ДЮ,ДЮ,2026-10-18,medium,done,0,1,EXTRA,понедельник; 1 час дорешки до занятия
-GEO001,"Сдать Европу: страны, столицы и местоположение",География,2026-10-16,very_high,done,0,0,DEADLINE,Все задания по географии сданы
-STP001,Дорешка Степанова — декартач,CP,2026-10-31,high,planned,0,0,DEADLINE,1 задача по теме сдана 09.10; продолжить дорешку
-STP002,Дорешка Степанова — продвинутый декартач,CP,2026-10-31,high,planned,0,0,DEADLINE,дорешать до конца октября
-STP003,Дорешка Степанова — продвинутая корнячка,CP,2026-10-31,high,planned,0,0,DEADLINE,дорешать до конца октября
-ENG002,Пересказ по английскому №2,ENG,2026-10-25,high,planned,0,0,DEADLINE,сдать до 25.10
-OL003,ШЭ — математика,OLYMPIAD,2026-10-16,high,unreported,0,0,EVENT,олимпиада; результат не сообщён
-OL004,ШЭ — информатика,OLYMPIAD,2026-10-21,high,planned,0,0,EVENT,08.09–22.10
-OL005,Физтех — математика,OLYMPIAD,2026-11-01,high,planned,0,0,EVENT,01.11 08:00 МСК
-OL006,Физтех — математика,OLYMPIAD,2026-11-07,high,planned,0,0,EVENT,07.11 10:00 МСК
-HIST001,Сдать историю,SCHOOL,,high,done,0,0,DEADLINE,Вся история сдана
-OL007,ВШЭ «Высшая проба» — информатика,OLYMPIAD,2026-11-14,very_high,planned,4,0,EVENT,Олимпиада Высшая проба по информатике (14.11)
-OL008,ВШЭ «Высшая проба» — математика,OLYMPIAD,2026-11-20,very_high,planned,4,0,EVENT,Олимпиада Высшая проба по математике (20.11)
-OL009,Иннополис Open («Инопа») — информатика,OLYMPIAD,2026-11-21,very_high,planned,5,0,EVENT,Innopolis Open по программированию (21.11)
-TEAM001,Тур Закла 2016 года,TEAM,2026-10-24,high,skipped,5,0,DEADLINE,"Суббота 24.10: перенесено (долг), день занят уборкой, ЕГЭ по русскому и раундом Codeforces"
-ENG001,Английский: 1-й пересказ (выучить в чт — сдать в пт),ENG,2026-10-23,very_high,planned,2,0,DEADLINE,Дедлайн: пятница 23.10. Учить в четверг 2 часа до пары Степанова
-RUS001,ЕГЭ русский язык — задание 8 и тест,RUS,2026-10-24,high,done,2,2.8,DEADLINE,Выполнено в субботу 24.10: 1.5ч разбор + 1.3ч ДЗ 11 задание
-CF001,Codeforces Div. 2 Round (24.10 16:05 UTC+5),CP,2026-10-24,high,done,2,3.3,EVENT,Соревнование Codeforces Div. 2 (16:05-18:05 UTC+5). Без конфликтов со статичным ДЮ.
-CF002,Codeforces Div. 2 Round (26.10 19:35 UTC+5),CP,2026-10-26,low,skipped,0,0,EVENT,Конфликт: совпадает по времени со статичным занятием ДЮ (19:00-21:00).
-OL_INNO01,25.01 олимпиада иннополис 10-13,OLYMPIAD,2026-01-25,very_high,planned,3,0,EVENT,25.01 олимпиада иннополис 10-13
 OL_admission_order-bvi,"Поступление 2027: правила: Проверить, принят ли приказ «БВИ только победителям»",OLYMPIAD,2026-11-15,very_high,planned,0.5,0,DEADLINE,Проект №171214. Если примут — призёрам перечневых олимпиад достанутся только 100 баллов. | https://pk.mipt.ru/bachelor/2027_olympiads/
 OL_admission_rules-2027,Поступление 2027: правила: Вузы публикуют списки олимпиад для БВИ и 100 баллов,OLYMPIAD,2027-01-20,very_high,planned,0.5,0,DEADLINE,"Сверь МФТИ, ВШЭ, ИТМО, Иннополис, МГУ ВМК, МИФИ, Бауманку: какие профили и классы засчитывают. | https://pk.mipt.ru/bachelor/2027_olympiads/"
-OL_ft-math_ft-math-r1,Физтех — математика: 1-й отборочный онлайн-тур по математике,MATH,2026-10-11,very_high,done,4,4,EVENT,"I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 10:00 | https://olymp-online.mipt.ru/event/449"
-OL_ft-math_ft-math-reg2,Физтех — математика: Если нет диплома: регистрация на 2-й тур,MATH,2026-10-31,very_high,planned,0.5,0,DEADLINE,"Если уже есть подтверждённый аккаунт — повторная регистрация не нужна, но проверь запись на тур. | I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 08:00 | https://olymp-online.mipt.ru/event/449"
-OL_ft-math_ft-math-r2,Физтех — математика: Если нет диплома: 2-й онлайн-тур,MATH,2026-11-01,very_high,planned,4,0,EVENT,"4 часа: ответы до 12:05 МСК, решения до 13:05 МСК. | I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 08:00 | https://olymp-online.mipt.ru/event/449"
-OL_ft-math_ft-math-reg3,Физтех — математика: Если нет диплома: регистрация на 3-й тур (11 класс),MATH,2026-11-06,very_high,planned,0.5,0,DEADLINE,"I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 10:00 | https://olymp-online.mipt.ru/event/449"
-OL_ft-math_ft-math-r3,Физтех — математика: Если нет диплома: 3-й онлайн-тур (11 класс),MATH,2026-11-07,very_high,planned,4,0,EVENT,"Туры независимые: в финал — победители и призёры любого тура. | I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 10:00 | https://olymp-online.mipt.ru/event/449"
-OL_ft-math_ft-math-final,Физтех — математика: Заключительный этап по математике,MATH,2027-02-14,very_high,planned,4,0,EVENT,"Допуск: диплом любого онлайн-тура. | I ур. · МФТИ: 100 баллов, БВИ победителям | https://olymp-online.mipt.ru/event/449"
-OL_ftcode_ftcode-r1,"Физтех.Код будущего: I отборочный этап (длинный онлайн-этап, информатика и программирование)",CP,2026-09-28,very_high,planned,4,0,EVENT,"Срок закрытия — по olimpiada.ru, точный проверь в личном кабинете. Реши задачи заранее, не в последний день. | II ур. · в списке МФТИ (профили уточнят) | https://olimpiada.ru/activity/5898"
-OL_ftcode_ftcode-r2,Физтех.Код будущего: II отборочный этап,CP,2026-11-20,very_high,planned,4,0,EVENT,II ур. · в списке МФТИ (профили уточнят) | https://olimpiada.ru/activity/5898
-OL_infopen_infopen-r1,"Открытая олимпиада по программированию: Отборочный тур (один длинный, ~9 задач)",CP,2026-12-01,very_high,planned,4,0,EVENT,"График сезона ещё не опубликован. | I ур. · ИТМО, МГУ, ВШЭ, МИФИ | https://inf-open.ru/"
+OL_ft-math_ft-math-r1,Физтех — математика: 1-й отборочный онлайн-тур по математике,FTECH,2026-10-11,very_high,done,4,4,EVENT,"I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 10:00 | https://olymp-online.mipt.ru/event/449"
+OL_ft-math_ft-math-reg2,Физтех — математика: Если нет диплома: регистрация на 2-й тур,FTECH,2026-10-31,very_high,done,0.5,5,DEADLINE,"Если уже есть подтверждённый аккаунт — повторная регистрация не нужна, но проверь запись на тур. | I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 08:00 | https://olymp-online.mipt.ru/event/449"
+OL_ft-math_ft-math-r2,Физтех — математика: Если нет диплома: 2-й онлайн-тур,FTECH,2026-11-01,very_high,done,4,5,EVENT,"4 часа: ответы до 12:05 МСК, решения до 13:05 МСК. | I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 08:00 | https://olymp-online.mipt.ru/event/449"
+OL_ft-math_ft-math-reg3,Физтех — математика: Если нет диплома: регистрация на 3-й тур (11 класс),FTECH,2026-11-06,very_high,done,0.5,5,DEADLINE,"I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 10:00 | https://olymp-online.mipt.ru/event/449"
+OL_ft-math_ft-math-r3,Физтех — математика: Если нет диплома: 3-й онлайн-тур (11 класс),FTECH,2026-11-07,very_high,done,4,5,EVENT,"Туры независимые: в финал — победители и призёры любого тура. | I ур. · МФТИ: 100 баллов, БВИ победителям | Время: 10:00 | https://olymp-online.mipt.ru/event/449"
+OL_ft-math_ft-math-final,Физтех — математика: Заключительный этап по математике,FTECH,2027-02-14,very_high,done,4,5,EVENT,"Допуск: диплом любого онлайн-тура. | I ур. · МФТИ: 100 баллов, БВИ победителям | https://olymp-online.mipt.ru/event/449"
+OL_ftcode_ftcode-r1,"Физтех.Код будущего: I отборочный этап (длинный онлайн-этап, информатика и программирование)",FTECH,2026-09-28,very_high,done,4,5,EVENT,"Срок закрытия — по olimpiada.ru, точный проверь в личном кабинете. Реши задачи заранее, не в последний день. | II ур. · в списке МФТИ (профили уточнят) | https://olimpiada.ru/activity/5898"
+OL_ftcode_ftcode-r2,Физтех.Код будущего: II отборочный этап,FTECH,2026-11-20,very_high,done,4,5,EVENT,II ур. · в списке МФТИ (профили уточнят) | https://olimpiada.ru/activity/5898
+OL_infopen_infopen-r1,"Открытая олимпиада по программированию: Отборочный тур (один длинный, ~9 задач)",CP,2026-12-01,very_high,done,4,5,EVENT,"График сезона ещё не опубликован. | I ур. · ИТМО, МГУ, ВШЭ, МИФИ | https://inf-open.ru/"
 OL_infopen_infopen-final,Открытая олимпиада по программированию: Заключительный этап,CP,2027-03-01,very_high,planned,4,0,EVENT,"I ур. · ИТМО, МГУ, ВШЭ, МИФИ | https://inf-open.ru/"
-OL_inno-inf_inno-inf-r1,"Иннополис — информатика: 1-й отборочный тур по информатике (онлайн, прокторинг, 3 часа)",CP,2026-11-22,high,planned,4,0,EVENT,II ур. · Иннополис | Время: 10:00 | https://dovuz.innopolis.university/pre-olympiads/innopolis-open/informatics
-OL_inno-inf_inno-inf-r2,Иннополис — информатика: 2-й отборочный тур по информатике,CP,2026-12-26,high,planned,4,0,EVENT,"Для финала достаточно стать призёром одного из туров. Накануне, 25 дек, — пробный тур. | II ур. · Иннополис | https://dovuz.innopolis.university/pre-olympiads/innopolis-open/informatics"
-OL_inno-inf_inno-inf-final,Иннополис — информатика: Финал (очно),CP,2027-02-12,high,planned,4,0,EVENT,II ур. · Иннополис | https://dovuz.innopolis.university/pre-olympiads/innopolis-open/informatics
-OL_inno-inf_inno-inf-trial,Иннополис — информатика: Пробный тур — проверка платформы и прокторинга,CP,2026-11-21,high,planned,2,0,EVENT,"Проверить камеру, платформу и вход. | II ур. · Иннополис | https://dovuz.innopolis.university/pre-olympiads/innopolis-open/informatics"
+OL_inno-inf_inno-inf-r1,"Иннополис — информатика: 1-й отборочный тур по информатике (онлайн, прокторинг, 3 часа)",CP,2026-11-22,high,done,4,5,EVENT,II ур. · Иннополис | Время: 10:00 | https://dovuz.innopolis.university/pre-olympiads/innopolis-open/informatics
+OL_inno-inf_inno-inf-r2,Иннополис — информатика: 2-й отборочный тур по информатике,CP,2026-12-26,high,done,4,5,EVENT,"Для финала достаточно стать призёром одного из туров. Накануне, 25 дек, — пробный тур. | II ур. · Иннополис | https://dovuz.innopolis.university/pre-olympiads/innopolis-open/informatics"
+OL_inno-inf_inno-inf-final,Иннополис — информатика: Финал (очно),CP,2027-02-12,high,done,4,3,EVENT,II ур. · Иннополис | https://dovuz.innopolis.university/pre-olympiads/innopolis-open/informatics
+OL_inno-inf_inno-inf-trial,Иннополис — информатика: Пробный тур — проверка платформы и прокторинга,CP,2026-11-21,high,done,2,5,EVENT,"Проверить камеру, платформу и вход. | II ур. · Иннополис | https://dovuz.innopolis.university/pre-olympiads/innopolis-open/informatics"
 OL_inno-math_inno-math-r1,Иннополис — математика: 1-й отборочный тур по математике (дистанционно),MATH,2026-10-24,high,done,4,4,EVENT,II ур. · 100 баллов | https://dovuz.innopolis.university/pre-olympiads/innopolis-open
-OL_inno-math_inno-math-r2,"Иннополис — математика: 2-й отборочный тур по математике (независимый, онлайн, прокторинг, 3 часа)",MATH,2026-11-29,high,planned,4,0,EVENT,В финал — по лучшему результату из двух туров. | II ур. · 100 баллов | Время: 10:00 | https://dovuz.innopolis.university/pre-olympiads/innopolis-open
-OL_inno-math_inno-math-final,"Иннополис — математика: Финал по математике (очно, Иннополис)",MATH,2027-03-05,high,planned,4,0,EVENT,II ур. · 100 баллов | https://dovuz.innopolis.university/pre-olympiads/innopolis-open
-OL_itmo-open_itmo-open-r1,Открытая олимпиада ИТМО — информатика: Отборочный этап по информатике (3 тура для 10–11),CP,2026-12-03,high,planned,4,0,EVENT,"Часть отбора — тест по школьной информатике (системы счисления, кодирование). | I ур. · ИТМО | https://olymp.itmo.ru"
+OL_inno-math_inno-math-r2,"Иннополис — математика: 2-й отборочный тур по математике (независимый, онлайн, прокторинг, 3 часа)",MATH,2026-11-29,high,done,4,5,EVENT,В финал — по лучшему результату из двух туров. | II ур. · 100 баллов | Время: 10:00 | https://dovuz.innopolis.university/pre-olympiads/innopolis-open
+OL_inno-math_inno-math-final,"Иннополис — математика: Финал по математике (очно, Иннополис)",MATH,2027-03-05,high,done,4,3,EVENT,II ур. · 100 баллов | https://dovuz.innopolis.university/pre-olympiads/innopolis-open
+OL_itmo-open_itmo-open-r1,Открытая олимпиада ИТМО — информатика: Отборочный этап по информатике (3 тура для 10–11),CP,2026-12-03,high,done,4,5,EVENT,"Часть отбора — тест по школьной информатике (системы счисления, кодирование). | I ур. · ИТМО | https://olymp.itmo.ru"
 OL_izumrud-inf_izumrud-inf,Изумруд — информатика: Отборочный этап по информатике (онлайн),CP,2026-10-25,medium,planned,4,0,EVENT,Не откладывай на конец окна. | II/III ур. | https://dovuz.urfu.ru/olymps/izumrud
 OL_izumrud-inf_izumrud-freg,Изумруд — информатика: Регистрация на заключительный этап,CP,2027-01-20,medium,planned,0.5,0,DEADLINE,"Нужна по каждому предмету, где прошёл отбор. | II/III ур. | https://dovuz.urfu.ru/olymps/izumrud"
 OL_izumrud-inf_izumrud-final,Изумруд — информатика: Заключительный этап (очно),CP,2027-01-31,medium,planned,4,0,EVENT,Даты по предметам уточни в расписании УрФУ — финалы по информатике и математике могут пересечься. | II/III ур. | https://dovuz.urfu.ru/olymps/izumrud
@@ -60,7 +26,7 @@ OL_izumrud-math_izumrud-math,Изумруд — математика: Отбор
 OL_izumrud-math_izumrud-freg-m,Изумруд — математика: Регистрация на заключительный этап,MATH,2027-01-20,medium,planned,0.5,0,DEADLINE,"Нужна по каждому предмету, где прошёл отбор. | II/III ур. | https://dovuz.urfu.ru/olymps/izumrud"
 OL_izumrud-math_izumrud-final-m,Изумруд — математика: Заключительный этап (очно),MATH,2027-01-31,medium,planned,4,0,EVENT,Даты по предметам уточни в расписании УрФУ — финалы по информатике и математике могут пересечься. | II/III ур. | https://dovuz.urfu.ru/olymps/izumrud
 OL_izumrud-phys_izumrud-phys-sel,Изумруд — физика: Отборочный этап по физике (онлайн),PHYS,2026-10-25,medium,planned,4,0,EVENT,II/III ур. | https://dovuz.urfu.ru/olymps/izumrud
-OL_izumrud-rus_izumrud-rus-sel,Изумруд — русский язык: Отборочный этап по русскому языку (онлайн),RUS,2026-10-25,medium,planned,4,0,EVENT,II/III ур. | https://dovuz.urfu.ru/olymps/izumrud
+OL_izumrud-rus_izumrud-rus-sel,Изумруд — русский язык: Отборочный этап по русскому языку (онлайн),RUS,2026-10-25,medium,done,4,1,EVENT,II/III ур. | https://dovuz.urfu.ru/olymps/izumrud
 OL_lomo-inf_lomo-reg,Ломоносов — информатика: Регистрация (информатика),CP,2026-10-25,high,planned,0.5,0,DEADLINE,Не тяни до последнего дня. | II ур. · МФТИ: в списке 7 | https://olymp.msu.ru/
 OL_lomo-inf_lomo-inf-r1,Ломоносов — информатика: Отборочный этап по информатике (онлайн),CP,2026-11-14,high,planned,4,0,EVENT,График 2026/27 опубликован на olymp.msu.ru — сверь. | II ур. · МФТИ: в списке 7 | Время: 12:00 | https://olymp.msu.ru/
 OL_lomo-math_lomo-reg-m,Ломоносов — математика: Регистрация (математика),MATH,2026-10-25,very_high,planned,0.5,0,DEADLINE,Не тяни до последнего дня. | I ур. · 100 баллов; МФТИ: в списке 7 | https://olymp.msu.ru/
@@ -68,16 +34,16 @@ OL_lomo-math_lomo-math-r1,Ломоносов — математика: Отбо�
 OL_lomo-math_lomo-math-final,Ломоносов — математика: Заключительный этап по математике,MATH,2027-03-27,very_high,planned,4,0,EVENT,I ур. · 100 баллов; МФТИ: в списке 7 | https://olymp.msu.ru/
 OL_mmo_mmo-r1,МОШ — математика: Отборочный этап для 11 классов,MATH,2027-01-15,high,planned,4,0,EVENT,Следи за датой на сайте. | I ур. · 100 баллов | https://mos.olimpiada.ru/
 OL_mosh-inf_mosh-inf-reg,"МОШ — информатика: Регистрация на олимпиаду по информатике, 10–11 классы",CP,2027-02-01,very_high,planned,0.5,0,DEADLINE,Новости — Telegram @InfMosh. | I ур. · МФТИ: БВИ победителям; МГУ ВМК: БВИ и призёрам | https://mos-inf.olimpiada.ru/
-OL_mosh-inf_mosh-inf-r1,"МОШ — информатика: 1-й отборочный тур по информатике, 10–11 классы",CP,2027-02-14,very_high,planned,4,0,EVENT,"Пропустить, если допуск в финал подтвердится. | I ур. · МФТИ: БВИ победителям; МГУ ВМК: БВИ и призёрам | https://mos-inf.olimpiada.ru/"
-OL_mosh-inf_mosh-inf-r2,"МОШ — информатика: 2-й отборочный тур по информатике, 10–11 классы",CP,2027-02-28,very_high,planned,4,0,EVENT,"Пропустить, если допуск в финал подтвердится. | I ур. · МФТИ: БВИ победителям; МГУ ВМК: БВИ и призёрам | https://mos-inf.olimpiada.ru/"
-OL_mosh-inf_mosh-inf-final,"МОШ — информатика: Очный тур (заключительный), 10–11 классы",CP,2027-03-28,very_high,planned,4,0,EVENT,"Проверить, есть ли площадка вне Москвы, иначе планировать поездку. | I ур. · МФТИ: БВИ победителям; МГУ ВМК: БВИ и призёрам | https://mos-inf.olimpiada.ru/"
+OL_mosh-inf_mosh-inf-r1,"МОШ — информатика: 1-й отборочный тур по информатике, 10–11 классы",CP,2027-02-14,very_high,done,4,5,EVENT,"Пропустить, если допуск в финал подтвердится. | I ур. · МФТИ: БВИ победителям; МГУ ВМК: БВИ и призёрам | https://mos-inf.olimpiada.ru/"
+OL_mosh-inf_mosh-inf-r2,"МОШ — информатика: 2-й отборочный тур по информатике, 10–11 классы",CP,2027-02-28,very_high,done,4,5,EVENT,"Пропустить, если допуск в финал подтвердится. | I ур. · МФТИ: БВИ победителям; МГУ ВМК: БВИ и призёрам | https://mos-inf.olimpiada.ru/"
+OL_mosh-inf_mosh-inf-final,"МОШ — информатика: Очный тур (заключительный), 10–11 классы",CP,2027-03-28,very_high,done,4,6,EVENT,"Проверить, есть ли площадка вне Москвы, иначе планировать поездку. | I ур. · МФТИ: БВИ победителям; МГУ ВМК: БВИ и призёрам | https://mos-inf.olimpiada.ru/"
 OL_nerc-school_nerc-school-r1,Олимпиада по информатике и программированию (ИТМО): Отборочный этап (две волны онлайн),CP,2027-02-01,high,planned,4,0,EVENT,"В прошлом сезоне туры были 28 янв и 12 фев. | I ур. · ИТМО, МГУ, ВШЭ | https://nerc.itmo.ru/school"
 OL_ommo_ommo-r1,ОММО: Отборочный этап (заочно),MATH,2027-01-11,medium,planned,4,0,EVENT,II/III ур. | https://olympiads.mccme.ru/omo/
 OL_pvg-math_pvg-math-r1,Покори Воробьёвы горы! — математика: Отборочный этап по математике (онлайн),MATH,2026-12-15,high,planned,4,0,EVENT,Расписание сезона ещё не опубликовано. | I ур. · 100 баллов | https://pvg.mk.ru
 OL_rosatom-inf_rosatom-inf-r1,Росатом — информатика: Дистанционный отбор по информатике,CP,2026-11-06,very_high,planned,4,0,EVENT,Расписание информатики ожидается в ноябре. | I ур. · МФТИ: БВИ победителям | https://olymp.mephi.ru/rosatom/about
 OL_rosatom-inf_rosatom-inf-r2,Росатом — информатика: II дистанционный отбор по информатике,CP,2026-12-29,very_high,planned,4,0,EVENT,I ур. · МФТИ: БВИ победителям | https://olymp.mephi.ru/rosatom/about
-OL_rosatom-math_rosatom-math-dist,Росатом — математика: Дистанционный отборочный тур по математике,MATH,2026-11-17,high,planned,4,0,EVENT,II ур. · 100 баллов | https://olymp.mephi.ru/rosatom/about
-OL_rosatom-math_rosatom-math-och,Росатом — математика: Очный отборочный тур по математике (Москва и регионы),MATH,2026-11-28,high,planned,4,0,EVENT,"Проверь, есть ли площадка в Екатеринбурге или рядом. | II ур. · 100 баллов | https://olymp.mephi.ru/rosatom/about"
+OL_rosatom-math_rosatom-math-dist,Росатом — математика: Дистанционный отборочный тур по математике,MATH,2026-11-17,high,done,4,5,EVENT,II ур. · 100 баллов | https://olymp.mephi.ru/rosatom/about
+OL_rosatom-math_rosatom-math-och,Росатом — математика: Очный отборочный тур по математике (Москва и регионы),MATH,2026-11-28,high,done,4,5,EVENT,"Проверь, есть ли площадка в Екатеринбурге или рядом. | II ур. · 100 баллов | https://olymp.mephi.ru/rosatom/about"
 OL_rosatom-math_rosatom-final,Росатом — математика: Заключительный этап (физика и математика),MATH,2027-02-06,high,planned,4,0,EVENT,II ур. · 100 баллов | https://olymp.mephi.ru/rosatom/about
 OL_spbu-math_spbu-math,СПбГУ — математика: Отборочный этап по математике (онлайн),MATH,2026-10-25,medium,planned,4,0,EVENT,уточни уровень | https://www.olympiada.spbu.ru/
 OL_tc_tc-reg,Технокубок: Регистрация,CP,2026-11-06,high,planned,0.5,0,DEADLINE,"I ур. · ИТМО, МГУ, МИФИ; МФТИ — 100 баллов | https://techno-cup.ru/"
@@ -87,13 +53,13 @@ OL_tc_tc-r3,Технокубок: 3-й отборочный раунд (онла
 OL_tc_tc-offline,"Технокубок: Второй отборочный этап (очно, 25+ площадок)",CP,2027-02-08,high,planned,4,0,EVENT,"Выбери площадку в Екатеринбурге при регистрации на этап. | I ур. · ИТМО, МГУ, МИФИ; МФТИ — 100 баллов | https://techno-cup.ru/"
 OL_tc_tc-final,Технокубок: Финал (МФТИ / МГТУ),CP,2027-03-13,high,planned,4,0,EVENT,"I ур. · ИТМО, МГУ, МИФИ; МФТИ — 100 баллов | https://techno-cup.ru/"
 OL_turgor_turgor-autumn-hard,"Турнир городов: Осенний тур, сложный вариант",MATH,2026-10-18,very_high,done,4,4,EVENT,"I ур. · БВИ в МФТИ (в списке 7, только победителям, ЕГЭ от 85) и ВШЭ | https://cdoosh.ru/turgor/"
-OL_turgor_turgor-spring,Турнир городов: Весенний тур (базовый и сложный вариант),MATH,2027-02-28,very_high,planned,4,0,EVENT,"I ур. · БВИ в МФТИ (в списке 7, только победителям, ЕГЭ от 85) и ВШЭ | https://cdoosh.ru/turgor/"
+OL_turgor_turgor-spring,Турнир городов: Весенний тур (базовый и сложный вариант),MATH,2027-02-28,very_high,done,4,5,EVENT,"I ур. · БВИ в МФТИ (в списке 7, только победителям, ЕГЭ от 85) и ВШЭ | https://cdoosh.ru/turgor/"
 OL_urkop_urkop-final,УрКОП → ВКОШП: Финал Уральской командной олимпиады по программированию,CP,2026-11-14,high,planned,4,0,EVENT,Командный. | не в перечне · командная | https://olimpiada.ru/activity/226
 OL_urkop_vkoshp-final,УрКОП → ВКОШП: Финал Всероссийской командной олимпиады по программированию,CP,2026-12-11,high,planned,4,0,EVENT,Зависит от итогов УрКОП. | не в перечне · командная | https://olimpiada.ru/activity/226
 OL_vp-inf_vp-inf-r1,"Высшая проба — информатика: Отборочный этап по информатике (онлайн, прокторинг, 2 часа)",CP,2026-11-19,very_high,planned,4,0,EVENT,"Запасная дата 14 ноя 16:00 Екб — занят (УрКОП). Начав тур в одну дату, во вторую доступ закроется. Прокторинг: камера, документ с фото, правила — https://olymp.hse.ru/mmo/instr-first/ | I ур. · ВШЭ ПМИ: БВИ победителям (ЕГЭ инф 90+) | Время: 11:00 | https://olymp.hse.ru/mmo"
 OL_vp-inf_vp-inf-final,Высшая проба — информатика: Заключительный этап,CP,2027-02-05,very_high,planned,4,0,EVENT,I ур. · ВШЭ ПМИ: БВИ победителям (ЕГЭ инф 90+) | https://olymp.hse.ru/mmo
 OL_vp-math_vp-math-r1,Высшая проба — математика: 1-й тур отборочного этапа по математике,MATH,2026-09-25,very_high,done,4,4,EVENT,Проход во 2-й тур — по проходным баллам. | I ур. · 100 баллов | https://olymp.hse.ru/mmo
-OL_vp-math_vp-math-r2,"Высшая проба — математика: Если прошёл: 2-й тур по математике (онлайн, прокторинг)",MATH,2026-11-20,very_high,planned,4,0,EVENT,Прокторинг — правила: https://olymp.hse.ru/mmo/instr-first/ | I ур. · 100 баллов | Время: 09:00 | https://olymp.hse.ru/mmo
+OL_vp-math_vp-math-r2,"Высшая проба — математика: Если прошёл: 2-й тур по математике (онлайн, прокторинг)",MATH,2026-11-20,very_high,done,4,5,EVENT,Прокторинг — правила: https://olymp.hse.ru/mmo/instr-first/ | I ур. · 100 баллов | Время: 09:00 | https://olymp.hse.ru/mmo
 OL_vsesib-inf_vsesib-inf-reg,Всесибирская — информатика: Регистрация на отборочный этап по информатике,CP,2026-11-06,very_high,done,0.5,0.5,DEADLINE,I ур. · МФТИ: БВИ победителям | Время: 07:00 | https://sesc.nsu.ru/olymp-vsesib/
 OL_vsesib-inf_vsesib-inf-r1,"Всесибирская — информатика: Отборочный этап по информатике (очно, СУНЦ УрФУ, 5 часов)",CP,2026-11-08,very_high,planned,4,0,EVENT,"Приехать заранее на регистрацию. Взять карточку участника и паспорт, перекус и воду. | I ур. · МФТИ: БВИ победителям | Время: 07:00 | https://sesc.nsu.ru/olymp-vsesib/"
 OL_vsesib-inf_vsesib-inf-freg,Всесибирская — информатика: Регистрация на заключительный этап,CP,2027-02-01,very_high,planned,0.5,0,DEADLINE,I ур. · МФТИ: БВИ победителям | https://sesc.nsu.ru/olymp-vsesib/
@@ -110,3 +76,37 @@ OL_vsosh-math_vsosh-math-school,ВсОШ — математика: Школьн�
 OL_vsosh-math_vsosh-math-mun,"ВсОШ — математика: Муниципальный этап, математика",MATH,2026-12-07,very_high,planned,4,0,EVENT,"Место — у ответственного в школе. | ВсОШ · БВИ на мат. направления, 100 баллов | Время: 08:00 | https://zsfond.ru/vsosh/"
 OL_vsosh-math_vsosh-math-reg,ВсОШ — математика: Региональный этап,MATH,2027-02-02,very_high,planned,4,0,EVENT,"Документы: паспорт, справка из школы, согласия — формы на zsfond.ru. | ВсОШ · БВИ на мат. направления, 100 баллов | https://zsfond.ru/vsosh/"
 OL_vsosh-math_vsosh-math-final,ВсОШ — математика: Заключительный этап,MATH,2027-03-15,very_high,planned,4,0,EVENT,"Даты по предметам объявит Минпросвещения. | ВсОШ · БВИ на мат. направления, 100 баллов | https://zsfond.ru/vsosh/"
+OLY281,иннопа матеша,OLYMPIAD,2026-10-25,very_high,planned,0,0,DEADLINE,
+W201,ДЮ — понедельник,ДЮ,2026-10-18,high,done,2,4,WEEKLY,понедельник 19:00–21:00; занятие фактически 4 часа
+W202,ЧГК — тренировка,CHGK,2026-10-18,high,done,1.5,1.5,WEEKLY,понедельник 15:30–17:00; тренировка состоялась
+W203,Степанов,TR,2026-10-18,high,done,2.5,2.5,WEEKLY,вторник 17:00–19:30
+W204,Дорешка — программирование,CP,2026-10-18,high,done,1,0.5,WEEKLY,вторник; план 1 час
+W205,Программирование — среда,CP,2026-10-18,medium,skipped,1,0,WEEKLY,не выполнено: после уроков пользователь пошёл на день рождения
+W207,ДЮ — среда,ДЮ,2026-10-18,high,done,2,2,WEEKLY,среда 19:00–21:00
+W208,Тур Закла 2016 года,TEAM,2026-10-18,high,done,5,6,WEEKLY,"Не удалось заниматься: после школы уснул, поел и снова спать до утра"
+W209,Пересказ по английскому №1,ENG,2026-10-16,high,done,2,1,WEEKLY,не отмечен в отчёте; после школы футбольный турнир
+W210,Дорешка Степанова — декартач,CP,2026-10-18,high,done,2.5,2.5,WEEKLY,"пятница; сдана E базового декартача, F продвинутого решена, код ещё не дописан"
+W211,ЕГЭ русский — практика задания 8,RUS,2026-10-18,high,done,1.5,1,WEEKLY,суббота занята отборочным ЧГК и театром
+W212,ЕГЭ математика — сложные задачи,MATH_EGE,2026-10-18,medium,done,1.5,1,WEEKLY,суббота занята отборочным ЧГК и театром
+W213,Тургор — отборочный тур,OLYMPIAD_MATH,2026-10-18,high,done,3,5,WEEKLY,воскресенье; фактически 5 часов
+W214,Чтение перед сном — рутина,READ,2026-10-18,medium,done,1.5,1.5,WEEKLY,прочитано 30 минут в среду; недельная цель полностью не выполнена
+W215,Дорешка перед ДЮ,ДЮ,2026-10-18,medium,done,0,1,EXTRA,понедельник; 1 час дорешки до занятия
+GEO001,"Сдать Европу: страны, столицы и местоположение",География,2026-10-16,very_high,done,0,0,DEADLINE,Все задания по географии сданы
+STP001,Дорешка Степанова — декартач,CP,2026-10-31,high,done,0,2,DEADLINE,1 задача по теме сдана 09.10; продолжить дорешку
+STP002,Дорешка Степанова — продвинутый декартач,CP,2026-10-31,high,done,0,2,DEADLINE,дорешать до конца октября
+STP003,Дорешка Степанова — продвинутая корнячка,CP,2026-10-31,high,done,0,2,DEADLINE,дорешать до конца октября
+ENG002,Пересказ по английскому №2,ENG,2026-10-25,high,done,0,1,DEADLINE,сдать до 25.10
+OL003,ШЭ — математика,OLYMPIAD,2026-10-16,high,unreported,0,0,EVENT,олимпиада; результат не сообщён
+OL004,ШЭ — информатика,OLYMPIAD,2026-10-21,high,planned,0,0,EVENT,08.09–22.10
+OL005,Физтех — математика,OLYMPIAD,2026-11-01,high,done,0,5,EVENT,01.11 08:00 МСК
+OL006,Физтех — математика,OLYMPIAD,2026-11-07,high,done,0,5,EVENT,07.11 10:00 МСК
+HIST001,Сдать историю,SCHOOL,,high,done,0,0,DEADLINE,Вся история сдана
+OL007,ВШЭ «Высшая проба» — информатика,OLYMPIAD,2026-11-14,very_high,planned,4,0,EVENT,Олимпиада Высшая проба по информатике (14.11)
+OL008,ВШЭ «Высшая проба» — математика,OLYMPIAD,2026-11-20,very_high,planned,4,0,EVENT,Олимпиада Высшая проба по математике (20.11)
+OL009,Иннополис Open («Инопа») — информатика,OLYMPIAD,2026-11-21,very_high,done,5,3,EVENT,Innopolis Open по программированию (21.11)
+TEAM001,Тур Закла 2016 года,TEAM,2026-10-24,high,done,5,6,DEADLINE,"Суббота 24.10: перенесено (долг), день занят уборкой, ЕГЭ по русскому и раундом Codeforces"
+ENG001,Английский: 1-й пересказ (выучить в чт — сдать в пт),ENG,2026-10-23,very_high,done,2,1,DEADLINE,Дедлайн: пятница 23.10. Учить в четверг 2 часа до пары Степанова
+RUS001,ЕГЭ русский язык — задание 8 и тест,RUS,2026-10-24,high,done,2,2.8,DEADLINE,Выполнено в субботу 24.10: 1.5ч разбор + 1.3ч ДЗ 11 задание
+CF001,Codeforces Div. 2 Round (24.10 16:05 UTC+5),CP,2026-10-24,high,done,2,3.3,EVENT,Соревнование Codeforces Div. 2 (16:05-18:05 UTC+5). Без конфликтов со статичным ДЮ.
+CF002,Codeforces Div. 2 Round (26.10 19:35 UTC+5),CP,2026-10-26,low,done,0,3.3,EVENT,Конфликт: совпадает по времени со статичным занятием ДЮ (19:00-21:00).
+OL_INNO01,25.01 олимпиада иннополис 10-13,OLYMPIAD,2026-01-25,very_high,done,3,3,EVENT,25.01 олимпиада иннополис 10-13
