@@ -65,7 +65,7 @@
         "date": "2026-10-31",
         "time": "08:00",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Если уже есть подтверждённый аккаунт — повторная регистрация не нужна, но проверь запись на тур."
       },
       {
@@ -75,7 +75,7 @@
         "date": "2026-11-01",
         "time": "08:00",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "4 часа: ответы до 12:05 МСК, решения до 13:05 МСК.",
         "resultsInfo": "До начала следующего тура, т.е. до 7 ноя (регламент Физтеха)"
       },
@@ -86,7 +86,7 @@
         "date": "2026-11-06",
         "time": "10:00",
         "confidence": "exact",
-        "done": true
+        "done": false
       },
       {
         "id": "ft-math-r3",
@@ -95,7 +95,7 @@
         "date": "2026-11-07",
         "time": "10:00",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Туры независимые: в финал — победители и призёры любого тура.",
         "resultsInfo": "Срок не объявлен — olymp-online.mipt.ru"
       },
@@ -106,7 +106,7 @@
         "date": "2027-02-14",
         "dateEnd": "2027-02-15",
         "confidence": "approx",
-        "done": true,
+        "done": false,
         "note": "Допуск: диплом любого онлайн-тура."
       }
     ]
@@ -132,7 +132,7 @@
         "date": "2026-09-28",
         "dateEnd": "2026-11-05",
         "confidence": "check",
-        "done": true,
+        "done": false,
         "note": "Срок закрытия — по olimpiada.ru, точный проверь в личном кабинете. Реши задачи заранее, не в последний день.",
         "resultsInfo": "Срок не объявлен — личный кабинет; II этап стартует 20 ноя"
       },
@@ -143,7 +143,7 @@
         "date": "2026-11-20",
         "dateEnd": "2027-01-25",
         "confidence": "approx",
-        "done": true
+        "done": false
       }
     ]
   },
@@ -168,7 +168,7 @@
         "date": "2026-12-01",
         "dateEnd": "2027-01-15",
         "confidence": "approx",
-        "done": true,
+        "done": false,
         "note": "График сезона ещё не опубликован."
       },
       {
@@ -203,7 +203,7 @@
         "date": "2026-11-22",
         "time": "10:00",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "resultsInfo": "Срок не объявлен — письмо и сайт организатора"
       },
       {
@@ -212,7 +212,7 @@
         "kind": "round",
         "date": "2026-12-26",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Для финала достаточно стать призёром одного из туров. Накануне, 25 дек, — пробный тур."
       },
       {
@@ -222,7 +222,7 @@
         "date": "2027-02-12",
         "dateEnd": "2027-02-14",
         "confidence": "exact",
-        "done": true
+        "done": false
       },
       {
         "id": "inno-inf-trial",
@@ -230,7 +230,7 @@
         "kind": "trial",
         "date": "2026-11-21",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Проверить камеру, платформу и вход."
       }
     ]
@@ -267,7 +267,7 @@
         "date": "2026-11-29",
         "time": "10:00",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "В финал — по лучшему результату из двух туров."
       },
       {
@@ -277,7 +277,7 @@
         "date": "2027-03-05",
         "dateEnd": "2027-03-07",
         "confidence": "approx",
-        "done": true
+        "done": false
       }
     ]
   },
@@ -302,7 +302,7 @@
         "date": "2026-12-03",
         "dateEnd": "2027-01-19",
         "confidence": "approx",
-        "done": true,
+        "done": false,
         "note": "Часть отбора — тест по школьной информатике (системы счисления, кодирование)."
       }
     ]
@@ -448,7 +448,7 @@
         "date": "2026-10-25",
         "dateEnd": "2027-01-19",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "resultsInfo": "Итоги отбора — к регистрации на финал 20–24 янв 2027"
       }
     ]
@@ -591,7 +591,7 @@
         "kind": "round",
         "date": "2027-02-14",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Пропустить, если допуск в финал подтвердится.",
         "resultsInfo": "Ориентир: ~через неделю после тура (в 2026: тур 23 фев → итоги 2 мар)"
       },
@@ -601,7 +601,7 @@
         "kind": "round",
         "date": "2027-02-28",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Пропустить, если допуск в финал подтвердится.",
         "resultsInfo": "Ориентир: ~через неделю после тура (в 2026: тур 9 мар → итоги 16 мар)"
       },
@@ -611,7 +611,7 @@
         "kind": "final",
         "date": "2027-03-28",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Проверить, есть ли площадка вне Москвы, иначе планировать поездку.",
         "resultsInfo": "Ориентир: начало апреля (в 2026 итоги финала — 4 апр, mos-inf.olimpiada.ru)"
       }
@@ -752,7 +752,7 @@
         "date": "2026-11-17",
         "dateEnd": "2026-12-21",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "resultsInfo": "Итоги отборочных туров — январь 2027 (olymp.mephi.ru)"
       },
       {
@@ -762,7 +762,7 @@
         "date": "2026-11-28",
         "dateEnd": "2026-11-29",
         "confidence": "check",
-        "done": true,
+        "done": false,
         "note": "Проверь, есть ли площадка в Екатеринбурге или рядом.",
         "resultsInfo": "Итоги отборочных туров — январь 2027 (olymp.mephi.ru)"
       },
@@ -901,7 +901,7 @@
         "date": "2027-02-28",
         "dateEnd": "2027-03-14",
         "confidence": "check",
-        "done": true
+        "done": false
       }
     ]
   },
@@ -1011,7 +1011,7 @@
         "date": "2026-11-20",
         "time": "09:00",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Прокторинг — правила: https://olymp.hse.ru/mmo/instr-first/",
         "resultsInfo": "Срок не объявлен; приглашения на финал — до 5 фев; города финала — в декабре (hse.ru)"
       }
