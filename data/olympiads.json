@@ -75,7 +75,7 @@
         "date": "2026-11-01",
         "time": "08:00",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "4 часа: ответы до 12:05 МСК, решения до 13:05 МСК.",
         "resultsInfo": "До начала следующего тура, т.е. до 7 ноя (регламент Физтеха)"
       },
@@ -339,7 +339,7 @@
         "date": "2027-01-20",
         "dateEnd": "2027-01-24",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Нужна по каждому предмету, где прошёл отбор."
       },
       {
@@ -386,7 +386,7 @@
         "date": "2027-01-20",
         "dateEnd": "2027-01-24",
         "confidence": "exact",
-        "done": true,
+        "done": false,
         "note": "Нужна по каждому предмету, где прошёл отбор."
       },
       {
@@ -824,7 +824,7 @@
         "date": "2026-11-06",
         "dateEnd": "2026-12-07",
         "confidence": "approx",
-        "done": true
+        "done": false
       },
       {
         "id": "tc-r1",
