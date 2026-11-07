@@ -1,7 +1,7 @@
 {
   "handle": "pon",
-  "updated_at": "2026-11-06T19:20:26.313Z",
-  "rating": 1571,
+  "updated_at": "2026-11-07T05:53:29.143Z",
+  "rating": 1500,
   "history": [
     {
       "contestId": 1672,
@@ -263,9 +263,26 @@
       "ratingUpdateTimeSeconds": 1792848000,
       "oldRating": 1599,
       "newRating": 1571
+    },
+    {
+      "contestId": 2284,
+      "contestName": "Codeforces Round 1132 (Div. 2)",
+      "handle": "pon",
+      "rank": 3486,
+      "ratingUpdateTimeSeconds": 1793983800,
+      "oldRating": 1571,
+      "newRating": 1500
     }
   ],
   "recent_divs": [
+    {
+      "name": "Codeforces Round 1132 (Div. 2)",
+      "date": "2026-11-06",
+      "rank": 3486,
+      "oldRating": 1571,
+      "newRating": 1500,
+      "delta": -71
+    },
     {
       "name": "Codeforces Round 1129 (Div. 2)",
       "date": "2026-10-24",
@@ -297,14 +314,6 @@
       "oldRating": 1491,
       "newRating": 1549,
       "delta": 58
-    },
-    {
-      "name": "Codeforces Round 1118 (Div. 2)",
-      "date": "2026-08-29",
-      "rank": 2478,
-      "oldRating": 1476,
-      "newRating": 1491,
-      "delta": 15
     }
   ]
 }
