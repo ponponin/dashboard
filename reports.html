@@ -108,19 +108,35 @@
   <script>
     function parseCSV(text) {
       if (!text) return [];
-      const lines = text.trim().split('\n');
-      if (lines.length < 2) return [];
-      const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, ''));
-      return lines.slice(1).map(line => {
-        const values = []; let inQuotes = false; let current = '';
-        for (let i = 0; i < line.length; i++) {
-          const char = line[i];
-          if (char === '"') inQuotes = !inQuotes;
-          else if (char === ',' && !inQuotes) { values.push(current.trim().replace(/^"|"$/g, '')); current = ''; }
-          else { current += char; }
+      const src = text.charCodeAt(0) === 0xFEFF ? text.slice(1) : text;
+      const rows = []; let row = []; let field = ''; let inQuotes = false;
+      for (let i = 0; i < src.length; i++) {
+        const ch = src[i]; const next = src[i + 1];
+        if (ch === '"') {
+          if (inQuotes && next === '"') { field += '"'; i++; }
+          else inQuotes = !inQuotes;
+        } else if (ch === ',' && !inQuotes) {
+          row.push(field.trim()); field = '';
+        } else if ((ch === '' || ch === '
+') && !inQuotes) {
+          if (ch === '' && next === '
+') i++;
+          row.push(field.trim()); field = '';
+          if (!(row.length === 1 && row[0] === '')) rows.push(row);
+          row = [];
+        } else {
+          field += ch;
         }
-        values.push(current.trim().replace(/^"|"$/g, ''));
-        const row = {}; headers.forEach((h, idx) => { row[h] = values[idx] || ''; }); return row;
+      }
+      if (field !== '' || row.length > 0) {
+        row.push(field.trim());
+        if (!(row.length === 1 && row[0] === '')) rows.push(row);
+      }
+      if (rows.length < 2) return [];
+      const headers = rows[0];
+      return rows.slice(1).map(cols => {
+        if (cols.length !== headers.length) throw new Error('CSV schema mismatch in report data');
+        const obj = {}; headers.forEach((h, idx) => { obj[h] = cols[idx] || ''; }); return obj;
       });
     }
     let statsData = []; let plansData = []; let topicsData = []; let activeWeekStart = ''; let categoryChartInstance = null;
